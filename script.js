@@ -71,7 +71,7 @@ const games = [
         usualPrice: '17.99€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
-        status: 'expiring',
+        status: 'active',
         daysLeft: 5,
         emoji: '🎲',
         description: {
@@ -87,7 +87,7 @@ const games = [
         usualPrice: '19.49€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
-        status: 'expiring',
+        status: 'active',
         daysLeft: 5,
         emoji: '🤖',
         description: {
