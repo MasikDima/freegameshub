@@ -341,3 +341,24 @@ footer {
         gap: 10px;
     }
 }
+/* Плавные переходы */
+.game-card {
+    transition: all 0.3s ease;
+}
+
+.hero h1, .hero p, .game-title, .game-description {
+    transition: opacity 0.2s ease;
+}
+
+#gamesContainer {
+    transition: opacity 0.15s ease;
+}
+
+/* Фикс дёрганий */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+}
