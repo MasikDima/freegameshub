@@ -158,33 +158,70 @@ const games = [
             ru: 'Королевская битва с милыми человечками. Бесплатно навсегда!',
             es: 'Battle royale con muñecos adorables. ¡Gratis para siempre!',
             en: 'Battle royale with cute beans. Free forever!'
-        }
+          }
     }
 ];
 
-// ========== ТЕКУЩИЙ ЯЗЫК ==========
+// ========== ЯЗЫК ==========
 let currentLang = 'ru';
 
-// ========== ФУНКЦИИ ==========
 function getTranslation(key) {
     return translations[currentLang][key] || key;
 }
 
 function switchLanguage(lang) {
     currentLang = lang;
-    
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
-    
     document.querySelectorAll('[data-key]').forEach(el => {
         el.textContent = getTranslation(el.dataset.key);
     });
-    
+    updateLangDisplay(lang);
     renderGames(currentFilter);
     localStorage.setItem('lang', lang);
 }
 
+// ========== ВЫПАДАЮЩИЙ СПИСОК ==========
+const langDropdownBtn = document.getElementById('langDropdownBtn');
+const langDropdownContent = document.getElementById('langDropdownContent');
+const currentLangFlag = document.getElementById('currentLangFlag');
+const currentLangText = document.getElementById('currentLangText');
+
+const langInfo = {
+    ru: { flag: '🇷🇺', text: 'RU' },
+    es: { flag: '🇪🇸', text: 'ES' },
+    en: { flag: '🇬🇧', text: 'EN' }
+};
+
+if (langDropdownBtn) {
+    langDropdownBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        langDropdownContent.classList.toggle('show');
+        this.classList.toggle('active');
+    });
+}
+
+document.addEventListener('click', function() {
+    if (langDropdownContent) langDropdownContent.classList.remove('show');
+    if (langDropdownBtn) langDropdownBtn.classList.remove('active');
+});
+
+document.querySelectorAll('.lang-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.preventDefault();
+        switchLanguage(this.dataset.lang);
+        if (langDropdownContent) langDropdownContent.classList.remove('show');
+        if (langDropdownBtn) langDropdownBtn.classList.remove('active');
+    });
+});
+
+function updateLangDisplay(lang) {
+    if (currentLangFlag) currentLangFlag.textContent = langInfo[lang].flag;
+    if (currentLangText) currentLangText.textContent = langInfo[lang].text;
+    document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+}
+
+// ========== ИГРЫ ==========
 function getGameDescription(game) {
     return game.description[currentLang] || game.description.en;
 }
@@ -208,74 +245,59 @@ function getCardClass(game) {
 }
 
 function getTimeText(game) {
-    if (game.status === 'new') return `⏰ Старт через ${game.daysLeft} ${getTranslation('days-left')}`;
+    if (game.status === 'new') return '⏰ Старт через ' + game.daysLeft + ' ' + getTranslation('days-left');
     if (game.daysLeft === 0) return '⏰ Сегодня!';
     if (game.daysLeft === 1) return '⏰ 1 день';
     if (game.daysLeft === 999) return '♾️ Навсегда';
-    return `⏰ ${game.daysLeft} ${getTranslation('days-left')}`;
+    return '⏰ ' + game.daysLeft + ' ' + getTranslation('days-left');
 }
 
-function renderGames(filter = 'all') {
-    const container = document.getElementById('gamesContainer');
+function renderGames(filter) {
+    filter = filter || 'all';
+    var container = document.getElementById('gamesContainer');
+    if (!container) return;
     
-    let filteredGames = games;
-    if (filter === 'expiring') filteredGames = games.filter(g => g.status === 'expiring');
-    if (filter === 'new') filteredGames = games.filter(g => g.status === 'new');
-    if (filter === 'active') filteredGames = games.filter(g => g.status === 'active');
+    var filteredGames = games;
+    if (filter === 'expiring') filteredGames = games.filter(function(g) { return g.status === 'expiring'; });
+    if (filter === 'new') filteredGames = games.filter(function(g) { return g.status === 'new'; });
+    if (filter === 'active') filteredGames = games.filter(function(g) { return g.status === 'active'; });
     
-    container.innerHTML = filteredGames.map(game => `
-        <div class="game-card ${getCardClass(game)}">
-            <img src="${game.image}" 
-                 alt="${game.title}" 
-                 class="game-image"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                 style="width:100%;height:200px;object-fit:cover;">
-            <div style="display:none; background: linear-gradient(135deg, #1a1a3e, #0f0f2a); height: 200px; align-items: center; justify-content: center; font-size: 80px;">
-                ${game.emoji}
-            </div>
-            <div class="game-info">
-                <span class="game-badge ${getBadgeClass(game)}">${getGameStatusText(game)}</span>
-                <h3 class="game-title">${game.title}</h3>
-                <p style="color:#aaa;margin-bottom:10px;">${getGameDescription(game)}</p>
-                <div class="game-price">
-                    <span class="original">${game.usualPrice}</span> → 
-                    <span class="free">0€</span>
-                </div>
-                <div class="game-store">${getTranslation('store')}: ${game.store}</div>
-                <div class="game-timer">${getTimeText(game)}</div>
-                <a href="${game.storeUrl}" class="btn-get" target="_blank" rel="nofollow">
-                    ${getTranslation('get-free')}
-                </a>
-            </div>
-        </div>
-    `).join('');
+    container.innerHTML = filteredGames.map(function(game) {
+        return '<div class="game-card ' + getCardClass(game) + '">' +
+            '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
+            '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
+            '<div class="game-info">' +
+            '<span class="game-badge ' + getBadgeClass(game) + '">' + getGameStatusText(game) + '</span>' +
+            '<h3 class="game-title">' + game.title + '</h3>' +
+            '<p style="color:#aaa;margin-bottom:10px;">' + getGameDescription(game) + '</p>' +
+            '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
+            '<div class="game-store">' + getTranslation('store') + ': ' + game.store + '</div>' +
+            '<div class="game-timer">' + getTimeText(game) + '</div>' +
+            '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow">' + getTranslation('get-free') + '</a>' +
+            '</div></div>';
+    }).join('');
     
-    const freeNow = games.filter(g => g.status === 'expiring' || g.status === 'active').length;
-    const upcoming = games.filter(g => g.status === 'new').length;
-    document.getElementById('freeGamesCount').textContent = freeNow;
-    document.getElementById('upcomingCount').textContent = upcoming;
+    var freeNow = games.filter(function(g) { return g.status === 'expiring' || g.status === 'active'; }).length;
+    var upcoming = games.filter(function(g) { return g.status === 'new'; }).length;
+    var el1 = document.getElementById('freeGamesCount');
+    var el2 = document.getElementById('upcomingCount');
+    if (el1) el1.textContent = freeNow;
+    if (el2) el2.textContent = upcoming;
 }
 
 // ========== ФИЛЬТРЫ ==========
-let currentFilter = 'all';
+var currentFilter = 'all';
 
-document.querySelectorAll('.filter-btn').forEach(btn => {
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         this.classList.add('active');
         currentFilter = this.dataset.filter;
         renderGames(currentFilter);
     });
 });
 
-// ========== ЯЗЫКИ ==========
-document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        switchLanguage(this.dataset.lang);
-    });
-});
-
 // ========== ЗАПУСК ==========
-const savedLang = localStorage.getItem('lang') || 'ru';
+var savedLang = localStorage.getItem('lang') || 'ru';
 switchLanguage(savedLang);
 renderGames();
