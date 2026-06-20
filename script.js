@@ -184,7 +184,6 @@ function getDesc(game) {
 function getStatusText(game) {
     var now = new Date();
     
-    // Проверяем, не истекает ли сегодня
     if (game.status === 'active' && game.endDate) {
         var end = new Date(game.endDate);
         var diffDays = Math.floor((end - now) / (1000 * 60 * 60 * 24));
@@ -232,7 +231,7 @@ function getTime(game) {
         var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         
-        if (days > 0) return '⏰ Старт через ' + days + 'д ' + hours + 'ч';
+        if (days > 0) return '⏰ Старт через ' + days + 'д ' + hours + 'ч ' + mins + 'м';
         if (hours > 0) return '⏰ Старт через ' + hours + 'ч ' + mins + 'м';
         return '⏰ Старт через ' + mins + ' мин';
     }
@@ -286,7 +285,6 @@ function renderGames(filter) {
     document.getElementById('freeGamesCount').textContent = games.filter(function(g) { return g.status === 'active'; }).length;
     document.getElementById('upcomingCount').textContent = games.filter(function(g) { return g.status === 'new'; }).length;
     
-    // Обновляем каждую минуту
     clearTimeout(window.timerRefresh);
     window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
