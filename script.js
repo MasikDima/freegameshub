@@ -57,7 +57,7 @@ var games = [
         image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
         usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
-        status: 'active', endDate: '2026-06-26', emoji: '🎲',
+        status: 'active', endDate: '2026-06-25', emoji: '🎲',
         desc: {
             ru: 'Ролевая игра в киберпанк-мире.',
             es: 'Juego de rol cyberpunk.',
@@ -69,7 +69,7 @@ var games = [
         image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e',
         usualPrice: '19.49€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
-        status: 'active', endDate: '2026-06-26', emoji: '🤖',
+        status: 'active', endDate: '2026-06-25', emoji: '🤖',
         desc: {
             ru: 'Ритм-шутер с роботами!',
             es: '¡Shooter rítmico con robots!',
@@ -198,7 +198,7 @@ function getTime(game) {
     
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
-        var d = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
+        var d = Math.floor((start - now) / (1000 * 60 * 60 * 24));
         if (d > 1) return '⏰ Старт через ' + d + ' ' + t('days-left');
         if (d === 1) return '⏰ Старт завтра!';
         return '⏰ Старт сегодня!';
@@ -206,7 +206,7 @@ function getTime(game) {
     
     if (game.endDate) {
         var end = new Date(game.endDate);
-        var d = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+        var d = Math.floor((end - now) / (1000 * 60 * 60 * 24));
         if (d > 999) return '♾️ Навсегда';
         if (d < 0) return '⏰ Закончилось';
         if (d === 0) return '⏰ Последний день!';
