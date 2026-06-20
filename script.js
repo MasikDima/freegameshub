@@ -208,6 +208,7 @@ function getCardClass(game) {
 }
 
 function getTimeText(game) {
+    if (game.status === 'new') return `⏰ Старт через ${game.daysLeft} ${getTranslation('days-left')}`;
     if (game.daysLeft === 0) return '⏰ Сегодня!';
     if (game.daysLeft === 1) return '⏰ 1 день';
     if (game.daysLeft === 999) return '♾️ Навсегда';
