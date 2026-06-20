@@ -15,10 +15,17 @@
                 <span class="logo-icon">🎮</span>
                 <span class="logo-text">Free Games Hub</span>
             </div>
-            <div class="lang-switch">
-                <button class="lang-btn active" data-lang="ru">🇷🇺 RU</button>
-                <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
-                <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+            <div class="lang-dropdown">
+                <button class="lang-dropdown-btn" id="langDropdownBtn">
+                    <span id="currentLangFlag">🇷🇺</span>
+                    <span id="currentLangText">RU</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="lang-dropdown-content" id="langDropdownContent">
+                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                </div>
             </div>
         </div>
     </header>
