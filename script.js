@@ -137,19 +137,6 @@ const games = [
         }
     }
 ];
-    {
-        id: 6, title: 'Fall Guys',
-        image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
-        usualPrice: '0€', store: 'Epic Games Store',
-        storeUrl: 'https://store.epicgames.com/p/fall-guys',
-        status: 'active', daysLeft: 999, emoji: '👑',
-        description: {
-            ru: 'Королевская битва с милыми человечками. Бесплатно навсегда!',
-            es: 'Battle royale con muñecos adorables. ¡Gratis para siempre!',
-            en: 'Battle royale with cute beans. Free forever!'
-        }
-    }
-];
 
 // ========== ЯЗЫК ==========
 var currentLang = 'ru';
@@ -161,7 +148,6 @@ function getTranslation(key) {
 function switchLanguage(lang) {
     currentLang = lang;
     
-    // Обновляем кнопки языков
     document.querySelectorAll('.lang-btn').forEach(function(btn) {
         if (btn.dataset.lang === lang) {
             btn.classList.add('active');
@@ -170,12 +156,10 @@ function switchLanguage(lang) {
         }
     });
     
-    // Обновляем текст на странице
     document.querySelectorAll('[data-key]').forEach(function(el) {
         el.textContent = getTranslation(el.dataset.key);
     });
     
-    // Обновляем выпадающий список (если есть)
     var flagEl = document.getElementById('currentLangFlag');
     var textEl = document.getElementById('currentLangText');
     var langInfo = { ru: { flag: '🇷🇺', text: 'RU' }, es: { flag: '🇪🇸', text: 'ES' }, en: { flag: '🇬🇧', text: 'EN' } };
@@ -227,29 +211,45 @@ function getGameDescription(game) {
 }
 
 function getGameStatusText(game) {
-    if (game.status === 'expiring' && game.daysLeft === 0) return getTranslation('ending-today');
     if (game.status === 'new') return getTranslation('new-deal');
     return getTranslation('still-free');
 }
 
 function getBadgeClass(game) {
-    if (game.status === 'expiring') return 'badge-expiring';
     if (game.status === 'new') return 'badge-new';
     return 'badge-active';
 }
 
 function getCardClass(game) {
-    if (game.status === 'expiring') return 'expiring';
     if (game.status === 'new') return 'new';
     return 'active-game';
 }
 
 function getTimeText(game) {
-    if (game.status === 'new') return '⏰ Старт через ' + game.daysLeft + ' ' + getTranslation('days-left');
-    if (game.daysLeft === 0) return '⏰ Сегодня!';
-    if (game.daysLeft === 1) return '⏰ 1 день';
-    if (game.daysLeft === 999) return '♾️ Навсегда';
-    return '⏰ ' + game.daysLeft + ' ' + getTranslation('days-left');
+    var now = new Date();
+    
+    // Если игра ещё не началась
+    if (game.status === 'new' && game.startDate) {
+        var start = new Date(game.startDate);
+        var diffStart = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
+        if (diffStart > 1) return '⏰ Старт через ' + diffStart + ' ' + getTranslation('days-left');
+        if (diffStart === 1) return '⏰ Старт завтра!';
+        if (diffStart === 0) return '⏰ Старт сегодня!';
+    }
+    
+    // Если есть дата окончания
+    if (game.endDate) {
+        var end = new Date(game.endDate);
+        var diffEnd = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+        
+        if (diffEnd > 999) return '♾️ Навсегда';
+        if (diffEnd < 0) return '⏰ Закончилось';
+        if (diffEnd === 0) return '⏰ Сегодня последний день!';
+        if (diffEnd === 1) return '⏰ Остался 1 день';
+        return '⏰ Осталось ' + diffEnd + ' ' + getTranslation('days-left');
+    }
+    
+    return '';
 }
 
 function renderGames(filter) {
@@ -277,7 +277,7 @@ function renderGames(filter) {
             '</div></div>';
     }).join('');
     
-    var freeNow = games.filter(function(g) { return g.status === 'expiring' || g.status === 'active'; }).length;
+    var freeNow = games.filter(function(g) { return g.status === 'active'; }).length;
     var upcoming = games.filter(function(g) { return g.status === 'new'; }).length;
     var el1 = document.getElementById('freeGamesCount');
     var el2 = document.getElementById('upcomingCount');
