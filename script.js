@@ -8,7 +8,7 @@ var translations = {
         'filter-all': 'Все',
         'filter-expiring': '🔴 Истекает',
         'filter-new': '🟡 Новые',
-        'filter-active': '🟢 Действуют',
+        'filter-active': '🟢 Бесплатно',
         'subscribe-title': 'Не пропусти халяву!',
         'subscribe-text': 'Подпишись на уведомления в Telegram',
         'footer-text': 'Все ссылки ведут на официальные магазины.',
@@ -24,7 +24,7 @@ var translations = {
         'filter-all': 'Todos',
         'filter-expiring': '🔴 Termina',
         'filter-new': '🟡 Próximos',
-        'filter-active': '🟢 Activos',
+        'filter-active': '🟢 Gratis',
         'subscribe-title': '¡No te pierdas nada!',
         'subscribe-text': 'Suscríbete a Telegram',
         'footer-text': 'Enlaces oficiales.',
@@ -40,7 +40,7 @@ var translations = {
         'filter-all': 'All',
         'filter-expiring': '🔴 Expiring',
         'filter-new': '🟡 Upcoming',
-        'filter-active': '🟢 Active',
+        'filter-active': '🟢 Free',
         'subscribe-title': 'Don\'t Miss Out!',
         'subscribe-text': 'Subscribe to Telegram',
         'footer-text': 'Official store links.',
@@ -187,10 +187,10 @@ function getStatusText(game) {
     if (game.status === 'active' && game.endDate) {
         var end = new Date(game.endDate);
         var diffDays = Math.floor((end - now) / (1000 * 60 * 60 * 24));
-        if (diffDays <= 1) return '🔴 ' + t('filter-expiring');
+        if (diffDays <= 1) return t('filter-expiring');
     }
     
-    return game.status === 'new' ? '🟡 ' + t('filter-new') : '🟢 ' + t('filter-active');
+    return game.status === 'new' ? t('filter-new') : t('filter-active');
 }
 
 function getBadge(game) {
@@ -220,7 +220,6 @@ function getCard(game) {
 function getTime(game) {
     var now = new Date();
     
-    // Если игра ещё не началась
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
         var diff = start - now;
@@ -236,7 +235,6 @@ function getTime(game) {
         return '⏰ Старт через ' + mins + ' мин';
     }
     
-    // Если есть дата окончания
     if (game.endDate) {
         var end = new Date(game.endDate);
         var diff = end - now;
