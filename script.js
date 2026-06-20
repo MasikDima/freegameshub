@@ -1,92 +1,281 @@
+// ========== ПЕРЕВОДЫ ==========
+const translations = {
+    ru: {
+        'hero-title': 'Бесплатные игры каждую неделю',
+        'hero-subtitle': 'Забери лучшие игры бесплатно, пока не поздно!',
+        'free-now': 'Бесплатно сейчас',
+        'upcoming': 'Скоро будет',
+        'filter-all': 'Все',
+        'filter-expiring': '🔴 Истекает',
+        'filter-new': '🟡 Новые',
+        'filter-active': '🟢 Действуют',
+        'subscribe-title': 'Не пропусти халяву!',
+        'subscribe-text': 'Подпишись на уведомления в Telegram',
+        'footer-text': 'Все ссылки ведут на официальные магазины.',
+        'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
+        'days-left': 'дней',
+        'hours-left': 'часов',
+        'ending-today': '🔴 ЗАКАНЧИВАЕТСЯ СЕГОДНЯ!',
+        'new-deal': '🟡 СКОРО БЕСПЛАТНО!',
+        'still-free': '🟢 БЕСПЛАТНО',
+        'usual-price': 'Обычная цена',
+        'store': 'Магазин'
+    },
+    es: {
+        'hero-title': 'Juegos gratis cada semana',
+        'hero-subtitle': '¡Consigue los mejores juegos gratis antes de que sea tarde!',
+        'free-now': 'Gratis ahora',
+        'upcoming': 'Próximamente',
+        'filter-all': 'Todos',
+        'filter-expiring': '🔴 Termina',
+        'filter-new': '🟡 Próximos',
+        'filter-active': '🟢 Activos',
+        'subscribe-title': '¡No te pierdas nada!',
+        'subscribe-text': 'Suscríbete a las notificaciones de Telegram',
+        'footer-text': 'Todos los enlaces llevan a tiendas oficiales.',
+        'get-free': '🎁 CONSEGUIR GRATIS',
+        'days-left': 'días',
+        'hours-left': 'horas',
+        'ending-today': '🔴 ¡TERMINA HOY!',
+        'new-deal': '🟡 ¡PRÓXIMAMENTE GRATIS!',
+        'still-free': '🟢 GRATIS',
+        'usual-price': 'Precio habitual',
+        'store': 'Tienda'
+    },
+    en: {
+        'hero-title': 'Free Games Every Week',
+        'hero-subtitle': 'Grab the best games for free before they\'re gone!',
+        'free-now': 'Free Now',
+        'upcoming': 'Coming Soon',
+        'filter-all': 'All',
+        'filter-expiring': '🔴 Expiring',
+        'filter-new': '🟡 Upcoming',
+        'filter-active': '🟢 Active',
+        'subscribe-title': 'Don\'t Miss Out!',
+        'subscribe-text': 'Subscribe to Telegram notifications',
+        'footer-text': 'All links lead to official stores.',
+        'get-free': '🎁 GET IT FREE',
+        'days-left': 'days',
+        'hours-left': 'hours',
+        'ending-today': '🔴 ENDING TODAY!',
+        'new-deal': '🟡 COMING SOON!',
+        'still-free': '🟢 FREE',
+        'usual-price': 'Usual price',
+        'store': 'Store'
+    }
+};
+
+// ========== БАЗА ИГР ==========
 const games = [
+    // БЕСПЛАТНО СЕЙЧАС
     {
         id: 1,
-        title: 'Grand Theft Auto V',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg',
-        usualPrice: '29.99€',
+        title: 'Citizen Sleeper',
+        image: '',
+        usualPrice: '19.99€',
         store: 'Epic Games Store',
-        storeUrl: 'https://store.epicgames.com/ru/p/grand-theft-auto-v',
+        storeUrl: 'https://store.epicgames.com/ru/p/citizen-sleeper',
         status: 'expiring',
         daysLeft: 0,
+        emoji: '🎲',
         description: {
-            ru: 'Одна из лучших игр всех времён. Открытый мир, сюжет, онлайн-режим.',
-            es: 'Uno de los mejores juegos de todos los tiempos. Mundo abierto, historia, modo online.',
-            en: 'One of the best games of all time. Open world, story, online mode.'
+            ru: 'Ролевая игра в киберпанк-мире. Бросай кости и выживай на космической станции!',
+            es: 'Juego de rol cyberpunk. ¡Lanza dados y sobrevive en una estación espacial!',
+            en: 'Cyberpunk RPG. Roll dice and survive on a space station!'
         }
     },
     {
         id: 2,
-        title: 'Frostpunk',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/323190/header.jpg',
-        usualPrice: '29.99€',
+        title: 'ROBOBEAT',
+        image: '',
+        usualPrice: '14.99€',
         store: 'Epic Games Store',
-        storeUrl: 'https://store.epicgames.com/ru/p/frostpunk',
-        status: 'new',
-        daysLeft: 6,
+        storeUrl: 'https://store.epicgames.com/ru/p/robobeat',
+        status: 'expiring',
+        daysLeft: 0,
+        emoji: '🤖',
         description: {
-            ru: 'Градостроительный симулятор выживания в ледяном постапокалипсисе.',
-            es: 'Simulador de construcción y supervivencia en un apocalipsis helado.',
-            en: 'City-building survival simulator in a frozen post-apocalypse.'
+            ru: 'Ритм-шутер с роботами! Стреляй в такт музыке.',
+            es: '¡Shooter rítmico con robots! Dispara al ritmo de la música.',
+            en: 'Rhythm shooter with robots! Shoot to the beat.'
         }
     },
+    // СКОРО БЕСПЛАТНО
     {
         id: 3,
-        title: 'Among Us',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/945360/header.jpg',
-        usualPrice: '3.99€',
+        title: 'RollerCoaster Tycoon 3 Complete Edition',
+        image: '',
+        usualPrice: '19.99€',
         store: 'Epic Games Store',
-        storeUrl: 'https://store.epicgames.com/ru/p/among-us',
-        status: 'active',
-        daysLeft: 12,
+        storeUrl: 'https://store.epicgames.com/ru/p/rollercoaster-tycoon-3-complete-edition',
+        status: 'new',
+        daysLeft: 5,
+        emoji: '🎢',
         description: {
-            ru: 'Найди предателя на космическом корабле! Мультиплеер до 15 игроков.',
-            es: '¡Encuentra al impostor en la nave espacial! Multijugador hasta 15 jugadores.',
-            en: 'Find the impostor on the spaceship! Multiplayer up to 15 players.'
+            ru: 'Строй парк аттракционов мечты! Бесплатно с 25 июня.',
+            es: '¡Construye el parque de tus sueños! Gratis desde el 25 jun.',
+            en: 'Build your dream theme park! Free from Jun 25.'
         }
     },
     {
         id: 4,
-        title: 'The Witcher 3: Wild Hunt',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg',
-        usualPrice: '39.99€',
-        store: 'GOG',
-        storeUrl: 'https://www.gog.com/game/the_witcher_3_wild_hunt',
+        title: 'Voidwrought',
+        image: '',
+        usualPrice: '12.99€',
+        store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/ru/p/voidwrought',
         status: 'new',
         daysLeft: 5,
+        emoji: '🕳️',
         description: {
-            ru: 'Шедевр RPG. Огромный мир, захватывающий сюжет, сотни часов геймплея.',
-            es: 'Obra maestra del RPG. Mundo enorme, historia cautivadora, cientos de horas.',
-            en: 'RPG masterpiece. Huge world, captivating story, hundreds of hours.'
+            ru: 'Мрачная метроидвания. Бесплатно с 25 июня.',
+            es: 'Oscura metroidvania. Gratis desde el 25 jun.',
+            en: 'Dark metroidvania. Free from Jun 25.'
         }
     },
+    // ВСЕГДА БЕСПЛАТНО
     {
         id: 5,
-        title: 'Rocket League',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/header.jpg',
-        usualPrice: '19.99€',
+        title: 'Valorant',
+        image: '',
+        usualPrice: '0€',
         store: 'Epic Games Store',
-        storeUrl: 'https://store.epicgames.com/ru/p/rocket-league',
+        storeUrl: 'https://store.epicgames.com/ru/p/valorant',
         status: 'active',
-        daysLeft: 20,
+        daysLeft: 999,
+        emoji: '🎯',
         description: {
-            ru: 'Футбол на машинах! Безумно весело, просто освоить, сложно стать профи.',
-            es: '¡Fútbol con coches! Increíblemente divertido, fácil de aprender.',
-            en: 'Soccer with cars! Insanely fun, easy to learn, hard to master.'
+            ru: 'Тактический шутер от Riot Games. Всегда бесплатно!',
+            es: 'Shooter táctico de Riot Games. ¡Siempre gratis!',
+            en: 'Tactical shooter from Riot Games. Always free!'
         }
     },
     {
         id: 6,
-        title: 'Portal 2',
-        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/620/header.jpg',
-        usualPrice: '9.99€',
-        store: 'Steam',
-        storeUrl: 'https://store.steampowered.com/app/620/Portal_2/',
-        status: 'expiring',
-        daysLeft: 1,
+        title: 'Fall Guys',
+        image: '',
+        usualPrice: '0€',
+        store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/ru/p/fall-guys',
+        status: 'active',
+        daysLeft: 999,
+        emoji: '👑',
         description: {
-            ru: 'Культовая головоломка. Порталы, юмор, кооператив на двоих.',
-            es: 'Rompecabezas de culto. Portales, humor, cooperativo para dos.',
-            en: 'Cult puzzle game. Portals, humor, two-player co-op.'
+            ru: 'Королевская битва с милыми человечками. Бесплатно навсегда!',
+            es: 'Battle royale con muñecos adorables. ¡Gratis para siempre!',
+            en: 'Battle royale with cute beans. Free forever!'
         }
     }
 ];
+
+// ========== ТЕКУЩИЙ ЯЗЫК ==========
+let currentLang = 'ru';
+
+// ========== ФУНКЦИИ ==========
+function getTranslation(key) {
+    return translations[currentLang][key] || key;
+}
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    
+    document.querySelectorAll('[data-key]').forEach(el => {
+        el.textContent = getTranslation(el.dataset.key);
+    });
+    
+    renderGames(currentFilter);
+    localStorage.setItem('lang', lang);
+}
+
+function getGameDescription(game) {
+    return game.description[currentLang] || game.description.en;
+}
+
+function getGameStatusText(game) {
+    if (game.status === 'expiring' && game.daysLeft === 0) return getTranslation('ending-today');
+    if (game.status === 'new') return getTranslation('new-deal');
+    return getTranslation('still-free');
+}
+
+function getBadgeClass(game) {
+    if (game.status === 'expiring') return 'badge-expiring';
+    if (game.status === 'new') return 'badge-new';
+    return 'badge-active';
+}
+
+function getCardClass(game) {
+    if (game.status === 'expiring') return 'expiring';
+    if (game.status === 'new') return 'new';
+    return 'active-game';
+}
+
+function getTimeText(game) {
+    if (game.daysLeft === 0) return '⏰ Сегодня!';
+    if (game.daysLeft === 1) return `⏰ 1 день`;
+    if (game.daysLeft === 999) return '♾️ Навсегда';
+    return `⏰ ${game.daysLeft} ${getTranslation('days-left')}`;
+}
+
+function renderGames(filter = 'all') {
+    const container = document.getElementById('gamesContainer');
+    
+    let filteredGames = games;
+    if (filter === 'expiring') filteredGames = games.filter(g => g.status === 'expiring');
+    if (filter === 'new') filteredGames = games.filter(g => g.status === 'new');
+    if (filter === 'active') filteredGames = games.filter(g => g.status === 'active');
+    
+    container.innerHTML = filteredGames.map(game => `
+        <div class="game-card ${getCardClass(game)}">
+            <div style="background: linear-gradient(135deg, #1a1a3e, #0f0f2a); height: 200px; display: flex; align-items: center; justify-content: center; font-size: 80px;">
+                ${game.emoji}
+            </div>
+            <div class="game-info">
+                <span class="game-badge ${getBadgeClass(game)}">${getGameStatusText(game)}</span>
+                <h3 class="game-title">${game.title}</h3>
+                <p style="color:#aaa;margin-bottom:10px;">${getGameDescription(game)}</p>
+                <div class="game-price">
+                    <span class="original">${game.usualPrice}</span> → 
+                    <span class="free">0€</span>
+                </div>
+                <div class="game-store">${getTranslation('store')}: ${game.store}</div>
+                <div class="game-timer">${getTimeText(game)}</div>
+                <a href="${game.storeUrl}" class="btn-get" target="_blank" rel="nofollow">
+                    ${getTranslation('get-free')}
+                </a>
+            </div>
+        </div>
+    `).join('');
+    
+    const freeNow = games.filter(g => g.status === 'expiring' || g.status === 'active').length;
+    const upcoming = games.filter(g => g.status === 'new').length;
+    document.getElementById('freeGamesCount').textContent = freeNow;
+    document.getElementById('upcomingCount').textContent = upcoming;
+}
+
+// ========== ФИЛЬТРЫ ==========
+let currentFilter = 'all';
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.dataset.filter;
+        renderGames(currentFilter);
+    });
+});
+
+// ========== ЯЗЫКИ ==========
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        switchLanguage(this.dataset.lang);
+    });
+});
+
+// ========== ЗАПУСК ==========
+const savedLang = localStorage.getItem('lang') || 'ru';
+switchLanguage(savedLang);
+renderGames();
