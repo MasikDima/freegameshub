@@ -65,15 +65,11 @@ const translations = {
 // ========== БАЗА ИГР ==========
 const games = [
     {
-        id: 1,
-        title: 'Citizen Sleeper',
+        id: 1, title: 'Citizen Sleeper',
         image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
-        usualPrice: '17.99€',
-        store: 'Epic Games Store',
+        usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
-        status: 'active',
-        daysLeft: 5,
-        emoji: '🎲',
+        status: 'active', daysLeft: 5, emoji: '🎲',
         description: {
             ru: 'Ролевая игра в киберпанк-мире. Бросай кости и выживай на космической станции!',
             es: 'Juego de rol cyberpunk. ¡Lanza dados y sobrevive en una estación espacial!',
@@ -81,15 +77,11 @@ const games = [
         }
     },
     {
-        id: 2,
-        title: 'ROBOBEAT',
+        id: 2, title: 'ROBOBEAT',
         image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e',
-        usualPrice: '19.49€',
-        store: 'Epic Games Store',
+        usualPrice: '19.49€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
-        status: 'active',
-        daysLeft: 5,
-        emoji: '🤖',
+        status: 'active', daysLeft: 5, emoji: '🤖',
         description: {
             ru: 'Ритм-шутер с роботами! Стреляй в такт музыке.',
             es: '¡Shooter rítmico con robots! Dispara al ritmo de la música.',
@@ -97,15 +89,11 @@ const games = [
         }
     },
     {
-        id: 3,
-        title: 'RollerCoaster Tycoon 3 Complete Edition',
+        id: 3, title: 'RollerCoaster Tycoon 3 Complete Edition',
         image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg',
-        usualPrice: '19.99€',
-        store: 'Epic Games Store',
+        usualPrice: '19.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition',
-        status: 'new',
-        daysLeft: 5,
-        emoji: '🎢',
+        status: 'new', daysLeft: 5, emoji: '🎢',
         description: {
             ru: 'Строй парк аттракционов мечты! Бесплатно с 25 июня.',
             es: '¡Construye el parque de tus sueños! Gratis desde el 25 jun.',
@@ -113,15 +101,11 @@ const games = [
         }
     },
     {
-        id: 4,
-        title: 'Voidwrought',
+        id: 4, title: 'Voidwrought',
         image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg',
-        usualPrice: '17.99€',
-        store: 'Epic Games Store',
+        usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b',
-        status: 'new',
-        daysLeft: 5,
-        emoji: '🕳️',
+        status: 'new', daysLeft: 5, emoji: '🕳️',
         description: {
             ru: 'Мрачная метроидвания. Бесплатно с 25 июня.',
             es: 'Oscura metroidvania. Gratis desde el 25 jun.',
@@ -129,15 +113,11 @@ const games = [
         }
     },
     {
-        id: 5,
-        title: 'Valorant',
+        id: 5, title: 'Valorant',
         image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg',
-        usualPrice: '0€',
-        store: 'Epic Games Store',
+        usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/valorant',
-        status: 'active',
-        daysLeft: 999,
-        emoji: '🎯',
+        status: 'active', daysLeft: 999, emoji: '🎯',
         description: {
             ru: 'Тактический шутер от Riot Games. Всегда бесплатно!',
             es: 'Shooter táctico de Riot Games. ¡Siempre gratis!',
@@ -145,25 +125,21 @@ const games = [
         }
     },
     {
-        id: 6,
-        title: 'Fall Guys',
+        id: 6, title: 'Fall Guys',
         image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
-        usualPrice: '0€',
-        store: 'Epic Games Store',
+        usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/fall-guys',
-        status: 'active',
-        daysLeft: 999,
-        emoji: '👑',
+        status: 'active', daysLeft: 999, emoji: '👑',
         description: {
             ru: 'Королевская битва с милыми человечками. Бесплатно навсегда!',
             es: 'Battle royale con muñecos adorables. ¡Gratis para siempre!',
             en: 'Battle royale with cute beans. Free forever!'
-          }
+        }
     }
 ];
 
 // ========== ЯЗЫК ==========
-let currentLang = 'ru';
+var currentLang = 'ru';
 
 function getTranslation(key) {
     return translations[currentLang][key] || key;
@@ -171,52 +147,63 @@ function getTranslation(key) {
 
 function switchLanguage(lang) {
     currentLang = lang;
-    document.querySelectorAll('[data-key]').forEach(el => {
+    
+    // Обновляем кнопки языков
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        if (btn.dataset.lang === lang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Обновляем текст на странице
+    document.querySelectorAll('[data-key]').forEach(function(el) {
         el.textContent = getTranslation(el.dataset.key);
     });
-    updateLangDisplay(lang);
-    renderGames(currentFilter);
-    localStorage.setItem('lang', lang);
-}
-
-// ========== ВЫПАДАЮЩИЙ СПИСОК ==========
-var langInfo = {
-    ru: { flag: '🇷🇺', text: 'RU' },
-    es: { flag: '🇪🇸', text: 'ES' },
-    en: { flag: '🇬🇧', text: 'EN' }
-};
-
-document.getElementById('langDropdownBtn').onclick = function(e) {
-    e.stopPropagation();
-    var content = document.getElementById('langDropdownContent');
-    if (content.style.display === 'block') {
-        content.style.display = 'none';
-    } else {
-        content.style.display = 'block';
-    }
-};
-
-document.addEventListener('click', function() {
-    document.getElementById('langDropdownContent').style.display = 'none';
-});
-
-document.querySelectorAll('.lang-option').forEach(function(option) {
-    option.onclick = function(e) {
-        e.preventDefault();
-        switchLanguage(this.dataset.lang);
-        document.getElementById('langDropdownContent').style.display = 'none';
-    };
-});
-
-function updateLangDisplay(lang) {
-    document.getElementById('currentLangFlag').textContent = langInfo[lang].flag;
-    document.getElementById('currentLangText').textContent = langInfo[lang].text;
+    
+    // Обновляем выпадающий список (если есть)
+    var flagEl = document.getElementById('currentLangFlag');
+    var textEl = document.getElementById('currentLangText');
+    var langInfo = { ru: { flag: '🇷🇺', text: 'RU' }, es: { flag: '🇪🇸', text: 'ES' }, en: { flag: '🇬🇧', text: 'EN' } };
+    if (flagEl) flagEl.textContent = langInfo[lang].flag;
+    if (textEl) textEl.textContent = langInfo[lang].text;
     document.querySelectorAll('.lang-option').forEach(function(opt) {
         if (opt.dataset.lang === lang) {
             opt.classList.add('active');
         } else {
             opt.classList.remove('active');
         }
+    });
+    
+    renderGames(currentFilter);
+    localStorage.setItem('lang', lang);
+}
+
+// ========== ВЫПАДАЮЩИЙ СПИСОК (если есть на странице) ==========
+var langDropdownBtn = document.getElementById('langDropdownBtn');
+var langDropdownContent = document.getElementById('langDropdownContent');
+
+if (langDropdownBtn && langDropdownContent) {
+    langDropdownBtn.onclick = function(e) {
+        e.stopPropagation();
+        if (langDropdownContent.style.display === 'block') {
+            langDropdownContent.style.display = 'none';
+        } else {
+            langDropdownContent.style.display = 'block';
+        }
+    };
+    
+    document.addEventListener('click', function() {
+        langDropdownContent.style.display = 'none';
+    });
+    
+    document.querySelectorAll('.lang-option').forEach(function(option) {
+        option.onclick = function(e) {
+            e.preventDefault();
+            switchLanguage(this.dataset.lang);
+            langDropdownContent.style.display = 'none';
+        };
     });
 }
 
