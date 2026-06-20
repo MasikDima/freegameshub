@@ -57,7 +57,7 @@ var games = [
         image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
         usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
-        status: 'active', endDate: '2026-06-25', emoji: '🎲',
+        status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲',
         desc: {
             ru: 'Ролевая игра в киберпанк-мире.',
             es: 'Juego de rol cyberpunk.',
@@ -69,7 +69,7 @@ var games = [
         image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e',
         usualPrice: '19.49€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
-        status: 'active', endDate: '2026-06-25', emoji: '🤖',
+        status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🤖',
         desc: {
             ru: 'Ритм-шутер с роботами!',
             es: '¡Shooter rítmico con robots!',
@@ -81,7 +81,7 @@ var games = [
         image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg',
         usualPrice: '19.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition',
-        status: 'new', startDate: '2026-06-25', endDate: '2026-07-02', emoji: '🎢',
+        status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🎢',
         desc: {
             ru: 'Строй парк аттракционов! С 25 июня.',
             es: '¡Construye tu parque! Desde el 25 jun.',
@@ -93,7 +93,7 @@ var games = [
         image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg',
         usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b',
-        status: 'new', startDate: '2026-06-25', endDate: '2026-07-02', emoji: '🕳️',
+        status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🕳️',
         desc: {
             ru: 'Мрачная метроидвания. С 25 июня.',
             es: 'Metroidvania oscura. Desde el 25 jun.',
@@ -105,7 +105,7 @@ var games = [
         image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg',
         usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/valorant',
-        status: 'active', endDate: '2099-12-31', emoji: '🎯',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯',
         desc: {
             ru: 'Тактический шутер от Riot Games.',
             es: 'Shooter táctico de Riot Games.',
@@ -117,7 +117,7 @@ var games = [
         image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
         usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/fall-guys',
-        status: 'active', endDate: '2099-12-31', emoji: '👑',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '👑',
         desc: {
             ru: 'Королевская битва с человечками.',
             es: 'Battle royale con muñecos.',
@@ -182,37 +182,79 @@ function getDesc(game) {
 }
 
 function getStatusText(game) {
+    var now = new Date();
+    
+    // Проверяем, не истекает ли сегодня
+    if (game.status === 'active' && game.endDate) {
+        var end = new Date(game.endDate);
+        var diffDays = Math.floor((end - now) / (1000 * 60 * 60 * 24));
+        if (diffDays <= 1) return '🔴 ' + t('filter-expiring');
+    }
+    
     return game.status === 'new' ? '🟡 ' + t('filter-new') : '🟢 ' + t('filter-active');
 }
 
 function getBadge(game) {
+    var now = new Date();
+    
+    if (game.status === 'active' && game.endDate) {
+        var end = new Date(game.endDate);
+        var diffDays = Math.floor((end - now) / (1000 * 60 * 60 * 24));
+        if (diffDays <= 1) return 'badge-expiring';
+    }
+    
     return game.status === 'new' ? 'badge-new' : 'badge-active';
 }
 
 function getCard(game) {
+    var now = new Date();
+    
+    if (game.status === 'active' && game.endDate) {
+        var end = new Date(game.endDate);
+        var diffDays = Math.floor((end - now) / (1000 * 60 * 60 * 24));
+        if (diffDays <= 1) return 'expiring';
+    }
+    
     return game.status === 'new' ? 'new' : 'active-game';
 }
 
 function getTime(game) {
     var now = new Date();
     
+    // Если игра ещё не началась
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
-        var d = Math.floor((start - now) / (1000 * 60 * 60 * 24));
-        if (d > 1) return '⏰ Старт через ' + d + ' ' + t('days-left');
-        if (d === 1) return '⏰ Старт завтра!';
-        return '⏰ Старт сегодня!';
+        var diff = start - now;
+        
+        if (diff <= 0) return '⏰ Старт сегодня!';
+        
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        if (days > 0) return '⏰ Старт через ' + days + 'д ' + hours + 'ч';
+        if (hours > 0) return '⏰ Старт через ' + hours + 'ч ' + mins + 'м';
+        return '⏰ Старт через ' + mins + ' мин';
     }
     
+    // Если есть дата окончания
     if (game.endDate) {
         var end = new Date(game.endDate);
-        var d = Math.floor((end - now) / (1000 * 60 * 60 * 24));
-        if (d > 999) return '♾️ Навсегда';
-        if (d < 0) return '⏰ Закончилось';
-        if (d === 0) return '⏰ Последний день!';
-        if (d === 1) return '⏰ Остался 1 день';
-        return '⏰ Осталось ' + d + ' ' + t('days-left');
+        var diff = end - now;
+        
+        if (diff > 999 * 24 * 60 * 60 * 1000) return '♾️ Навсегда';
+        if (diff <= 0) return '⏰ Закончилось';
+        
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
+        if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
+        if (mins > 0) return '⏰ ' + mins + ' мин';
+        return '⏰ Меньше минуты!';
     }
+    
     return '';
 }
 
@@ -222,8 +264,9 @@ function renderGames(filter) {
     if (!container) return;
     
     var list = games;
+    if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
     if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
-    if (filter === 'active') list = games.filter(function(g) { return g.status === 'active'; });
+    if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
     
     container.innerHTML = list.map(function(game) {
         return '<div class="game-card ' + getCard(game) + '">' +
@@ -242,6 +285,10 @@ function renderGames(filter) {
     
     document.getElementById('freeGamesCount').textContent = games.filter(function(g) { return g.status === 'active'; }).length;
     document.getElementById('upcomingCount').textContent = games.filter(function(g) { return g.status === 'new'; }).length;
+    
+    // Обновляем каждую минуту
+    clearTimeout(window.timerRefresh);
+    window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
 
 // ========== ФИЛЬТРЫ ==========
