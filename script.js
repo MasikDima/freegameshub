@@ -180,44 +180,43 @@ function switchLanguage(lang) {
 }
 
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
-const langDropdownBtn = document.getElementById('langDropdownBtn');
-const langDropdownContent = document.getElementById('langDropdownContent');
-const currentLangFlag = document.getElementById('currentLangFlag');
-const currentLangText = document.getElementById('currentLangText');
-
-const langInfo = {
+var langInfo = {
     ru: { flag: '🇷🇺', text: 'RU' },
     es: { flag: '🇪🇸', text: 'ES' },
     en: { flag: '🇬🇧', text: 'EN' }
 };
 
-if (langDropdownBtn) {
-    langDropdownBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        langDropdownContent.classList.toggle('show');
-        this.classList.toggle('active');
-    });
-}
+document.getElementById('langDropdownBtn').onclick = function(e) {
+    e.stopPropagation();
+    var content = document.getElementById('langDropdownContent');
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+    } else {
+        content.style.display = 'block';
+    }
+};
 
 document.addEventListener('click', function() {
-    if (langDropdownContent) langDropdownContent.classList.remove('show');
-    if (langDropdownBtn) langDropdownBtn.classList.remove('active');
+    document.getElementById('langDropdownContent').style.display = 'none';
 });
 
-document.querySelectorAll('.lang-option').forEach(option => {
-    option.addEventListener('click', function(e) {
+document.querySelectorAll('.lang-option').forEach(function(option) {
+    option.onclick = function(e) {
         e.preventDefault();
         switchLanguage(this.dataset.lang);
-        if (langDropdownContent) langDropdownContent.classList.remove('show');
-        if (langDropdownBtn) langDropdownBtn.classList.remove('active');
-    });
+        document.getElementById('langDropdownContent').style.display = 'none';
+    };
 });
 
 function updateLangDisplay(lang) {
-    if (currentLangFlag) currentLangFlag.textContent = langInfo[lang].flag;
-    if (currentLangText) currentLangText.textContent = langInfo[lang].text;
-    document.querySelectorAll('.lang-option').forEach(opt => {
-        opt.classList.toggle('active', opt.dataset.lang === lang);
+    document.getElementById('currentLangFlag').textContent = langInfo[lang].flag;
+    document.getElementById('currentLangText').textContent = langInfo[lang].text;
+    document.querySelectorAll('.lang-option').forEach(function(opt) {
+        if (opt.dataset.lang === lang) {
+            opt.classList.add('active');
+        } else {
+            opt.classList.remove('active');
+        }
     });
 }
 
