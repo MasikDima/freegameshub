@@ -67,11 +67,10 @@ const translations = {
 
 // ========== БАЗА ИГР ==========
 const games = [
-    // БЕСПЛАТНО СЕЙЧАС
     {
         id: 1,
         title: 'Citizen Sleeper',
-        image: '',
+        image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
         usualPrice: '19.99€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/citizen-sleeper',
@@ -87,7 +86,7 @@ const games = [
     {
         id: 2,
         title: 'ROBOBEAT',
-        image: '',
+        image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e',
         usualPrice: '14.99€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/robobeat',
@@ -100,11 +99,10 @@ const games = [
             en: 'Rhythm shooter with robots! Shoot to the beat.'
         }
     },
-    // СКОРО БЕСПЛАТНО
     {
         id: 3,
         title: 'RollerCoaster Tycoon 3 Complete Edition',
-        image: '',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg',
         usualPrice: '19.99€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/rollercoaster-tycoon-3-complete-edition',
@@ -120,7 +118,7 @@ const games = [
     {
         id: 4,
         title: 'Voidwrought',
-        image: '',
+        image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg',
         usualPrice: '12.99€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/voidwrought',
@@ -133,11 +131,10 @@ const games = [
             en: 'Dark metroidvania. Free from Jun 25.'
         }
     },
-    // ВСЕГДА БЕСПЛАТНО
     {
         id: 5,
         title: 'Valorant',
-        image: '',
+        image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg',
         usualPrice: '0€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/valorant',
@@ -153,7 +150,7 @@ const games = [
     {
         id: 6,
         title: 'Fall Guys',
-        image: '',
+        image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
         usualPrice: '0€',
         store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/ru/p/fall-guys',
@@ -215,7 +212,7 @@ function getCardClass(game) {
 
 function getTimeText(game) {
     if (game.daysLeft === 0) return '⏰ Сегодня!';
-    if (game.daysLeft === 1) return `⏰ 1 день`;
+    if (game.daysLeft === 1) return '⏰ 1 день';
     if (game.daysLeft === 999) return '♾️ Навсегда';
     return `⏰ ${game.daysLeft} ${getTranslation('days-left')}`;
 }
@@ -230,7 +227,12 @@ function renderGames(filter = 'all') {
     
     container.innerHTML = filteredGames.map(game => `
         <div class="game-card ${getCardClass(game)}">
-            <div style="background: linear-gradient(135deg, #1a1a3e, #0f0f2a); height: 200px; display: flex; align-items: center; justify-content: center; font-size: 80px;">
+            <img src="${game.image}" 
+                 alt="${game.title}" 
+                 class="game-image"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                 style="width:100%;height:200px;object-fit:cover;">
+            <div style="display:none; background: linear-gradient(135deg, #1a1a3e, #0f0f2a); height: 200px; align-items: center; justify-content: center; font-size: 80px;">
                 ${game.emoji}
             </div>
             <div class="game-info">
