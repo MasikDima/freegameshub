@@ -10,6 +10,11 @@ body {
     background: #0a0a1a;
     color: #ffffff;
     line-height: 1.6;
+    min-height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 .container {
@@ -52,30 +57,75 @@ header .container {
     -webkit-text-fill-color: transparent;
 }
 
-.lang-switch {
-    display: flex;
-    gap: 5px;
+/* ========== ВЫПАДАЮЩИЙ СПИСОК ЯЗЫКОВ ========== */
+.lang-dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-.lang-btn {
+.lang-dropdown-btn {
     background: #1a1a3e;
-    color: #aaa;
+    color: white;
     border: 1px solid #2a2a5e;
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 10px 16px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 110px;
+    justify-content: center;
     transition: all 0.3s;
 }
 
-.lang-btn.active {
-    background: #e94560;
-    color: white;
+.lang-dropdown-btn:hover {
     border-color: #e94560;
+    background: #0f0f2a;
 }
 
-.lang-btn:hover {
-    border-color: #e94560;
+.lang-dropdown-btn .arrow {
+    font-size: 10px;
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+.lang-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 5px;
+    background: #1a1a3e;
+    border: 1px solid #2a2a5e;
+    border-radius: 8px;
+    min-width: 160px;
+    z-index: 200;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.lang-dropdown-content.open {
+    display: block;
+}
+
+.lang-option {
+    display: block;
+    padding: 12px 20px;
+    color: #aaa;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 15px;
+}
+
+.lang-option:hover {
+    background: #e94560;
+    color: white;
+}
+
+.lang-option.active {
+    background: #0f3460;
+    color: white;
 }
 
 /* ========== ГЕРОЙ ========== */
@@ -163,6 +213,7 @@ header .container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 20px;
+    transition: opacity 0.15s ease;
 }
 
 .game-card {
@@ -340,32 +391,4 @@ footer {
         flex-direction: column;
         gap: 10px;
     }
-}
-/* Плавные переходы */
-.game-card {
-    transition: all 0.3s ease;
-}
-
-.hero h1, .hero p, .game-title, .game-description {
-    transition: opacity 0.2s ease;
-}
-
-#gamesContainer {
-    transition: opacity 0.15s ease;
-}
-
-/* Фикс дёрганий */
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-}
-.lang-dropdown-content {
-    display: none !important;
-}
-
-.lang-dropdown-content.open {
-    display: block !important;
 }
