@@ -180,32 +180,33 @@ function switchLanguage(lang) {
     localStorage.setItem('lang', lang);
 }
 
-// ========== ВЫПАДАЮЩИЙ СПИСОК (если есть на странице) ==========
-var langDropdownBtn = document.getElementById('langDropdownBtn');
-var langDropdownContent = document.getElementById('langDropdownContent');
+// ========== ВЫПАДАЮЩИЙ СПИСОК ==========
+var langBtn = document.getElementById('langDropdownBtn');
+var langContent = document.getElementById('langDropdownContent');
 
-if (langDropdownBtn && langDropdownContent) {
-    langDropdownBtn.onclick = function(e) {
-        e.stopPropagation();
-        if (langDropdownContent.style.display === 'block') {
-            langDropdownContent.style.display = 'none';
-        } else {
-            langDropdownContent.style.display = 'block';
-        }
+langBtn.onclick = function(e) {
+    e.stopPropagation();
+    if (langContent.classList.contains('open')) {
+        langContent.classList.remove('open');
+    } else {
+        langContent.classList.add('open');
+    }
+};
+
+document.addEventListener('click', function() {
+    langContent.classList.remove('open');
+});
+
+document.querySelectorAll('.lang-option').forEach(function(opt) {
+    opt.onclick = function(e) {
+        e.preventDefault();
+        var lang = this.dataset.lang;
+        document.getElementById('currentLangFlag').textContent = {ru:'🇷🇺',es:'🇪🇸',en:'🇬🇧'}[lang];
+        document.getElementById('currentLangText').textContent = lang.toUpperCase();
+        switchLanguage(lang);
+        langContent.classList.remove('open');
     };
-    
-    document.addEventListener('click', function() {
-        langDropdownContent.style.display = 'none';
-    });
-    
-    document.querySelectorAll('.lang-option').forEach(function(option) {
-        option.onclick = function(e) {
-            e.preventDefault();
-            switchLanguage(this.dataset.lang);
-            langDropdownContent.style.display = 'none';
-        };
-    });
-}
+});
 
 // ========== ИГРЫ ==========
 function getGameDescription(game) {
