@@ -1,0 +1,343 @@
+/* ========== ОСНОВА ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0a0a1a;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========== ШАПКА ========== */
+header {
+    background: #0f0f2a;
+    padding: 15px 0;
+    border-bottom: 1px solid #1a1a3e;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 28px;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #e94560, #f5c518);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.lang-switch {
+    display: flex;
+    gap: 5px;
+}
+
+.lang-btn {
+    background: #1a1a3e;
+    color: #aaa;
+    border: 1px solid #2a2a5e;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.lang-btn.active {
+    background: #e94560;
+    color: white;
+    border-color: #e94560;
+}
+
+.lang-btn:hover {
+    border-color: #e94560;
+}
+
+/* ========== ГЕРОЙ ========== */
+.hero {
+    background: linear-gradient(135deg, #0f0f2a 0%, #1a1a3e 100%);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #e94560, #f5c518);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 48px;
+    font-weight: bold;
+    color: #f5c518;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* ========== ФИЛЬТРЫ ========== */
+.filters {
+    padding: 20px 0;
+    text-align: center;
+    background: #0a0a1a;
+    position: sticky;
+    top: 70px;
+    z-index: 99;
+}
+
+.filter-btn {
+    background: #1a1a3e;
+    color: #aaa;
+    border: 1px solid #2a2a5e;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: #e94560;
+    color: white;
+    border-color: #e94560;
+}
+
+.filter-btn:hover {
+    border-color: #e94560;
+    color: white;
+}
+
+/* ========== КАРТОЧКИ ИГР ========== */
+.games {
+    padding: 40px 0;
+}
+
+#gamesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.game-card {
+    background: #0f0f2a;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1a1a3e;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+}
+
+.game-card.expiring {
+    border: 2px solid #e94560;
+}
+
+.game-card.new {
+    border: 2px solid #f5c518;
+}
+
+.game-card.active-game {
+    border: 2px solid #0f3460;
+}
+
+.game-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #1a1a3e;
+}
+
+.game-info {
+    padding: 20px;
+}
+
+.game-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.badge-expiring {
+    background: #e94560;
+    color: white;
+}
+
+.badge-new {
+    background: #f5c518;
+    color: #0a0a1a;
+}
+
+.badge-active {
+    background: #0f3460;
+    color: white;
+}
+
+.game-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.game-price {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.game-price .original {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.game-price .free {
+    color: #4ecca3;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.game-store {
+    color: #aaa;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.game-timer {
+    color: #e94560;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.btn-get {
+    display: block;
+    text-align: center;
+    background: #e94560;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-get:hover {
+    background: #c73652;
+}
+
+/* ========== ПОДПИСКА ========== */
+.subscribe {
+    background: linear-gradient(135deg, #0f0f2a, #1a1a3e);
+    padding: 60px 0;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.subscribe h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subscribe p {
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.btn-telegram {
+    display: inline-block;
+    background: #0088cc;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-telegram:hover {
+    background: #006699;
+}
+
+/* ========== ПОДВАЛ ========== */
+footer {
+    background: #0a0a1a;
+    padding: 20px 0;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+    
+    #gamesContainer {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-stats {
+        gap: 20px;
+    }
+    
+    .stat-number {
+        font-size: 36px;
+    }
+    
+    header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
