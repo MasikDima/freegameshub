@@ -362,3 +362,10 @@ html {
 body {
     min-height: 100vh;
 }
+.lang-dropdown-content {
+    display: none !important;
+}
+
+.lang-dropdown-content.open {
+    display: block !important;
+}
