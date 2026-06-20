@@ -1,5 +1,5 @@
 // ========== ПЕРЕВОДЫ ==========
-const translations = {
+var translations = {
     ru: {
         'hero-title': 'Бесплатные игры каждую неделю',
         'hero-subtitle': 'Забери лучшие игры бесплатно, пока не поздно!',
@@ -14,15 +14,11 @@ const translations = {
         'footer-text': 'Все ссылки ведут на официальные магазины.',
         'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
         'days-left': 'дней',
-        'ending-today': '🔴 ЗАКАНЧИВАЕТСЯ СЕГОДНЯ!',
-        'new-deal': '🟡 СКОРО БЕСПЛАТНО!',
-        'still-free': '🟢 БЕСПЛАТНО',
-        'usual-price': 'Обычная цена',
         'store': 'Магазин'
     },
     es: {
         'hero-title': 'Juegos gratis cada semana',
-        'hero-subtitle': '¡Consigue los mejores juegos gratis antes de que sea tarde!',
+        'hero-subtitle': '¡Consigue los mejores juegos gratis!',
         'free-now': 'Gratis ahora',
         'upcoming': 'Próximamente',
         'filter-all': 'Todos',
@@ -30,19 +26,15 @@ const translations = {
         'filter-new': '🟡 Próximos',
         'filter-active': '🟢 Activos',
         'subscribe-title': '¡No te pierdas nada!',
-        'subscribe-text': 'Suscríbete a las notificaciones de Telegram',
-        'footer-text': 'Todos los enlaces llevan a tiendas oficiales.',
+        'subscribe-text': 'Suscríbete a Telegram',
+        'footer-text': 'Enlaces oficiales.',
         'get-free': '🎁 CONSEGUIR GRATIS',
         'days-left': 'días',
-        'ending-today': '🔴 ¡TERMINA HOY!',
-        'new-deal': '🟡 ¡PRÓXIMAMENTE GRATIS!',
-        'still-free': '🟢 GRATIS',
-        'usual-price': 'Precio habitual',
         'store': 'Tienda'
     },
     en: {
         'hero-title': 'Free Games Every Week',
-        'hero-subtitle': 'Grab the best games for free before they\'re gone!',
+        'hero-subtitle': 'Grab the best games for free!',
         'free-now': 'Free Now',
         'upcoming': 'Coming Soon',
         'filter-all': 'All',
@@ -50,30 +42,26 @@ const translations = {
         'filter-new': '🟡 Upcoming',
         'filter-active': '🟢 Active',
         'subscribe-title': 'Don\'t Miss Out!',
-        'subscribe-text': 'Subscribe to Telegram notifications',
-        'footer-text': 'All links lead to official stores.',
+        'subscribe-text': 'Subscribe to Telegram',
+        'footer-text': 'Official store links.',
         'get-free': '🎁 GET IT FREE',
         'days-left': 'days',
-        'ending-today': '🔴 ENDING TODAY!',
-        'new-deal': '🟡 COMING SOON!',
-        'still-free': '🟢 FREE',
-        'usual-price': 'Usual price',
         'store': 'Store'
     }
 };
 
 // ========== БАЗА ИГР ==========
-const games = [
+var games = [
     {
         id: 1, title: 'Citizen Sleeper',
         image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
         usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
         status: 'active', endDate: '2026-06-26', emoji: '🎲',
-        description: {
-            ru: 'Ролевая игра в киберпанк-мире. Бросай кости и выживай на космической станции!',
-            es: 'Juego de rol cyberpunk. ¡Lanza dados y sobrevive en una estación espacial!',
-            en: 'Cyberpunk RPG. Roll dice and survive on a space station!'
+        desc: {
+            ru: 'Ролевая игра в киберпанк-мире.',
+            es: 'Juego de rol cyberpunk.',
+            en: 'Cyberpunk RPG.'
         }
     },
     {
@@ -82,22 +70,22 @@ const games = [
         usualPrice: '19.49€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
         status: 'active', endDate: '2026-06-26', emoji: '🤖',
-        description: {
-            ru: 'Ритм-шутер с роботами! Стреляй в такт музыке.',
-            es: '¡Shooter rítmico con robots! Dispara al ritmo de la música.',
-            en: 'Rhythm shooter with robots! Shoot to the beat.'
+        desc: {
+            ru: 'Ритм-шутер с роботами!',
+            es: '¡Shooter rítmico con robots!',
+            en: 'Rhythm shooter with robots!'
         }
     },
     {
-        id: 3, title: 'RollerCoaster Tycoon 3 Complete Edition',
+        id: 3, title: 'RollerCoaster Tycoon 3',
         image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg',
         usualPrice: '19.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition',
         status: 'new', startDate: '2026-06-25', endDate: '2026-07-02', emoji: '🎢',
-        description: {
-            ru: 'Строй парк аттракционов мечты! Бесплатно с 25 июня.',
-            es: '¡Construye el parque de tus sueños! Gratis desde el 25 jun.',
-            en: 'Build your dream theme park! Free from Jun 25.'
+        desc: {
+            ru: 'Строй парк аттракционов! С 25 июня.',
+            es: '¡Construye tu parque! Desde el 25 jun.',
+            en: 'Build your theme park! From Jun 25.'
         }
     },
     {
@@ -106,10 +94,10 @@ const games = [
         usualPrice: '17.99€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b',
         status: 'new', startDate: '2026-06-25', endDate: '2026-07-02', emoji: '🕳️',
-        description: {
-            ru: 'Мрачная метроидвания. Бесплатно с 25 июня.',
-            es: 'Oscura metroidvania. Gratis desde el 25 jun.',
-            en: 'Dark metroidvania. Free from Jun 25.'
+        desc: {
+            ru: 'Мрачная метроидвания. С 25 июня.',
+            es: 'Metroidvania oscura. Desde el 25 jun.',
+            en: 'Dark metroidvania. From Jun 25.'
         }
     },
     {
@@ -118,10 +106,10 @@ const games = [
         usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/valorant',
         status: 'active', endDate: '2099-12-31', emoji: '🎯',
-        description: {
-            ru: 'Тактический шутер от Riot Games. Всегда бесплатно!',
-            es: 'Shooter táctico de Riot Games. ¡Siempre gratis!',
-            en: 'Tactical shooter from Riot Games. Always free!'
+        desc: {
+            ru: 'Тактический шутер от Riot Games.',
+            es: 'Shooter táctico de Riot Games.',
+            en: 'Tactical shooter from Riot Games.'
         }
     },
     {
@@ -130,10 +118,10 @@ const games = [
         usualPrice: '0€', store: 'Epic Games Store',
         storeUrl: 'https://store.epicgames.com/p/fall-guys',
         status: 'active', endDate: '2099-12-31', emoji: '👑',
-        description: {
-            ru: 'Королевская битва с милыми человечками. Бесплатно навсегда!',
-            es: 'Battle royale con muñecos adorables. ¡Gratis para siempre!',
-            en: 'Battle royale with cute beans. Free forever!'
+        desc: {
+            ru: 'Королевская битва с человечками.',
+            es: 'Battle royale con muñecos.',
+            en: 'Battle royale with cute beans.'
         }
     }
 ];
@@ -141,36 +129,25 @@ const games = [
 // ========== ЯЗЫК ==========
 var currentLang = 'ru';
 
-function getTranslation(key) {
+function t(key) {
     return translations[currentLang][key] || key;
 }
 
 function switchLanguage(lang) {
     currentLang = lang;
     
-    document.querySelectorAll('.lang-btn').forEach(function(btn) {
-        if (btn.dataset.lang === lang) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
     document.querySelectorAll('[data-key]').forEach(function(el) {
-        el.textContent = getTranslation(el.dataset.key);
+        el.textContent = t(el.dataset.key);
     });
     
     var flagEl = document.getElementById('currentLangFlag');
     var textEl = document.getElementById('currentLangText');
-    var langInfo = { ru: { flag: '🇷🇺', text: 'RU' }, es: { flag: '🇪🇸', text: 'ES' }, en: { flag: '🇬🇧', text: 'EN' } };
-    if (flagEl) flagEl.textContent = langInfo[lang].flag;
-    if (textEl) textEl.textContent = langInfo[lang].text;
+    var info = { ru: { flag: '🇷🇺', text: 'RU' }, es: { flag: '🇪🇸', text: 'ES' }, en: { flag: '🇬🇧', text: 'EN' } };
+    if (flagEl) flagEl.textContent = info[lang].flag;
+    if (textEl) textEl.textContent = info[lang].text;
+    
     document.querySelectorAll('.lang-option').forEach(function(opt) {
-        if (opt.dataset.lang === lang) {
-            opt.classList.add('active');
-        } else {
-            opt.classList.remove('active');
-        }
+        opt.classList.toggle('active', opt.dataset.lang === lang);
     });
     
     renderGames(currentFilter);
@@ -178,20 +155,14 @@ function switchLanguage(lang) {
 }
 
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
-var langBtn = document.getElementById('langDropdownBtn');
-var langContent = document.getElementById('langDropdownContent');
-
-langBtn.onclick = function(e) {
+document.getElementById('langDropdownBtn').onclick = function(e) {
     e.stopPropagation();
-    if (langContent.classList.contains('open')) {
-        langContent.classList.remove('open');
-    } else {
-        langContent.classList.add('open');
-    }
+    var c = document.getElementById('langDropdownContent');
+    c.classList.toggle('open');
 };
 
 document.addEventListener('click', function() {
-    langContent.classList.remove('open');
+    document.getElementById('langDropdownContent').classList.remove('open');
 });
 
 document.querySelectorAll('.lang-option').forEach(function(opt) {
@@ -201,54 +172,47 @@ document.querySelectorAll('.lang-option').forEach(function(opt) {
         document.getElementById('currentLangFlag').textContent = {ru:'🇷🇺',es:'🇪🇸',en:'🇬🇧'}[lang];
         document.getElementById('currentLangText').textContent = lang.toUpperCase();
         switchLanguage(lang);
-        langContent.classList.remove('open');
+        document.getElementById('langDropdownContent').classList.remove('open');
     };
 });
 
-// ========== ИГРЫ ==========
-function getGameDescription(game) {
-    return game.description[currentLang] || game.description.en;
+// ========== ФУНКЦИИ ИГР ==========
+function getDesc(game) {
+    return game.desc[currentLang] || game.desc.en;
 }
 
-function getGameStatusText(game) {
-    if (game.status === 'new') return getTranslation('new-deal');
-    return getTranslation('still-free');
+function getStatusText(game) {
+    return game.status === 'new' ? '🟡 ' + t('filter-new') : '🟢 ' + t('filter-active');
 }
 
-function getBadgeClass(game) {
-    if (game.status === 'new') return 'badge-new';
-    return 'badge-active';
+function getBadge(game) {
+    return game.status === 'new' ? 'badge-new' : 'badge-active';
 }
 
-function getCardClass(game) {
-    if (game.status === 'new') return 'new';
-    return 'active-game';
+function getCard(game) {
+    return game.status === 'new' ? 'new' : 'active-game';
 }
 
-function getTimeText(game) {
+function getTime(game) {
     var now = new Date();
     
-    // Если игра ещё не началась
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
-        var diffStart = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
-        if (diffStart > 1) return '⏰ Старт через ' + diffStart + ' ' + getTranslation('days-left');
-        if (diffStart === 1) return '⏰ Старт завтра!';
-        if (diffStart === 0) return '⏰ Старт сегодня!';
+        var d = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
+        if (d > 1) return '⏰ Старт через ' + d + ' ' + t('days-left');
+        if (d === 1) return '⏰ Старт завтра!';
+        return '⏰ Старт сегодня!';
     }
     
-    // Если есть дата окончания
     if (game.endDate) {
         var end = new Date(game.endDate);
-        var diffEnd = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
-        
-        if (diffEnd > 999) return '♾️ Навсегда';
-        if (diffEnd < 0) return '⏰ Закончилось';
-        if (diffEnd === 0) return '⏰ Сегодня последний день!';
-        if (diffEnd === 1) return '⏰ Остался 1 день';
-        return '⏰ Осталось ' + diffEnd + ' ' + getTranslation('days-left');
+        var d = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+        if (d > 999) return '♾️ Навсегда';
+        if (d < 0) return '⏰ Закончилось';
+        if (d === 0) return '⏰ Последний день!';
+        if (d === 1) return '⏰ Остался 1 день';
+        return '⏰ Осталось ' + d + ' ' + t('days-left');
     }
-    
     return '';
 }
 
@@ -257,32 +221,27 @@ function renderGames(filter) {
     var container = document.getElementById('gamesContainer');
     if (!container) return;
     
-    var filteredGames = games;
-    if (filter === 'expiring') filteredGames = games.filter(function(g) { return g.status === 'expiring'; });
-    if (filter === 'new') filteredGames = games.filter(function(g) { return g.status === 'new'; });
-    if (filter === 'active') filteredGames = games.filter(function(g) { return g.status === 'active'; });
+    var list = games;
+    if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
+    if (filter === 'active') list = games.filter(function(g) { return g.status === 'active'; });
     
-    container.innerHTML = filteredGames.map(function(game) {
-        return '<div class="game-card ' + getCardClass(game) + '">' +
+    container.innerHTML = list.map(function(game) {
+        return '<div class="game-card ' + getCard(game) + '">' +
             '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
             '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
             '<div class="game-info">' +
-            '<span class="game-badge ' + getBadgeClass(game) + '">' + getGameStatusText(game) + '</span>' +
+            '<span class="game-badge ' + getBadge(game) + '">' + getStatusText(game) + '</span>' +
             '<h3 class="game-title">' + game.title + '</h3>' +
-            '<p style="color:#aaa;margin-bottom:10px;">' + getGameDescription(game) + '</p>' +
+            '<p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
             '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
-            '<div class="game-store">' + getTranslation('store') + ': ' + game.store + '</div>' +
-            '<div class="game-timer">' + getTimeText(game) + '</div>' +
-            '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow">' + getTranslation('get-free') + '</a>' +
+            '<div class="game-store">' + t('store') + ': ' + game.store + '</div>' +
+            '<div class="game-timer">' + getTime(game) + '</div>' +
+            '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow">' + t('get-free') + '</a>' +
             '</div></div>';
     }).join('');
     
-    var freeNow = games.filter(function(g) { return g.status === 'active'; }).length;
-    var upcoming = games.filter(function(g) { return g.status === 'new'; }).length;
-    var el1 = document.getElementById('freeGamesCount');
-    var el2 = document.getElementById('upcomingCount');
-    if (el1) el1.textContent = freeNow;
-    if (el2) el2.textContent = upcoming;
+    document.getElementById('freeGamesCount').textContent = games.filter(function(g) { return g.status === 'active'; }).length;
+    document.getElementById('upcomingCount').textContent = games.filter(function(g) { return g.status === 'new'; }).length;
 }
 
 // ========== ФИЛЬТРЫ ==========
@@ -298,6 +257,5 @@ document.querySelectorAll('.filter-btn').forEach(function(btn) {
 });
 
 // ========== ЗАПУСК ==========
-var savedLang = localStorage.getItem('lang') || 'ru';
-switchLanguage(savedLang);
+switchLanguage(localStorage.getItem('lang') || 'ru');
 renderGames();
