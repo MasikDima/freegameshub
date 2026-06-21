@@ -125,6 +125,56 @@ var games = [
             es: 'Battle royale con muñecos.',
             en: 'Battle royale with cute beans.'
         }
+       // Steam бесплатные игры
+    {
+        id: 7, title: 'Counter-Strike 2',
+        image: 'https://wallpapercave.com/wp/wp12803829.jpg',
+        usualPrice: '0€', store: 'Steam',
+        storeUrl: 'https://store.steampowered.com/app/730',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯',
+        desc: {
+            ru: 'Легендарный тактический шутер. Всегда бесплатно!',
+            es: 'Legendario shooter táctico. ¡Siempre gratis!',
+            en: 'Legendary tactical shooter. Always free!'
+        }
+    },
+    {
+        id: 8, title: 'PUBG: BATTLEGROUNDS',
+        image: 'https://wallpaperaccess.com/full/810309.jpg',
+        usualPrice: '0€', store: 'Steam',
+        storeUrl: 'https://store.steampowered.com/app/578080',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫',
+        desc: {
+            ru: 'Королевская битва, с которой всё началось.',
+            es: 'El battle royale que lo empezó todo.',
+            en: 'The battle royale that started it all.'
+        }
+    },
+    {
+        id: 9, title: 'Dota 2',
+        image: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/06/dota-2-heroes.jpg',
+        usualPrice: '0€', store: 'Steam',
+        storeUrl: 'https://store.steampowered.com/app/570',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🐉',
+        desc: {
+            ru: 'Самая популярная MOBA в мире. Всегда бесплатно!',
+            es: 'El MOBA más popular del mundo. ¡Siempre gratis!',
+            en: 'The most popular MOBA in the world. Always free!'
+        }
+    },
+    {
+        id: 10, title: 'Apex Legends',
+        image: 'https://images.wallpapersden.com/image/download/apex-legends-season-18_bmZmZmuUmZqaraWkpJRmbmdlrWZlbWU.jpg',
+        usualPrice: '0€', store: 'Steam',
+        storeUrl: 'https://store.steampowered.com/app/1172470',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🚀',
+        desc: {
+            ru: 'Королевская битва с героями и уникальными способностями.',
+            es: 'Battle royale con héroes y habilidades únicas.',
+            en: 'Hero battle royale with unique abilities.'
+        }
+    }
+];
     }
 ];
 
