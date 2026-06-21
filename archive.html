@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Games Hub - Архив раздач</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">📦</span>
+                <span class="logo-text">Архив раздач</span>
+            </div>
+            <a href="index.html" class="back-btn">← На главную</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>📦 Архив бесплатных раздач</h1>
+            <p>Игры, которые раздавали раньше</p>
+        </div>
+    </section>
+
+    <section class="games">
+        <div class="container" id="archiveContainer">
+            <p style="text-align:center;color:#aaa;">Загрузка...</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub.</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=10"></script>
+    <script>
+        // Показываем архив при загрузке
+        var saved = localStorage.getItem('archive');
+        var archive = saved ? JSON.parse(saved) : [];
+        var container = document.getElementById('archiveContainer');
+        
+        if (archive.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#aaa;">Пока пусто. Когда раздачи закончатся — игры появятся здесь.</p>';
+        } else {
+            container.innerHTML = archive.map(function(game) {
+                return '<div class="game-card">' +
+                    '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
+                    '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">📦</div>' +
+                    '<div class="game-info">' +
+                    '<span class="game-badge badge-expiring">📦 Закончилась</span>' +
+                    '<h3 class="game-title">' + game.title + '</h3>' +
+                    '<p style="color:#aaa;">Раздача завершена</p>' +
+                    '<div class="game-store">Магазин: ' + game.store + '</div>' +
+                    '</div></div>';
+            }).join('');
+        }
+    </script>
+</body>
+</html>
