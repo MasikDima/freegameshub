@@ -22,13 +22,6 @@
             object-fit: cover;
             border-radius: 8px;
         }
-        .history-info h3 {
-            margin-bottom: 5px;
-        }
-        .history-date {
-            color: #aaa;
-            font-size: 14px;
-        }
         .badge-ended {
             background: #666;
             color: white;
@@ -36,6 +29,11 @@
             border-radius: 15px;
             font-size: 12px;
             display: inline-block;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 600px) {
+            .history-card { flex-direction: column; }
+            .history-card img { width: 100%; height: 150px; }
         }
     </style>
 </head>
@@ -71,49 +69,22 @@
     </footer>
 
     <script>
-        // Все игры, которые когда-либо были на сайте (пополняется автоматически)
-        var allTimeGames = [];
-        
-        // Загружаем из localStorage
+        var historyGames = [];
         var saved = localStorage.getItem('allHistory');
-        if (saved) {
-            allTimeGames = JSON.parse(saved);
-        }
+        if (saved) historyGames = JSON.parse(saved);
         
-        // Добавляем текущие игры, если их ещё нет в истории
-        var currentGames = [
-            { id: 1, title: 'Citizen Sleeper', image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg', store: 'Epic Games Store', date: 'Июнь 2026' },
-            { id: 2, title: 'ROBOBEAT', image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e', store: 'Epic Games Store', date: 'Июнь 2026' },
-            { id: 3, title: 'RollerCoaster Tycoon 3', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg', store: 'Epic Games Store', date: 'Июнь-Июль 2026' },
-            { id: 4, title: 'Voidwrought', image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg', store: 'Epic Games Store', date: 'Июнь-Июль 2026' },
-            { id: 5, title: 'Valorant', image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg', store: 'Epic Games Store', date: 'Всегда' },
-            { id: 6, title: 'Fall Guys', image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png', store: 'Epic Games Store', date: 'Всегда' }
-        ];
-        
-        // Объединяем, убираем дубликаты
-        currentGames.forEach(function(cg) {
-            var exists = allTimeGames.some(function(ag) { return ag.id === cg.id; });
-            if (!exists) {
-                allTimeGames.push(cg);
-            }
-        });
-        
-        // Сохраняем
-        localStorage.setItem('allHistory', JSON.stringify(allTimeGames));
-        
-        // Показываем
         var container = document.getElementById('historyContainer');
         
-        if (allTimeGames.length === 0) {
-            container.innerHTML = '<p style="text-align:center;color:#aaa;">Пока пусто. Когда появятся раздачи — они будут здесь.</p>';
+        if (historyGames.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#aaa;padding:40px;">Пока здесь нет игр. Когда раздачи закончатся — они появятся здесь автоматически.</p>';
         } else {
-            container.innerHTML = allTimeGames.reverse().map(function(game) {
+            container.innerHTML = historyGames.reverse().map(function(game) {
                 return '<div class="history-card">' +
                     '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                     '<div class="history-info">' +
-                    '<span class="badge-ended">📦 Была бесплатно</span>' +
+                    '<span class="badge-ended">📦 Раздача завершена</span>' +
                     '<h3 class="game-title">' + game.title + '</h3>' +
-                    '<p class="history-date">🗓 ' + game.date + ' • 🏪 ' + game.store + '</p>' +
+                    '<p style="color:#aaa;">🏪 ' + game.store + '</p>' +
                     '</div></div>';
             }).join('');
         }
