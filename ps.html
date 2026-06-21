@@ -156,5 +156,24 @@
                 '</div>';
         }).join('');
     </script>
+<script>
+document.getElementById('langDropdownBtn').onclick = function(e) {
+    e.stopPropagation();
+    document.getElementById('langDropdownContent').classList.toggle('open');
+};
+document.addEventListener('click', function() {
+    document.getElementById('langDropdownContent').classList.remove('open');
+});
+document.querySelectorAll('.lang-option').forEach(function(opt) {
+    opt.onclick = function(e) {
+        e.preventDefault();
+        var lang = this.dataset.lang;
+        document.getElementById('currentLangText').textContent = lang.toUpperCase();
+        localStorage.setItem('lang', lang);
+        location.reload();
+        document.getElementById('langDropdownContent').classList.remove('open');
+    };
+});
+</script>
 </body>
 </html>
