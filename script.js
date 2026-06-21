@@ -114,7 +114,68 @@ var games = [
             en: 'Tactical shooter from Riot Games.'
         }
     },
-        {
+        var games = [
+    {
+        id: 1, title: 'Citizen Sleeper',
+        image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg',
+        usualPrice: '17.99€', store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858',
+        status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲',
+        desc: {
+            ru: 'Ролевая игра в киберпанк-мире.',
+            es: 'Juego de rol cyberpunk.',
+            en: 'Cyberpunk RPG.'
+        }
+    },
+    {
+        id: 2, title: 'ROBOBEAT',
+        image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e',
+        usualPrice: '19.49€', store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b',
+        status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🤖',
+        desc: {
+            ru: 'Ритм-шутер с роботами!',
+            es: '¡Shooter rítmico con robots!',
+            en: 'Rhythm shooter with robots!'
+        }
+    },
+    {
+        id: 3, title: 'RollerCoaster Tycoon 3',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg',
+        usualPrice: '19.99€', store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition',
+        status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🎢',
+        desc: {
+            ru: 'Строй парк аттракционов! С 25 июня.',
+            es: '¡Construye tu parque! Desde el 25 jun.',
+            en: 'Build your theme park! From Jun 25.'
+        }
+    },
+    {
+        id: 4, title: 'Voidwrought',
+        image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg',
+        usualPrice: '17.99€', store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b',
+        status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🕳️',
+        desc: {
+            ru: 'Мрачная метроидвания. С 25 июня.',
+            es: 'Metroidvania oscura. Desde el 25 jun.',
+            en: 'Dark metroidvania. From Jun 25.'
+        }
+    },
+    {
+        id: 5, title: 'Valorant',
+        image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg',
+        usualPrice: '0€', store: 'Epic Games Store',
+        storeUrl: 'https://store.epicgames.com/p/valorant',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯',
+        desc: {
+            ru: 'Тактический шутер от Riot Games.',
+            es: 'Shooter táctico de Riot Games.',
+            en: 'Tactical shooter from Riot Games.'
+        }
+    },
+    {
         id: 6, title: 'Fall Guys',
         image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
         usualPrice: '0€', store: 'Epic Games Store',
@@ -131,7 +192,7 @@ var games = [
         image: 'https://wallpapercave.com/wp/wp12803829.jpg',
         usualPrice: '0€', store: 'Steam',
         storeUrl: 'https://store.steampowered.com/app/730',
-        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫',
         desc: {
             ru: 'Легендарный тактический шутер.',
             es: 'Legendario shooter táctico.',
@@ -143,7 +204,7 @@ var games = [
         image: 'https://wallpaperaccess.com/full/810309.jpg',
         usualPrice: '0€', store: 'Steam',
         storeUrl: 'https://store.steampowered.com/app/578080',
-        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫',
+        status: 'active', endDate: '2099-12-31T23:59:59', emoji: '💥',
         desc: {
             ru: 'Королевская битва, с которой всё началось.',
             es: 'El battle royale que lo empezó todo.',
