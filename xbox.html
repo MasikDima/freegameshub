@@ -5,7 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xbox - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css?v=30">
+    <link rel="stylesheet" href="style.css?v=30">
+    <style>
+        .xbox-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .xbox-game-card {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid rgba(16, 124, 16, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .xbox-game-card:hover {
+            border-color: rgba(16, 124, 16, 0.6);
+            box-shadow: 0 0 25px rgba(16, 124, 16, 0.2);
+            transform: translateY(-3px);
+        }
+        .xbox-game-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .xbox-badge-free {
+            display: inline-block;
+            background: linear-gradient(135deg, #107c10, #52d452);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(16, 124, 16, 0.3);
+            margin-bottom: 12px;
+        }
+        .xbox-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #107c10, #52d452);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 12px;
+            transition: all 0.3s;
+        }
+        .xbox-btn:hover {
+            box-shadow: 0 0 25px rgba(16, 124, 16, 0.5);
+        }
+    </style>
 </head>
 <body>
 
@@ -13,15 +68,15 @@
         <div class="container">
             <div class="logo">
                 <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-                <span class="logo-text">Free Games Hub</span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
             </div>
             <div style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
                 <div class="lang-dropdown">
                     <button class="lang-dropdown-btn" id="langDropdownBtn">
-    <span id="currentLangText">RU</span>
-    <span class="arrow">▼</span>
-</button>
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
                     <div class="lang-dropdown-content" id="langDropdownContent">
                         <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
                         <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
@@ -33,33 +88,33 @@
     </header>
 
     <nav class="store-nav">
-    <div class="container">
-        <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
-<a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
-<a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
-        <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
-        <a href="xbox.html" class="store-link active"><i class="fab fa-xbox"></i> Xbox</a>
-    </div>
-</nav>
-
-    <section class="hero" style="padding:50px 0;">
         <div class="container">
-            <h1><i class="fab fa-xbox"></i> Xbox</h1>
-            <p>Xbox Game Pass и Games with Gold</p>
+            <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
+            <a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
+            <a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
+            <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
+            <a href="xbox.html" class="store-link active"><i class="fab fa-xbox"></i> Xbox</a>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding:50px 0 30px;">
+        <div class="container">
+            <h1><i class="fab fa-xbox"></i> Xbox Game Pass</h1>
+            <p>Бесплатные игры июня 2026</p>
         </div>
     </section>
 
     <section class="games">
-        <div class="container" id="gamesContainer">
-            <p style="text-align:center;color:#aaa;padding:40px;">Для получения игр нужна подписка Xbox Game Pass. Загляни позже!</p>
+        <div class="container">
+            <div class="xbox-games-grid" id="xboxGames"></div>
         </div>
     </section>
 
     <section class="subscribe">
         <div class="container">
-            <h2>Узнай первым!</h2>
-            <p>Подпишись на уведомления в Telegram</p>
-            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
+            <h2>Нужна подписка Game Pass</h2>
+            <p>Для получения игр оформи подписку Xbox Game Pass Ultimate</p>
+            <a href="https://www.xbox.com/ru-RU/xbox-game-pass" class="btn-telegram" target="_blank">🟢 Узнать про Game Pass</a>
         </div>
     </section>
 
@@ -68,24 +123,65 @@
             <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
         </div>
     </footer>
-<script>
-document.getElementById('langDropdownBtn').onclick = function(e) {
-    e.stopPropagation();
-    document.getElementById('langDropdownContent').classList.toggle('open');
-};
-document.addEventListener('click', function() {
-    document.getElementById('langDropdownContent').classList.remove('open');
-});
-document.querySelectorAll('.lang-option').forEach(function(opt) {
-    opt.onclick = function(e) {
-        e.preventDefault();
-        var lang = this.dataset.lang;
-        document.getElementById('currentLangText').textContent = lang.toUpperCase();
-        localStorage.setItem('lang', lang);
-        location.reload();
-        document.getElementById('langDropdownContent').classList.remove('open');
-    };
-});
-</script>
+
+    <script>
+        var xboxGames = [
+            { 
+                title: 'Junkster', 
+                image: 'https://th.bing.com/th?id=OIF.lckp6Jj3qhJ%2fPYhltMqlvA&rs=1&pid=ImgDetMain&o=7&rm=3',
+                url: 'https://www.xbox.com/ru-RU/games/store/junkster'
+            },
+            { 
+                title: 'Call of Duty: Vanguard', 
+                image: 'https://wallpaperaccess.com/full/6824905.jpg',
+                url: 'https://www.xbox.com/ru-RU/games/store/call-of-duty-vanguard'
+            },
+            { 
+                title: 'EA Sports FC 26', 
+                image: 'https://www.insidexbox.de/wp-content/uploads/2025/07/easports-fc-26-cover.webp',
+                url: 'https://www.xbox.com/ru-RU/games/store/ea-sports-fc-26'
+            },
+            { 
+                title: 'Abyssus', 
+                image: 'https://gamefabrique.com/i/pc/abyssus.jpg',
+                url: 'https://www.xbox.com/ru-RU/games/store/abyssus'
+            },
+            { 
+                title: 'RV There Yet?', 
+                image: 'https://trafficrally.io/data/image/how-to-play-rv-there-yet.png',
+                url: 'https://www.xbox.com/ru-RU/games/store/rv-there-yet'
+            }
+        ];
+
+        var container = document.getElementById('xboxGames');
+        container.innerHTML = xboxGames.map(function(game) {
+            return '<div class="xbox-game-card">' +
+                '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.xbox-fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
+                '<div class="xbox-fallback" style="display:none;background:linear-gradient(135deg,#0a2a0a,#1a4a1a);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🟢</div>' +
+                '<span class="xbox-badge-free">Game Pass</span>' +
+                '<h3 class="xbox-game-title">' + game.title + '</h3>' +
+                '<a href="' + game.url + '" class="xbox-btn" target="_blank">🟢 Подробнее</a>' +
+                '</div>';
+        }).join('');
+
+        document.getElementById('langDropdownBtn').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdownContent').classList.toggle('open');
+        };
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdownContent').classList.remove('open');
+        });
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var lang = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = lang.toUpperCase();
+                localStorage.setItem('lang', lang);
+                location.reload();
+            };
+        });
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+    </script>
 </body>
 </html>
