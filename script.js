@@ -15,7 +15,15 @@ var translations = {
         'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
         'days-left': 'дней',
         'store': 'Магазин',
-        'history-btn': '📦 История'
+        'history-btn': '📦 История',
+        'epic-desc': 'Бесплатные раздачи каждую неделю',
+        'epic-btn': 'Смотреть игры',
+        'steam-desc': 'Лучшие free-to-play игры',
+        'steam-btn': 'Смотреть игры',
+        'ps-desc': 'PS Plus — 3 игры в месяц',
+        'ps-btn': 'Смотреть игры',
+        'xbox-desc': 'Game Pass и Games with Gold',
+        'xbox-btn': 'Смотреть игры'
     },
     es: {
         'hero-title': 'Juegos gratis cada semana',
@@ -32,7 +40,15 @@ var translations = {
         'get-free': '🎁 CONSEGUIR GRATIS',
         'days-left': 'días',
         'store': 'Tienda',
-        'history-btn': '📦 Historial'
+        'history-btn': '📦 Historial',
+        'epic-desc': 'Juegos gratis cada semana',
+        'epic-btn': 'Ver juegos',
+        'steam-desc': 'Mejores juegos free-to-play',
+        'steam-btn': 'Ver juegos',
+        'ps-desc': 'PS Plus — 3 juegos al mes',
+        'ps-btn': 'Ver juegos',
+        'xbox-desc': 'Game Pass y Games with Gold',
+        'xbox-btn': 'Ver juegos'
     },
     en: {
         'hero-title': 'Free Games Every Week',
@@ -49,7 +65,15 @@ var translations = {
         'get-free': '🎁 GET IT FREE',
         'days-left': 'days',
         'store': 'Store',
-        'history-btn': '📦 History'
+        'history-btn': '📦 History',
+        'epic-desc': 'Free games every week',
+        'epic-btn': 'View games',
+        'steam-desc': 'Best free-to-play games',
+        'steam-btn': 'View games',
+        'ps-desc': 'PS Plus — 3 games monthly',
+        'ps-btn': 'View games',
+        'xbox-desc': 'Game Pass & Games with Gold',
+        'xbox-btn': 'View games'
     }
 };
 
