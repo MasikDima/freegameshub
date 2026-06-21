@@ -4,7 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Games Hub - Бесплатные игры</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
+    <style>
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 40px 0;
+        }
+        .category-card {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .category-card:hover::before {
+            opacity: 1;
+        }
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .category-card.epic:hover {
+            border-color: rgba(233, 69, 96, 0.6);
+            box-shadow: 0 20px 50px rgba(233, 69, 96, 0.2);
+        }
+        .category-card.steam:hover {
+            border-color: rgba(0, 136, 204, 0.6);
+            box-shadow: 0 20px 50px rgba(0, 136, 204, 0.2);
+        }
+        .category-card.ps:hover {
+            border-color: rgba(0, 112, 204, 0.6);
+            box-shadow: 0 20px 50px rgba(0, 112, 204, 0.2);
+        }
+        .category-card.xbox:hover {
+            border-color: rgba(16, 124, 16, 0.6);
+            box-shadow: 0 20px 50px rgba(16, 124, 16, 0.2);
+        }
+        .category-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .category-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .category-count {
+            color: #aaa;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .category-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-epic { background: linear-gradient(135deg, #ff0080, #e94560); color: white; }
+        .btn-steam { background: linear-gradient(135deg, #0088cc, #00aaff); color: white; }
+        .btn-ps { background: linear-gradient(135deg, #003087, #0070cc); color: white; }
+        .btn-xbox { background: linear-gradient(135deg, #107c10, #52d452); color: white; }
+        
+        .hero-small {
+            padding: 60px 0 20px;
+            text-align: center;
+        }
+        .hero-small h1 {
+            font-size: 42px;
+            background: linear-gradient(135deg, #ff0080, #f5c518);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-small p {
+            color: #aaa;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
 
@@ -17,10 +117,10 @@
             <div style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;" data-key="history-btn">📦 История</a>
                 <div class="lang-dropdown">
-                   <button class="lang-dropdown-btn" id="langDropdownBtn">
-    <span id="currentLangText">RU</span>
-    <span class="arrow">▼</span>
-</button>
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
                     <div class="lang-dropdown-content" id="langDropdownContent">
                         <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
                         <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
@@ -31,60 +131,64 @@
         </div>
     </header>
 
-    <nav class="store-nav">
+    <section class="hero-small">
         <div class="container">
-            <a href="index.html" class="store-link active">🎮 Все</a>
-            <a href="epic.html" class="store-link">🎁 Epic Games</a>
-            <a href="steam.html" class="store-link">🔵 Steam</a>
-            <a href="ps.html" class="store-link">🎮 PlayStation</a>
-            <a href="xbox.html" class="store-link">🟢 Xbox</a>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="container">
-            <h1 data-key="hero-title">Бесплатные игры каждую неделю</h1>
-            <p data-key="hero-subtitle">Забери лучшие игры бесплатно, пока не поздно!</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number" id="freeGamesCount">4</span>
-                    <span class="stat-label" data-key="free-now">Бесплатно сейчас</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" id="upcomingCount">2</span>
-                    <span class="stat-label" data-key="upcoming">Скоро будет</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="filters">
-        <div class="container">
-            <button class="filter-btn active" data-filter="all" data-key="filter-all">Все</button>
-            <button class="filter-btn" data-filter="expiring" data-key="filter-expiring">🔴 Истекает</button>
-            <button class="filter-btn" data-filter="new" data-key="filter-new">🟡 Новые</button>
-            <button class="filter-btn" data-filter="active" data-key="filter-active">🟢 Бесплатно</button>
+            <h1>🎮 Бесплатные игры</h1>
+            <p>Выбери платформу и забирай игры бесплатно!</p>
         </div>
     </section>
 
     <section class="games">
-        <div class="container" id="gamesContainer"></div>
+        <div class="container">
+            <div class="categories-grid">
+                <!-- Epic Games -->
+                <a href="epic.html" class="category-card epic">
+                    <span class="category-icon">🎁</span>
+                    <h2 class="category-title">Epic Games</h2>
+                    <p class="category-count">Бесплатные раздачи каждую неделю</p>
+                    <span class="category-btn btn-epic">Смотреть игры</span>
+                </a>
+
+                <!-- Steam -->
+                <a href="steam.html" class="category-card steam">
+                    <span class="category-icon">🔵</span>
+                    <h2 class="category-title">Steam</h2>
+                    <p class="category-count">Лучшие free-to-play игры</p>
+                    <span class="category-btn btn-steam">Смотреть игры</span>
+                </a>
+
+                <!-- PlayStation -->
+                <a href="ps.html" class="category-card ps">
+                    <span class="category-icon">🎮</span>
+                    <h2 class="category-title">PlayStation</h2>
+                    <p class="category-count">PS Plus — 3 игры в месяц</p>
+                    <span class="category-btn btn-ps">Смотреть игры</span>
+                </a>
+
+                <!-- Xbox -->
+                <a href="xbox.html" class="category-card xbox">
+                    <span class="category-icon">🟢</span>
+                    <h2 class="category-title">Xbox</h2>
+                    <p class="category-count">Game Pass и Games with Gold</p>
+                    <span class="category-btn btn-xbox">Смотреть игры</span>
+                </a>
+            </div>
+        </div>
     </section>
 
     <section class="subscribe">
         <div class="container">
-            <h2 data-key="subscribe-title">Не пропусти халяву!</h2>
-            <p data-key="subscribe-text">Подпишись на уведомления в Telegram</p>
+            <h2>Узнай первым!</h2>
+            <p>Подпишись на Telegram и получай уведомления о новых раздачах</p>
             <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
+            <p>© 2026 Free Games Hub. Все ссылки ведут на официальные магазины.</p>
         </div>
     </footer>
 
-    <script src="script.js?v=35"></script>
 </body>
 </html>
