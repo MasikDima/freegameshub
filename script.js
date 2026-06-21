@@ -168,7 +168,6 @@ document.querySelectorAll('.lang-option').forEach(function(opt) {
     opt.onclick = function(e) {
         e.preventDefault();
         var lang = this.dataset.lang;
-        document.getElementById('currentLangFlag').textContent = {ru:'🇷🇺',es:'🇪🇸',en:'🇬🇧'}[lang];
         document.getElementById('currentLangText').textContent = lang.toUpperCase();
         switchLanguage(lang);
         document.getElementById('langDropdownContent').classList.remove('open');
