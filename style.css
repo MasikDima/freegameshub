@@ -573,16 +573,6 @@ footer a:hover {
     background: linear-gradient(180deg, #ff1070, #ff5570);
 }
 /* ========== МЕНЮ МАГАЗИНОВ ========== */
-.store-nav {
-    background: rgba(5, 5, 16, 0.9);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 12px 0;
-    position: sticky;
-    top: 72px;
-    z-index: 98;
-    backdrop-filter: blur(10px);
-}
-
 .store-link {
     color: #666;
     text-decoration: none;
@@ -601,7 +591,18 @@ footer a:hover {
 }
 
 .store-link.active {
+    color: #fff !important;
+    background: linear-gradient(135deg, #ff0080, #e94560) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.3) !important;
+}
+
+.store-link:hover {
     color: #fff;
-    background: linear-gradient(135deg, #ff0080, #e94560);
-    box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+    background: rgba(255, 0, 128, 0.15);
+}
+
+.store-link.active {
+    color: #fff !important;
+    background: linear-gradient(135deg, #ff0080, #e94560) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.3) !important
 }
