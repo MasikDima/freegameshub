@@ -298,23 +298,8 @@ function renderGames(filter) {
         games = stillActive;
     }
     
-    // Также сохраняем текущие игры в историю
-    var savedAll = localStorage.getItem('allHistory');
-    var allHistory = savedAll ? JSON.parse(savedAll) : [];
-    
-    games.forEach(function(g) {
-        var exists = allHistory.some(function(h) { return h.id === g.id; });
-        if (!exists) {
-            allHistory.push({
-                id: g.id,
-                title: g.title,
-                image: g.image,
-                store: g.store
-            });
-        }
-    });
-    
-    localStorage.setItem('allHistory', JSON.stringify(allHistory));
+        // Сохраняем в историю ТОЛЬКО завершённые игры
+    // (текущие игры не сохраняем — они попадут в историю только когда закончатся)
     
     // Фильтруем для отображения
     var list = games;
