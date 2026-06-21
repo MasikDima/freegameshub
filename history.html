@@ -37,6 +37,15 @@
             color: #aaa;
             padding: 60px 20px;
         }
+        .lang-dropdown { position: relative; display: inline-block; }
+        .lang-dropdown-btn { background: #1a1a3e; color: white; border: 1px solid #2a2a5e; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; gap: 8px; min-width: 110px; justify-content: center; }
+        .lang-dropdown-btn:hover { border-color: #e94560; }
+        .lang-dropdown-btn .arrow { font-size: 10px; margin-left: auto; }
+        .lang-dropdown-content { display: none; position: absolute; top: 100%; right: 0; margin-top: 5px; background: #1a1a3e; border: 1px solid #2a2a5e; border-radius: 8px; min-width: 160px; z-index: 200; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .lang-dropdown-content.open { display: block; }
+        .lang-option { display: block; padding: 12px 20px; color: #aaa; text-decoration: none; transition: all 0.2s; font-size: 15px; }
+        .lang-option:hover { background: #e94560; color: white; }
+        .lang-option.active { background: #0f3460; color: white; }
         @media (max-width: 600px) {
             .history-card { flex-direction: column; }
             .history-card img { width: 100%; height: 150px; }
@@ -51,7 +60,21 @@
                 <span class="logo-icon">📦</span>
                 <span class="logo-text" data-key="history-title">История раздач</span>
             </div>
-            <a href="index.html" style="color:#e94560;text-decoration:none;font-weight:bold;" data-key="back-home">← На главную</a>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="index.html" style="color:#e94560;text-decoration:none;font-weight:bold;" data-key="back-home">← На главную</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangFlag">🇷🇺</span>
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -75,8 +98,8 @@
     </footer>
 
     <script>
-        // Переводы для страницы истории
-        var historyTranslations = {
+        // Переводы
+        var t2 = {
             ru: {
                 'history-title': 'История раздач',
                 'back-home': '← На главную',
@@ -110,45 +133,76 @@
         };
 
         var lang = localStorage.getItem('lang') || 'ru';
-        var t2 = historyTranslations[lang];
 
-        // Обновляем текст на странице
-        document.querySelectorAll('[data-key]').forEach(function(el) {
-            el.textContent = t2[el.dataset.key] || '';
-        });
-
-        // Загружаем историю
-        var historyGames = [];
-        var saved = localStorage.getItem('allHistory');
-        if (saved) historyGames = JSON.parse(saved);
-
-        // Фильтруем: убираем те, что ещё раздаются (Valorant, Fall Guys)
-        var alwaysFreeIds = [5, 6]; // id Valorant и Fall Guys
-        var currentActiveIds = [];
-        
-        // Проверяем текущие активные игры на главной
-        var now = new Date();
-        historyGames = historyGames.filter(function(game) {
-            // Убираем "вечные" игры
-            if (alwaysFreeIds.indexOf(game.id) !== -1) return false;
-            return true;
-        });
-
-        var container = document.getElementById('historyContainer');
-        
-        if (historyGames.length === 0) {
-            container.innerHTML = '<p class="empty-history">' + t2['empty'] + '</p>';
-        } else {
-            container.innerHTML = historyGames.reverse().map(function(game) {
-                return '<div class="history-card">' +
-                    '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
-                    '<div class="history-info">' +
-                    '<span class="badge-ended">' + t2['ended'] + '</span>' +
-                    '<h3 class="game-title">' + game.title + '</h3>' +
-                    '<p style="color:#aaa;">' + t2['store'] + ': ' + game.store + '</p>' +
-                    '</div></div>';
-            }).join('');
+        function updateTexts(l) {
+            document.querySelectorAll('[data-key]').forEach(function(el) {
+                el.textContent = t2[l][el.dataset.key] || '';
+            });
         }
+
+        function updateLangDisplay(l) {
+            document.getElementById('currentLangFlag').textContent = {ru:'🇷🇺',es:'🇪🇸',en:'🇬🇧'}[l];
+            document.getElementById('currentLangText').textContent = l.toUpperCase();
+            document.querySelectorAll('.lang-option').forEach(function(opt) {
+                opt.classList.toggle('active', opt.dataset.lang === l);
+            });
+        }
+
+        function renderHistory(l) {
+            var container = document.getElementById('historyContainer');
+            var saved = localStorage.getItem('allHistory');
+            var historyGames = saved ? JSON.parse(saved) : [];
+            var alwaysFreeIds = [5, 6];
+            
+            historyGames = historyGames.filter(function(game) {
+                return alwaysFreeIds.indexOf(game.id) === -1;
+            });
+
+            if (historyGames.length === 0) {
+                container.innerHTML = '<p class="empty-history">' + t2[l]['empty'] + '</p>';
+            } else {
+                container.innerHTML = historyGames.reverse().map(function(game) {
+                    return '<div class="history-card">' +
+                        '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
+                        '<div class="history-info">' +
+                        '<span class="badge-ended">' + t2[l]['ended'] + '</span>' +
+                        '<h3 class="game-title">' + game.title + '</h3>' +
+                        '<p style="color:#aaa;">' + t2[l]['store'] + ': ' + game.store + '</p>' +
+                        '</div></div>';
+                }).join('');
+            }
+        }
+
+        function switchLang(l) {
+            lang = l;
+            localStorage.setItem('lang', l);
+            updateTexts(l);
+            updateLangDisplay(l);
+            renderHistory(l);
+        }
+
+        // Выпадающий список
+        document.getElementById('langDropdownBtn').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdownContent').classList.toggle('open');
+        };
+
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdownContent').classList.remove('open');
+        });
+
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) {
+                e.preventDefault();
+                switchLang(this.dataset.lang);
+                document.getElementById('langDropdownContent').classList.remove('open');
+            };
+        });
+
+        // Запуск
+        updateTexts(lang);
+        updateLangDisplay(lang);
+        renderHistory(lang);
     </script>
 </body>
 </html>
