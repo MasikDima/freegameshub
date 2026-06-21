@@ -15,6 +15,7 @@ var translations = {
         'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
         'days-left': 'дней',
         'store': 'Магазин'
+        'history-btn': '📦 История',
     },
     es: {
         'hero-title': 'Juegos gratis cada semana',
@@ -31,6 +32,7 @@ var translations = {
         'get-free': '🎁 CONSEGUIR GRATIS',
         'days-left': 'días',
         'store': 'Tienda'
+    'history-btn': '📦 Historial',
     },
     en: {
         'hero-title': 'Free Games Every Week',
@@ -47,6 +49,7 @@ var translations = {
         'get-free': '🎁 GET IT FREE',
         'days-left': 'days',
         'store': 'Store'
+        'history-btn': '📦 History',
     }
 };
 
