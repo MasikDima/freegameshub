@@ -74,6 +74,7 @@ header .container {
 
 .logo-icon {
     font-size: 28px;
+    color: #f5c518;
     filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.6));
     animation: glowPulse 2s ease-in-out infinite;
 }
