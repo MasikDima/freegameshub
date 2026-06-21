@@ -260,6 +260,63 @@ function renderGames(filter) {
     var container = document.getElementById('gamesContainer');
     if (!container) return;
     
+    // Переносим завершённые игры в архив
+    var now = new Date();
+    var finished = [];
+    var stillActive = [];
+    
+    games.forEach(function(game) {
+        if (game.status === 'active' && game.endDate) {
+            var end = new Date(game.endDate);
+            if (end <= now && end.getFullYear() < 2099) {
+                finished.push(game);
+            } else {
+                stillActive.push(game);
+            }
+        } else {
+            stillActive.push(game);
+        }
+    });
+    
+    if (finished.length > 0) {
+        var saved = localStorage.getItem('allHistory');
+        var archive = saved ? JSON.parse(saved) : [];
+        
+        finished.forEach(function(game) {
+            var exists = archive.some(function(a) { return a.id === game.id; });
+            if (!exists) {
+                archive.push({
+                    id: game.id,
+                    title: game.title,
+                    image: game.image,
+                    store: game.store
+                });
+            }
+        });
+        
+        localStorage.setItem('allHistory', JSON.stringify(archive));
+        games = stillActive;
+    }
+    
+    // Также сохраняем текущие игры в историю
+    var savedAll = localStorage.getItem('allHistory');
+    var allHistory = savedAll ? JSON.parse(savedAll) : [];
+    
+    games.forEach(function(g) {
+        var exists = allHistory.some(function(h) { return h.id === g.id; });
+        if (!exists) {
+            allHistory.push({
+                id: g.id,
+                title: g.title,
+                image: g.image,
+                store: g.store
+            });
+        }
+    });
+    
+    localStorage.setItem('allHistory', JSON.stringify(allHistory));
+    
+    // Фильтруем для отображения
     var list = games;
     if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
     if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
@@ -286,53 +343,6 @@ function renderGames(filter) {
     clearTimeout(window.timerRefresh);
     window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
-    // Счётчики
-    var activeGames = games.filter(function(g) { return g.status === 'active'; });
-    var newGames = games.filter(function(g) { return g.status === 'new'; });
-    document.getElementById('freeGamesCount').textContent = activeGames.length;
-    document.getElementById('upcomingCount').textContent = newGames.length;
-    
-    // Переносим завершённые игры в архив
-    var now = new Date();
-    var finished = [];
-    var stillActive = [];
-    
-    games.forEach(function(game) {
-        if (game.status === 'active' && game.endDate) {
-            var end = new Date(game.endDate);
-            if (end <= now) {
-                finished.push(game);
-            } else {
-                stillActive.push(game);
-            }
-        } else {
-            stillActive.push(game);
-        }
-    });
-    
-    if (finished.length > 0) {
-        // Сохраняем в архив
-        var saved = localStorage.getItem('archive');
-        var archive = saved ? JSON.parse(saved) : [];
-        
-        finished.forEach(function(game) {
-            // Проверяем, нет ли уже в архиве
-            var exists = archive.some(function(a) { return a.id === game.id; });
-            if (!exists) {
-                archive.push({
-                    id: game.id,
-                    title: game.title,
-                    image: game.image,
-                    store: game.store
-                });
-            }
-        });
-        
-        localStorage.setItem('archive', JSON.stringify(archive));
-        
-        // Убираем из активных
-        games = stillActive;
-    }
 
 // ========== ФИЛЬТРЫ ==========
 var currentFilter = 'all';
