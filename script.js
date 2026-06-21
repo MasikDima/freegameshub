@@ -142,11 +142,8 @@ function switchLanguage(lang) {
         el.textContent = t(el.dataset.key);
     });
     
-    var flagEl = document.getElementById('currentLangFlag');
     var textEl = document.getElementById('currentLangText');
-    var info = { ru: { flag: '🇷🇺', text: 'RU' }, es: { flag: '🇪🇸', text: 'ES' }, en: { flag: '🇬🇧', text: 'EN' } };
-    if (flagEl) flagEl.textContent = info[lang].flag;
-    if (textEl) textEl.textContent = info[lang].text;
+    if (textEl) textEl.textContent = lang.toUpperCase();
     
     document.querySelectorAll('.lang-option').forEach(function(opt) {
         opt.classList.toggle('active', opt.dataset.lang === lang);
