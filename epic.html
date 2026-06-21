@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic Games - Free Games Hub</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <span class="logo-text">Free Games Hub</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;" data-key="history-btn">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangFlag">🇷🇺</span>
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="store-nav">
+        <div class="container">
+            <a href="index.html" class="store-link">🎮 Все</a>
+            <a href="epic.html" class="store-link active">🎁 Epic Games</a>
+            <a href="steam.html" class="store-link">🔵 Steam</a>
+            <a href="gog.html" class="store-link">🔮 GOG</a>
+            <a href="other.html" class="store-link">🎯 Другие</a>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding:50px 0;">
+        <div class="container">
+            <h1>🎁 Epic Games Store</h1>
+            <p>Бесплатные раздачи каждую неделю</p>
+        </div>
+    </section>
+
+    <section class="games">
+        <div class="container" id="gamesContainer"></div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
+        </div>
+    </footer>
+
+    <script>
+        var storeFilter = 'Epic Games Store';
+    </script>
+    <script src="script.js?v=12"></script>
+    <script>
+        if (typeof renderGames === 'function') {
+            var originalRender = renderGames;
+            renderGames = function(filter) {
+                var allGames = window.games || games;
+                var filtered = allGames.filter(function(g) { return g.store === storeFilter; });
+                var container = document.getElementById('gamesContainer');
+                if (!container) return;
+                
+                container.innerHTML = filtered.map(function(game) {
+                    return '<div class="game-card ' + getCard(game) + '">' +
+                        '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
+                        '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
+                        '<div class="game-info">' +
+                        '<span class="game-badge ' + getBadge(game) + '">' + getStatusText(game) + '</span>' +
+                        '<h3 class="game-title">' + game.title + '</h3>' +
+                        '<p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
+                        '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
+                        '<div class="game-store">' + t('store') + ': ' + game.store + '</div>' +
+                        '<div class="game-timer">' + getTime(game) + '</div>' +
+                        '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow">' + t('get-free') + '</a>' +
+                        '</div></div>';
+                }).join('');
+            };
+            switchLanguage(localStorage.getItem('lang') || 'ru');
+            renderGames();
+        }
+    </script>
+</body>
+</html>
