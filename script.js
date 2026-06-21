@@ -286,6 +286,53 @@ function renderGames(filter) {
     clearTimeout(window.timerRefresh);
     window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
+    // Счётчики
+    var activeGames = games.filter(function(g) { return g.status === 'active'; });
+    var newGames = games.filter(function(g) { return g.status === 'new'; });
+    document.getElementById('freeGamesCount').textContent = activeGames.length;
+    document.getElementById('upcomingCount').textContent = newGames.length;
+    
+    // Переносим завершённые игры в архив
+    var now = new Date();
+    var finished = [];
+    var stillActive = [];
+    
+    games.forEach(function(game) {
+        if (game.status === 'active' && game.endDate) {
+            var end = new Date(game.endDate);
+            if (end <= now) {
+                finished.push(game);
+            } else {
+                stillActive.push(game);
+            }
+        } else {
+            stillActive.push(game);
+        }
+    });
+    
+    if (finished.length > 0) {
+        // Сохраняем в архив
+        var saved = localStorage.getItem('archive');
+        var archive = saved ? JSON.parse(saved) : [];
+        
+        finished.forEach(function(game) {
+            // Проверяем, нет ли уже в архиве
+            var exists = archive.some(function(a) { return a.id === game.id; });
+            if (!exists) {
+                archive.push({
+                    id: game.id,
+                    title: game.title,
+                    image: game.image,
+                    store: game.store
+                });
+            }
+        });
+        
+        localStorage.setItem('archive', JSON.stringify(archive));
+        
+        // Убираем из активных
+        games = stillActive;
+    }
 
 // ========== ФИЛЬТРЫ ==========
 var currentFilter = 'all';
