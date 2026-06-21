@@ -6,14 +6,6 @@
     <title>Epic Games - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=5">
-    <style>
-        .epic-games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-    </style>
 </head>
 <body>
 
@@ -67,7 +59,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=45"></script>
+    <script src="script.js?v=50"></script>
     <script>
         setTimeout(function() {
             if (typeof renderGames === 'function' && typeof games !== 'undefined') {
@@ -83,14 +75,14 @@
                         '<h3 class="game-title">' + game.title + '</h3>' +
                         '<p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
                         '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
-                        '<div class="game-store">Магазин: ' + game.store + '</div>' +
+                        '<div class="game-store">' + t('store') + ': ' + game.store + '</div>' +
                         '<div class="game-timer">' + getTime(game) + '</div>' +
                         '<a href="' + game.storeUrl + '" class="btn-get" target="_blank">🎁 ЗАБРАТЬ БЕСПЛАТНО</a>' +
                         '</div></div>';
                 }).join('');
             }
         }, 500);
-        
+
         document.getElementById('langDropdownBtn').onclick = function(e) {
             e.stopPropagation();
             document.getElementById('langDropdownContent').classList.toggle('open');
