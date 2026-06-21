@@ -111,7 +111,12 @@ function t(key) { return translations[currentLang][key] || key; }
 
 function switchLanguage(lang) {
     currentLang = lang;
-    document.querySelectorAll('[data-key]').forEach(function(el) { el.textContent = t(el.dataset.key); });
+    document.querySelectorAll('[data-key]').forEach(function(el) {
+        var translation = t(el.dataset.key);
+        if (translation && translation !== el.dataset.key) {
+            el.textContent = translation;
+        }
+    });
     var textEl = document.getElementById('currentLangText');
     if (textEl) textEl.textContent = lang.toUpperCase();
     document.querySelectorAll('.lang-option').forEach(function(opt) { opt.classList.toggle('active', opt.dataset.lang === lang); });
