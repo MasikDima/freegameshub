@@ -114,7 +114,7 @@ var games = [
             en: 'Tactical shooter from Riot Games.'
         }
     },
-    {
+        {
         id: 6, title: 'Fall Guys',
         image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png',
         usualPrice: '0€', store: 'Epic Games Store',
@@ -125,7 +125,7 @@ var games = [
             es: 'Battle royale con muñecos.',
             en: 'Battle royale with cute beans.'
         }
-       // Steam бесплатные игры
+    },
     {
         id: 7, title: 'Counter-Strike 2',
         image: 'https://wallpapercave.com/wp/wp12803829.jpg',
@@ -133,9 +133,9 @@ var games = [
         storeUrl: 'https://store.steampowered.com/app/730',
         status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯',
         desc: {
-            ru: 'Легендарный тактический шутер. Всегда бесплатно!',
-            es: 'Legendario shooter táctico. ¡Siempre gratis!',
-            en: 'Legendary tactical shooter. Always free!'
+            ru: 'Легендарный тактический шутер.',
+            es: 'Legendario shooter táctico.',
+            en: 'Legendary tactical shooter.'
         }
     },
     {
@@ -157,9 +157,9 @@ var games = [
         storeUrl: 'https://store.steampowered.com/app/570',
         status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🐉',
         desc: {
-            ru: 'Самая популярная MOBA в мире. Всегда бесплатно!',
-            es: 'El MOBA más popular del mundo. ¡Siempre gratis!',
-            en: 'The most popular MOBA in the world. Always free!'
+            ru: 'Самая популярная MOBA в мире.',
+            es: 'El MOBA más popular del mundo.',
+            en: 'The most popular MOBA in the world.'
         }
     },
     {
@@ -169,12 +169,10 @@ var games = [
         storeUrl: 'https://store.steampowered.com/app/1172470',
         status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🚀',
         desc: {
-            ru: 'Королевская битва с героями и уникальными способностями.',
-            es: 'Battle royale con héroes y habilidades únicas.',
-            en: 'Hero battle royale with unique abilities.'
+            ru: 'Королевская битва с героями.',
+            es: 'Battle royale con héroes.',
+            en: 'Hero battle royale.'
         }
-    }
-];
     }
 ];
 
