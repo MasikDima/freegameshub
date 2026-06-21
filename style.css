@@ -604,5 +604,5 @@ footer a:hover {
 .store-link.active {
     color: #fff !important;
     background: linear-gradient(135deg, #ff0080, #e94560) !important;
-    box-shadow: 0 0 15px rgba(255, 0, 128, 0.3) !important
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.3) !important;
 }
