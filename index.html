@@ -143,8 +143,8 @@
 
     <section class="hero-small">
         <div class="container">
-            <h1>🎮 Бесплатные игры</h1>
-            <p>Выбери платформу и забирай игры бесплатно!</p>
+            <h1 data-key="hero-title">🎮 Бесплатные игры</h1>
+            <p data-key="hero-subtitle">Выбери платформу и забирай игры бесплатно!</p>
         </div>
     </section>
 
@@ -154,29 +154,29 @@
                 <a href="epic.html" class="category-card epic">
                     <span class="category-icon">🎁</span>
                     <h2 class="category-title">Epic Games</h2>
-                    <p class="category-count">Бесплатные раздачи каждую неделю</p>
-                    <span class="category-btn btn-epic">Смотреть игры</span>
+                    <p class="category-count" data-key="epic-desc">Бесплатные раздачи каждую неделю</p>
+                    <span class="category-btn btn-epic" data-key="epic-btn">Смотреть игры</span>
                 </a>
 
                 <a href="steam.html" class="category-card steam">
                     <span class="category-icon">🔵</span>
                     <h2 class="category-title">Steam</h2>
-                    <p class="category-count">Лучшие free-to-play игры</p>
-                    <span class="category-btn btn-steam">Смотреть игры</span>
+                    <p class="category-count" data-key="steam-desc">Лучшие free-to-play игры</p>
+                    <span class="category-btn btn-steam" data-key="steam-btn">Смотреть игры</span>
                 </a>
 
                 <a href="ps.html" class="category-card ps">
                     <span class="category-icon">🎮</span>
                     <h2 class="category-title">PlayStation</h2>
-                    <p class="category-count">PS Plus — 3 игры в месяц</p>
-                    <span class="category-btn btn-ps">Смотреть игры</span>
+                    <p class="category-count" data-key="ps-desc">PS Plus — 3 игры в месяц</p>
+                    <span class="category-btn btn-ps" data-key="ps-btn">Смотреть игры</span>
                 </a>
 
                 <a href="xbox.html" class="category-card xbox">
                     <span class="category-icon">🟢</span>
                     <h2 class="category-title">Xbox</h2>
-                    <p class="category-count">Game Pass и Games with Gold</p>
-                    <span class="category-btn btn-xbox">Смотреть игры</span>
+                    <p class="category-count" data-key="xbox-desc">Game Pass и Games with Gold</p>
+                    <span class="category-btn btn-xbox" data-key="xbox-btn">Смотреть игры</span>
                 </a>
             </div>
         </div>
@@ -184,35 +184,18 @@
 
     <section class="subscribe">
         <div class="container">
-            <h2>Узнай первым!</h2>
-            <p>Подпишись на Telegram и получай уведомления о новых раздачах</p>
+            <h2 data-key="subscribe-title">Узнай первым!</h2>
+            <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления о новых раздачах</p>
             <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>© 2026 Free Games Hub. Все ссылки ведут на официальные магазины.</p>
+            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
         </div>
     </footer>
-<script>
-document.getElementById('langDropdownBtn').onclick = function(e) {
-    e.stopPropagation();
-    document.getElementById('langDropdownContent').classList.toggle('open');
-};
-document.addEventListener('click', function() {
-    document.getElementById('langDropdownContent').classList.remove('open');
-});
-document.querySelectorAll('.lang-option').forEach(function(opt) {
-    opt.onclick = function(e) {
-        e.preventDefault();
-        var lang = this.dataset.lang;
-        document.getElementById('currentLangText').textContent = lang.toUpperCase();
-        localStorage.setItem('lang', lang);
-        location.reload();
-        document.getElementById('langDropdownContent').classList.remove('open');
-    };
-});
-</script>
+
+    <script src="script.js?v=35"></script>
 </body>
 </html>
