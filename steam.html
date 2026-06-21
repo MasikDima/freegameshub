@@ -216,9 +216,10 @@
 ];
 
         var container = document.getElementById('steamGames');
-        container.innerHTML = steamGames.map(function(game) {
+      container.innerHTML = steamGames.map(function(game) {
     return '<div class="steam-game-card">' +
-        '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\'">' +
+        '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
+        '<div class="fallback" style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>' +
         '<span class="steam-badge-free">Free to Play</span>' +
         '<h3 class="steam-game-title">' + game.title + '</h3>' +
         '<p class="steam-game-date">📅 ' + game.date + '</p>' +
