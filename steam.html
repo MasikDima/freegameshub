@@ -129,21 +129,91 @@
 
     <script>
         var steamGames = [
-            { title: 'Counter-Strike 2', date: '21 Aug, 2012', url: 'https://store.steampowered.com/app/730' },
-            { title: 'PUBG: BATTLEGROUNDS', date: '21 Dec, 2017', url: 'https://store.steampowered.com/app/578080' },
-            { title: 'Warframe', date: '25 Mar, 2013', url: 'https://store.steampowered.com/app/230410' },
-            { title: 'Marvel Rivals', date: '6 Dec, 2024', url: 'https://store.steampowered.com/app/2767030' },
-            { title: 'Wuthering Waves', date: '28 Apr, 2025', url: 'https://store.steampowered.com/app/2717200' },
-            { title: 'Apex Legends', date: '5 Nov, 2020', url: 'https://store.steampowered.com/app/1172470' },
-            { title: 'The Sims 4', date: '18 Jun, 2020', url: 'https://store.steampowered.com/app/1222670' },
-            { title: 'Rainbow Six Siege', date: '1 Dec, 2015', url: 'https://store.steampowered.com/app/359550' },
-            { title: 'Dota 2', date: '9 Jul, 2013', url: 'https://store.steampowered.com/app/570' },
-            { title: 'War Thunder', date: '15 Aug, 2013', url: 'https://store.steampowered.com/app/236390' },
-            { title: 'NARAKA: BLADEPOINT', date: '12 Aug, 2021', url: 'https://store.steampowered.com/app/1203220' },
-            { title: 'Overwatch 2', date: '10 Aug, 2023', url: 'https://store.steampowered.com/app/2357570' },
-            { title: 'Destiny 2', date: '1 Oct, 2019', url: 'https://store.steampowered.com/app/1085660' },
-            { title: 'TBH: Task Bar Hero', date: '27 May, 2026', url: 'https://store.steampowered.com/app/3314120' }
-        ];
+    { 
+        title: 'Counter-Strike 2', 
+        date: '21 Aug, 2012', 
+        url: 'https://store.steampowered.com/app/730',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg'
+    },
+    { 
+        title: 'PUBG: BATTLEGROUNDS', 
+        date: '21 Dec, 2017', 
+        url: 'https://store.steampowered.com/app/578080',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578080/header.jpg'
+    },
+    { 
+        title: 'Warframe', 
+        date: '25 Mar, 2013', 
+        url: 'https://store.steampowered.com/app/230410',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/230410/header.jpg'
+    },
+    { 
+        title: 'Marvel Rivals', 
+        date: '6 Dec, 2024', 
+        url: 'https://store.steampowered.com/app/2767030',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2767030/header.jpg'
+    },
+    { 
+        title: 'Wuthering Waves', 
+        date: '28 Apr, 2025', 
+        url: 'https://store.steampowered.com/app/3513350',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3513350/header.jpg'
+    },
+    { 
+        title: 'Apex Legends', 
+        date: '5 Nov, 2020', 
+        url: 'https://store.steampowered.com/app/1172470',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172470/header.jpg'
+    },
+    { 
+        title: 'The Sims 4', 
+        date: '18 Jun, 2020', 
+        url: 'https://store.steampowered.com/app/1222670',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222670/header.jpg'
+    },
+    { 
+        title: 'Rainbow Six Siege', 
+        date: '1 Dec, 2015', 
+        url: 'https://store.steampowered.com/app/359550',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg'
+    },
+    { 
+        title: 'Dota 2', 
+        date: '9 Jul, 2013', 
+        url: 'https://store.steampowered.com/app/570',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg'
+    },
+    { 
+        title: 'War Thunder', 
+        date: '15 Aug, 2013', 
+        url: 'https://store.steampowered.com/app/236390',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/236390/header.jpg'
+    },
+    { 
+        title: 'NARAKA: BLADEPOINT', 
+        date: '12 Aug, 2021', 
+        url: 'https://store.steampowered.com/app/1203220',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1203220/header.jpg'
+    },
+    { 
+        title: 'Overwatch 2', 
+        date: '10 Aug, 2023', 
+        url: 'https://store.steampowered.com/app/2357570',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/header.jpg'
+    },
+    { 
+        title: 'Destiny 2', 
+        date: '1 Oct, 2019', 
+        url: 'https://store.steampowered.com/app/1085660',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/header.jpg'
+    },
+    { 
+        title: 'TBH: Task Bar Hero', 
+        date: '27 May, 2026', 
+        url: 'https://store.steampowered.com/app/3678970',
+        image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3678970/header.jpg'
+    }
+];
 
         var container = document.getElementById('steamGames');
         container.innerHTML = steamGames.map(function(game) {
