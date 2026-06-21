@@ -260,7 +260,6 @@ function renderGames(filter) {
     var container = document.getElementById('gamesContainer');
     if (!container) return;
     
-    // Переносим завершённые игры в архив
     var now = new Date();
     var finished = [];
     var stillActive = [];
@@ -298,10 +297,6 @@ function renderGames(filter) {
         games = stillActive;
     }
     
-        // Сохраняем в историю ТОЛЬКО завершённые игры
-    // (текущие игры не сохраняем — они попадут в историю только когда закончатся)
-    
-    // Фильтруем для отображения
     var list = games;
     if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
     if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
