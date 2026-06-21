@@ -4,7 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam - Free Games Hub</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
+    <style>
+        .steam-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .steam-game-card {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid rgba(0, 136, 204, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .steam-game-card:hover {
+            border-color: rgba(0, 136, 204, 0.6);
+            box-shadow: 0 0 25px rgba(0, 136, 204, 0.2);
+            transform: translateY(-3px);
+        }
+        .steam-game-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .steam-game-date {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .steam-badge-free {
+            display: inline-block;
+            background: linear-gradient(135deg, #00c8ff, #0078ff);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+        }
+        .steam-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #0088cc, #00aaff);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 12px;
+            transition: all 0.3s;
+        }
+        .steam-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 136, 204, 0.5);
+        }
+    </style>
 </head>
 <body>
 
@@ -17,10 +76,10 @@
             <div style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
                 <div class="lang-dropdown">
-                   <button class="lang-dropdown-btn" id="langDropdownBtn">
-    <span id="currentLangText">RU</span>
-    <span class="arrow">▼</span>
-</button>
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
                     <div class="lang-dropdown-content" id="langDropdownContent">
                         <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
                         <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
@@ -41,16 +100,16 @@
         </div>
     </nav>
 
-    <section class="hero" style="padding:50px 0;">
+    <section class="hero" style="padding:50px 0 30px;">
         <div class="container">
             <h1>🔵 Steam</h1>
-            <p>Бесплатные игры и акции выходного дня</p>
+            <p>Лучшие бесплатные игры навсегда</p>
         </div>
     </section>
 
     <section class="games">
-        <div class="container" id="gamesContainer">
-            <p style="text-align:center;color:#aaa;padding:40px;">Пока нет активных раздач Steam. Загляни в другие разделы!</p>
+        <div class="container">
+            <div class="steam-games-grid" id="steamGames"></div>
         </div>
     </section>
 
@@ -68,5 +127,33 @@
         </div>
     </footer>
 
+    <script>
+        var steamGames = [
+            { title: 'Counter-Strike 2', date: '21 Aug, 2012', url: 'https://store.steampowered.com/app/730' },
+            { title: 'PUBG: BATTLEGROUNDS', date: '21 Dec, 2017', url: 'https://store.steampowered.com/app/578080' },
+            { title: 'Warframe', date: '25 Mar, 2013', url: 'https://store.steampowered.com/app/230410' },
+            { title: 'Marvel Rivals', date: '6 Dec, 2024', url: 'https://store.steampowered.com/app/2767030' },
+            { title: 'Wuthering Waves', date: '28 Apr, 2025', url: 'https://store.steampowered.com/app/2717200' },
+            { title: 'Apex Legends', date: '5 Nov, 2020', url: 'https://store.steampowered.com/app/1172470' },
+            { title: 'The Sims 4', date: '18 Jun, 2020', url: 'https://store.steampowered.com/app/1222670' },
+            { title: 'Rainbow Six Siege', date: '1 Dec, 2015', url: 'https://store.steampowered.com/app/359550' },
+            { title: 'Dota 2', date: '9 Jul, 2013', url: 'https://store.steampowered.com/app/570' },
+            { title: 'War Thunder', date: '15 Aug, 2013', url: 'https://store.steampowered.com/app/236390' },
+            { title: 'NARAKA: BLADEPOINT', date: '12 Aug, 2021', url: 'https://store.steampowered.com/app/1203220' },
+            { title: 'Overwatch 2', date: '10 Aug, 2023', url: 'https://store.steampowered.com/app/2357570' },
+            { title: 'Destiny 2', date: '1 Oct, 2019', url: 'https://store.steampowered.com/app/1085660' },
+            { title: 'TBH: Task Bar Hero', date: '27 May, 2026', url: 'https://store.steampowered.com/app/3314120' }
+        ];
+
+        var container = document.getElementById('steamGames');
+        container.innerHTML = steamGames.map(function(game) {
+            return '<div class="steam-game-card">' +
+                '<span class="steam-badge-free">Free to Play</span>' +
+                '<h3 class="steam-game-title">' + game.title + '</h3>' +
+                '<p class="steam-game-date">📅 ' + game.date + '</p>' +
+                '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
+                '</div>';
+        }).join('');
+    </script>
 </body>
 </html>
