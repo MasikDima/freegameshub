@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xbox - Free Games Hub</title>
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <span class="logo-text">Free Games Hub</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangFlag">🇷🇺</span>
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="store-nav">
+        <div class="container">
+            <a href="index.html" class="store-link">🎮 Все</a>
+            <a href="epic.html" class="store-link">🎁 Epic Games</a>
+            <a href="steam.html" class="store-link">🔵 Steam</a>
+            <a href="ps.html" class="store-link">🎮 PlayStation</a>
+            <a href="xbox.html" class="store-link active">🟢 Xbox</a>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding:50px 0;">
+        <div class="container">
+            <h1>🟢 Xbox</h1>
+            <p>Xbox Game Pass и Games with Gold</p>
+        </div>
+    </section>
+
+    <section class="games">
+        <div class="container" id="gamesContainer">
+            <p style="text-align:center;color:#aaa;padding:40px;">Для получения игр нужна подписка Xbox Game Pass. Загляни позже!</p>
+        </div>
+    </section>
+
+    <section class="subscribe">
+        <div class="container">
+            <h2>Узнай первым!</h2>
+            <p>Подпишись на уведомления в Telegram</p>
+            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
+        </div>
+    </footer>
+
+</body>
+</html>
