@@ -8,108 +8,74 @@
 </head>
 <body>
 
-    <!-- ШАПКА -->
     <header>
         <div class="container">
             <div class="logo">
                 <span class="logo-icon">🎮</span>
                 <span class="logo-text">Free Games Hub</span>
             </div>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangFlag">🇷🇺</span>
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangFlag">🇷🇺</span>
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
-    <div class="container">
-        <div class="logo">
-            <span class="logo-icon">🎮</span>
-            <span class="logo-text">Free Games Hub</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:15px;">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:16px;">📦 История</a>
-            <div class="lang-dropdown">
-                ...
-            </div>
-        </div>
-    </div>
-</header>
 
-    <!-- ГЕРОЙ-БЛОК -->
     <section class="hero">
         <div class="container">
             <h1 data-key="hero-title">Бесплатные игры каждую неделю</h1>
             <p data-key="hero-subtitle">Забери лучшие игры бесплатно, пока не поздно!</p>
             <div class="hero-stats">
                 <div class="stat">
-                    <span class="stat-number" id="freeGamesCount">12</span>
+                    <span class="stat-number" id="freeGamesCount">4</span>
                     <span class="stat-label" data-key="free-now">Бесплатно сейчас</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number" id="upcomingCount">5</span>
+                    <span class="stat-number" id="upcomingCount">2</span>
                     <span class="stat-label" data-key="upcoming">Скоро будет</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ФИЛЬТРЫ -->
     <section class="filters">
         <div class="container">
             <button class="filter-btn active" data-filter="all" data-key="filter-all">Все</button>
             <button class="filter-btn" data-filter="expiring" data-key="filter-expiring">🔴 Истекает</button>
             <button class="filter-btn" data-filter="new" data-key="filter-new">🟡 Новые</button>
-            <button class="filter-btn" data-filter="active" data-key="filter-active">🟢 Действуют</button>
+            <button class="filter-btn" data-filter="active" data-key="filter-active">🟢 Бесплатно</button>
         </div>
     </section>
 
-    <!-- КАРТОЧКИ ИГР -->
     <section class="games">
-        <div class="container" id="gamesContainer">
-            <!-- Игры добавляются через JavaScript -->
-        </div>
+        <div class="container" id="gamesContainer"></div>
     </section>
 
-    <!-- ПОДПИСКА -->
     <section class="subscribe">
         <div class="container">
             <h2 data-key="subscribe-title">Не пропусти халяву!</h2>
             <p data-key="subscribe-text">Подпишись на уведомления в Telegram</p>
-            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">
-                📱 Подписаться на Telegram
-            </a>
+            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
         </div>
     </section>
 
-    <!-- ПОДВАЛ -->
-    <header>
-    <div class="container">
-        <div class="logo">
-            <span class="logo-icon">🎮</span>
-            <span class="logo-text">Free Games Hub</span>
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
         </div>
-        <div style="display:flex;align-items:center;gap:15px;">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:16px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangFlag">🇷🇺</span>
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+    </footer>
+
+    <script src="script.js?v=11"></script>
+</body>
+</html>
