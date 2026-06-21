@@ -21,6 +21,7 @@
             height: 80px;
             object-fit: cover;
             border-radius: 8px;
+            background: #1a1a3e;
         }
         .badge-ended {
             background: #666;
@@ -30,6 +31,11 @@
             font-size: 12px;
             display: inline-block;
             margin-bottom: 8px;
+        }
+        .empty-history {
+            text-align: center;
+            color: #aaa;
+            padding: 60px 20px;
         }
         @media (max-width: 600px) {
             .history-card { flex-direction: column; }
@@ -43,22 +49,22 @@
         <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
             <div class="logo">
                 <span class="logo-icon">📦</span>
-                <span class="logo-text">История раздач</span>
+                <span class="logo-text" data-key="history-title">История раздач</span>
             </div>
-            <a href="index.html" style="color:#e94560;text-decoration:none;font-weight:bold;">← На главную</a>
+            <a href="index.html" style="color:#e94560;text-decoration:none;font-weight:bold;" data-key="back-home">← На главную</a>
         </div>
     </header>
 
     <section class="hero" style="padding:40px 0;">
         <div class="container">
-            <h1>📦 История всех раздач</h1>
-            <p>Игры, которые были бесплатны на нашем сайте</p>
+            <h1 data-key="history-heading">📦 История всех раздач</h1>
+            <p data-key="history-desc">Игры, которые уже закончились</p>
         </div>
     </section>
 
     <section style="padding:20px 0 60px 0;">
         <div class="container" id="historyContainer">
-            <p style="text-align:center;color:#aaa;">Загрузка...</p>
+            <p class="empty-history" data-key="loading">Загрузка...</p>
         </div>
     </section>
 
@@ -69,22 +75,77 @@
     </footer>
 
     <script>
+        // Переводы для страницы истории
+        var historyTranslations = {
+            ru: {
+                'history-title': 'История раздач',
+                'back-home': '← На главную',
+                'history-heading': '📦 История всех раздач',
+                'history-desc': 'Игры, которые уже закончились',
+                'loading': 'Загрузка...',
+                'empty': 'Пока здесь нет игр. Когда раздачи закончатся — они появятся здесь.',
+                'ended': '📦 Раздача завершена',
+                'store': 'Магазин'
+            },
+            es: {
+                'history-title': 'Historial',
+                'back-home': '← Inicio',
+                'history-heading': '📦 Historial de juegos',
+                'history-desc': 'Juegos que ya terminaron',
+                'loading': 'Cargando...',
+                'empty': 'Aún no hay juegos. Cuando terminen las ofertas, aparecerán aquí.',
+                'ended': '📦 Oferta terminada',
+                'store': 'Tienda'
+            },
+            en: {
+                'history-title': 'History',
+                'back-home': '← Home',
+                'history-heading': '📦 All Giveaways History',
+                'history-desc': 'Games that have ended',
+                'loading': 'Loading...',
+                'empty': 'No games yet. When giveaways end, they will appear here.',
+                'ended': '📦 Giveaway Ended',
+                'store': 'Store'
+            }
+        };
+
+        var lang = localStorage.getItem('lang') || 'ru';
+        var t2 = historyTranslations[lang];
+
+        // Обновляем текст на странице
+        document.querySelectorAll('[data-key]').forEach(function(el) {
+            el.textContent = t2[el.dataset.key] || '';
+        });
+
+        // Загружаем историю
         var historyGames = [];
         var saved = localStorage.getItem('allHistory');
         if (saved) historyGames = JSON.parse(saved);
+
+        // Фильтруем: убираем те, что ещё раздаются (Valorant, Fall Guys)
+        var alwaysFreeIds = [5, 6]; // id Valorant и Fall Guys
+        var currentActiveIds = [];
         
+        // Проверяем текущие активные игры на главной
+        var now = new Date();
+        historyGames = historyGames.filter(function(game) {
+            // Убираем "вечные" игры
+            if (alwaysFreeIds.indexOf(game.id) !== -1) return false;
+            return true;
+        });
+
         var container = document.getElementById('historyContainer');
         
         if (historyGames.length === 0) {
-            container.innerHTML = '<p style="text-align:center;color:#aaa;padding:40px;">Пока здесь нет игр. Когда раздачи закончатся — они появятся здесь автоматически.</p>';
+            container.innerHTML = '<p class="empty-history">' + t2['empty'] + '</p>';
         } else {
             container.innerHTML = historyGames.reverse().map(function(game) {
                 return '<div class="history-card">' +
                     '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                     '<div class="history-info">' +
-                    '<span class="badge-ended">📦 Раздача завершена</span>' +
+                    '<span class="badge-ended">' + t2['ended'] + '</span>' +
                     '<h3 class="game-title">' + game.title + '</h3>' +
-                    '<p style="color:#aaa;">🏪 ' + game.store + '</p>' +
+                    '<p style="color:#aaa;">' + t2['store'] + ': ' + game.store + '</p>' +
                     '</div></div>';
             }).join('');
         }
