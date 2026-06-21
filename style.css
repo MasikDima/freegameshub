@@ -392,3 +392,18 @@ footer {
         gap: 10px;
     }
 }
+.back-btn {
+    background: #1a1a3e;
+    color: #e94560;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #e94560;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: #e94560;
+    color: white;
+}
