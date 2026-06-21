@@ -139,13 +139,12 @@
             });
         }
 
-        function updateLangDisplay(l) {
-            document.getElementById('currentLangFlag').textContent = {ru:'🇷🇺',es:'🇪🇸',en:'🇬🇧'}[l];
-            document.getElementById('currentLangText').textContent = l.toUpperCase();
-            document.querySelectorAll('.lang-option').forEach(function(opt) {
-                opt.classList.toggle('active', opt.dataset.lang === l);
-            });
-        }
+       function updateLangDisplay(l) {
+    document.getElementById('currentLangText').textContent = l.toUpperCase();
+    document.querySelectorAll('.lang-option').forEach(function(opt) {
+        opt.classList.toggle('active', opt.dataset.lang === l);
+    });
+}
 
         function renderHistory(l) {
             var container = document.getElementById('historyContainer');
