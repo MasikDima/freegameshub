@@ -6,8 +6,12 @@
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #0a0a1a;
+    font-family: 'Segoe UI', 'Rajdhani', Arial, sans-serif;
+    background: #050510;
+    background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(233, 69, 96, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 20%, rgba(245, 197, 24, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(0, 180, 255, 0.05) 0%, transparent 50%);
     color: #ffffff;
     line-height: 1.6;
     min-height: 100vh;
@@ -23,14 +27,37 @@ html {
     padding: 0 20px;
 }
 
+/* ========== АНИМИРОВАННЫЕ ЧАСТИЦЫ ФОНА ========== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.008) 2px, rgba(255,255,255,0.008) 4px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
 /* ========== ШАПКА ========== */
 header {
-    background: #0f0f2a;
+    background: rgba(5, 5, 16, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     padding: 15px 0;
-    border-bottom: 1px solid #1a1a3e;
+    border-bottom: 1px solid rgba(233, 69, 96, 0.3);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 4px 30px rgba(233, 69, 96, 0.15);
 }
 
 header .container {
@@ -47,14 +74,32 @@ header .container {
 
 .logo-icon {
     font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.6));
+    animation: glowPulse 2s ease-in-out infinite;
 }
 
 .logo-text {
-    font-size: 22px;
-    font-weight: bold;
-    background: linear-gradient(135deg, #e94560, #f5c518);
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ff0080, #ff8c00, #ffff00);
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+    text-shadow: none;
+}
+
+@keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.6)); }
+    50% { filter: drop-shadow(0 0 25px rgba(245, 197, 24, 1)); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* ========== ВЫПАДАЮЩИЙ СПИСОК ЯЗЫКОВ ========== */
@@ -64,9 +109,9 @@ header .container {
 }
 
 .lang-dropdown-btn {
-    background: #1a1a3e;
+    background: rgba(10, 10, 30, 0.8);
     color: white;
-    border: 1px solid #2a2a5e;
+    border: 1px solid rgba(233, 69, 96, 0.4);
     padding: 10px 16px;
     border-radius: 8px;
     cursor: pointer;
@@ -77,11 +122,12 @@ header .container {
     min-width: 110px;
     justify-content: center;
     transition: all 0.3s;
+    backdrop-filter: blur(10px);
 }
 
 .lang-dropdown-btn:hover {
-    border-color: #e94560;
-    background: #0f0f2a;
+    border-color: #ff0080;
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
 }
 
 .lang-dropdown-btn .arrow {
@@ -96,13 +142,14 @@ header .container {
     top: 100%;
     right: 0;
     margin-top: 5px;
-    background: #1a1a3e;
-    border: 1px solid #2a2a5e;
+    background: rgba(10, 10, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(233, 69, 96, 0.4);
     border-radius: 8px;
     min-width: 160px;
     z-index: 200;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(233, 69, 96, 0.2);
 }
 
 .lang-dropdown-content.open {
@@ -119,40 +166,61 @@ header .container {
 }
 
 .lang-option:hover {
-    background: #e94560;
+    background: linear-gradient(90deg, #ff0080, #e94560);
     color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .lang-option.active {
-    background: #0f3460;
+    background: rgba(233, 69, 96, 0.3);
     color: white;
+    border-left: 3px solid #ff0080;
 }
 
 /* ========== ГЕРОЙ ========== */
 .hero {
-    background: linear-gradient(135deg, #0f0f2a 0%, #1a1a3e 100%);
-    padding: 60px 0;
+    background: transparent;
+    padding: 80px 0 60px;
     text-align: center;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ff0080, #f5c518, transparent);
 }
 
 .hero h1 {
-    font-size: 42px;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #e94560, #f5c518);
+    font-size: 52px;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #ff0080, #ff6b00, #f5c518);
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: gradientShift 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255, 0, 128, 0.5));
 }
 
 .hero p {
-    font-size: 18px;
-    color: #aaa;
-    margin-bottom: 30px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
 }
 
 .hero-stats {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 60px;
 }
 
 .stat {
@@ -161,218 +229,301 @@ header .container {
 
 .stat-number {
     display: block;
-    font-size: 48px;
-    font-weight: bold;
-    color: #f5c518;
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(180deg, #f5c518, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(245, 197, 24, 0.6));
+    line-height: 1;
 }
 
 .stat-label {
     font-size: 14px;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* ========== ФИЛЬТРЫ ========== */
 .filters {
     padding: 20px 0;
     text-align: center;
-    background: #0a0a1a;
+    background: rgba(5, 5, 16, 0.8);
+    backdrop-filter: blur(10px);
     position: sticky;
-    top: 70px;
+    top: 72px;
     z-index: 99;
+    border-bottom: 1px solid rgba(233, 69, 96, 0.2);
 }
 
 .filter-btn {
-    background: #1a1a3e;
+    background: rgba(10, 10, 30, 0.6);
     color: #aaa;
-    border: 1px solid #2a2a5e;
-    padding: 10px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
     margin: 0 5px;
-    border-radius: 25px;
+    border-radius: 30px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     transition: all 0.3s;
+    backdrop-filter: blur(5px);
 }
 
 .filter-btn.active {
-    background: #e94560;
+    background: linear-gradient(135deg, #ff0080, #e94560);
     color: white;
-    border-color: #e94560;
+    border-color: transparent;
+    box-shadow: 0 0 25px rgba(255, 0, 128, 0.4);
 }
 
 .filter-btn:hover {
-    border-color: #e94560;
+    border-color: #ff0080;
     color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.2);
 }
 
 /* ========== КАРТОЧКИ ИГР ========== */
 .games {
-    padding: 40px 0;
+    padding: 50px 0;
 }
 
 #gamesContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 25px;
     transition: opacity 0.15s ease;
 }
 
 .game-card {
-    background: #0f0f2a;
-    border-radius: 12px;
+    background: rgba(10, 10, 30, 0.7);
+    border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #1a1a3e;
-    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 128, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .game-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+    transform: translateY(-8px);
+    border-color: rgba(255, 0, 128, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 0, 128, 0.15);
+}
+
+.game-card:hover::before {
+    opacity: 1;
 }
 
 .game-card.expiring {
-    border: 2px solid #e94560;
+    border: 2px solid rgba(255, 0, 128, 0.6);
+    box-shadow: 0 0 25px rgba(255, 0, 128, 0.2);
 }
 
 .game-card.new {
-    border: 2px solid #f5c518;
+    border: 2px solid rgba(245, 197, 24, 0.6);
+    box-shadow: 0 0 25px rgba(245, 197, 24, 0.2);
 }
 
 .game-card.active-game {
-    border: 2px solid #0f3460;
+    border: 1px solid rgba(0, 200, 255, 0.3);
 }
 
 .game-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    background: #1a1a3e;
+    background: linear-gradient(135deg, #0a0a1e, #1a1a3e);
 }
 
 .game-info {
-    padding: 20px;
+    padding: 25px;
 }
 
 .game-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
 }
 
 .badge-expiring {
-    background: #e94560;
+    background: linear-gradient(135deg, #ff0080, #e94560);
     color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.4);
 }
 
 .badge-new {
-    background: #f5c518;
-    color: #0a0a1a;
+    background: linear-gradient(135deg, #f5c518, #ff8c00);
+    color: #050510;
+    box-shadow: 0 0 15px rgba(245, 197, 24, 0.4);
 }
 
 .badge-active {
-    background: #0f3460;
+    background: linear-gradient(135deg, #00c8ff, #0078ff);
     color: white;
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
 }
 
 .game-title {
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 700;
     margin-bottom: 10px;
+    line-height: 1.3;
 }
 
 .game-price {
     color: #aaa;
     font-size: 14px;
-    margin-bottom: 5px;
+    margin: 12px 0;
 }
 
 .game-price .original {
     text-decoration: line-through;
-    color: #666;
+    color: #555;
+    font-size: 13px;
 }
 
 .game-price .free {
-    color: #4ecca3;
-    font-weight: bold;
-    font-size: 18px;
+    color: #00ff88;
+    font-weight: 700;
+    font-size: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
 }
 
 .game-store {
-    color: #aaa;
-    font-size: 12px;
+    color: #666;
+    font-size: 11px;
     margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .game-timer {
-    color: #e94560;
-    font-weight: bold;
-    margin-bottom: 15px;
+    color: #ff0080;
+    font-weight: 700;
+    margin-bottom: 18px;
+    font-size: 15px;
+    text-shadow: 0 0 10px rgba(255, 0, 128, 0.3);
 }
 
 .btn-get {
     display: block;
     text-align: center;
-    background: #e94560;
+    background: linear-gradient(135deg, #ff0080, #e94560);
     color: white;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 10px;
     text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border: none;
 }
 
 .btn-get:hover {
-    background: #c73652;
+    background: linear-gradient(135deg, #ff1070, #ff5570);
+    box-shadow: 0 0 30px rgba(255, 0, 128, 0.5);
+    transform: scale(1.02);
 }
 
 /* ========== ПОДПИСКА ========== */
 .subscribe {
-    background: linear-gradient(135deg, #0f0f2a, #1a1a3e);
-    padding: 60px 0;
+    background: rgba(10, 10, 30, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 70px 0;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 60px;
+    border-top: 1px solid rgba(255, 0, 128, 0.2);
+    border-bottom: 1px solid rgba(255, 0, 128, 0.2);
 }
 
 .subscribe h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ff0080, #f5c518);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subscribe p {
-    color: #aaa;
-    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 25px;
+    font-size: 16px;
 }
 
 .btn-telegram {
     display: inline-block;
-    background: #0088cc;
+    background: linear-gradient(135deg, #0088cc, #00aaff);
     color: white;
-    padding: 15px 30px;
-    border-radius: 8px;
+    padding: 16px 36px;
+    border-radius: 12px;
     text-decoration: none;
     font-size: 18px;
-    font-weight: bold;
-    transition: background 0.3s;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(0, 136, 204, 0.3);
 }
 
 .btn-telegram:hover {
-    background: #006699;
+    box-shadow: 0 0 50px rgba(0, 136, 204, 0.6);
+    transform: translateY(-3px);
 }
 
 /* ========== ПОДВАЛ ========== */
 footer {
-    background: #0a0a1a;
-    padding: 20px 0;
+    background: rgba(5, 5, 16, 0.8);
+    padding: 30px 0;
     text-align: center;
-    color: #666;
+    color: #444;
     font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+footer a {
+    color: #ff0080;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #f5c518;
 }
 
 /* ========== АДАПТИВНОСТЬ ========== */
 @media (max-width: 768px) {
     .hero h1 {
-        font-size: 28px;
+        font-size: 30px;
+        letter-spacing: 1px;
+    }
+    
+    .hero p {
+        font-size: 16px;
     }
     
     #gamesContainer {
@@ -380,30 +531,43 @@ footer {
     }
     
     .hero-stats {
-        gap: 20px;
+        gap: 30px;
     }
     
     .stat-number {
-        font-size: 36px;
+        font-size: 42px;
     }
     
     header .container {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+    }
+    
+    .logo-text {
+        font-size: 18px;
+    }
+    
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        margin: 3px;
     }
 }
-.back-btn {
-    background: #1a1a3e;
-    color: #e94560;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #e94560;
-    transition: all 0.3s;
+
+/* ========== СКРОЛЛБАР ========== */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.back-btn:hover {
-    background: #e94560;
-    color: white;
+::-webkit-scrollbar-track {
+    background: #050510;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff0080, #e94560);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff1070, #ff5570);
 }
