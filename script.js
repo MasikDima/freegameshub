@@ -338,6 +338,24 @@ document.querySelectorAll('.filter-btn').forEach(function(btn) {
     });
 });
 
+// ========== АВТО-ОПРЕДЕЛЕНИЕ ЯЗЫКА ==========
+function detectLanguage() {
+    // Если пользователь уже выбрал язык — не меняем
+    var saved = localStorage.getItem('lang');
+    if (saved) return saved;
+    
+    // Определяем по языку браузера
+    var browserLang = navigator.language || navigator.userLanguage;
+    
+    if (browserLang.indexOf('ru') === 0) return 'ru';
+    if (browserLang.indexOf('es') === 0) return 'es';
+    if (browserLang.indexOf('en') === 0) return 'en';
+    
+    // Если не определили — английский
+    return 'en';
+}
+
 // ========== ЗАПУСК ==========
-switchLanguage(localStorage.getItem('lang') || 'ru');
+var detectedLang = detectLanguage();
+switchLanguage(detectedLang);
 renderGames();
