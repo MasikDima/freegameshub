@@ -217,13 +217,14 @@
 
         var container = document.getElementById('steamGames');
         container.innerHTML = steamGames.map(function(game) {
-            return '<div class="steam-game-card">' +
-                '<span class="steam-badge-free">Free to Play</span>' +
-                '<h3 class="steam-game-title">' + game.title + '</h3>' +
-                '<p class="steam-game-date">📅 ' + game.date + '</p>' +
-                '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
-                '</div>';
-        }).join('');
+    return '<div class="steam-game-card">' +
+        '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\'">' +
+        '<span class="steam-badge-free">Free to Play</span>' +
+        '<h3 class="steam-game-title">' + game.title + '</h3>' +
+        '<p class="steam-game-date">📅 ' + game.date + '</p>' +
+        '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
+        '</div>';
+}).join('');
     </script>
 </body>
 </html>
