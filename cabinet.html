@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Free Games Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=45">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        .cabinet-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .user-card {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #f5c518;
+            margin-bottom: 15px;
+        }
+        .user-name {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+        .user-username {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .keys-section {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .keys-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .key-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #4ecca3;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .key-game {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4ecca3;
+            margin-bottom: 10px;
+        }
+        .key-code {
+            background: #0a0a0a;
+            color: #f5c518;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            letter-spacing: 1px;
+            word-break: break-all;
+        }
+        .no-keys {
+            text-align: center;
+            color: #aaa;
+            padding: 40px 20px;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .not-telegram {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .not-telegram h2 {
+            margin-bottom: 15px;
+        }
+        .not-telegram p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .btn-telegram-open {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 30px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="store-nav">
+        <div class="container">
+            <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
+            <a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
+            <a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
+            <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
+            <a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
+            <a href="giveaway.html" class="store-link"><i class="fas fa-trophy"></i> Розыгрыш</a>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding:50px 0 30px;">
+        <div class="container">
+            <h1><i class="fas fa-user"></i> Личный кабинет</h1>
+            <p>Твои выигранные ключи</p>
+        </div>
+    </section>
+
+    <div class="cabinet-container">
+        <!-- Если открыто НЕ из Telegram -->
+        <div class="not-telegram" id="notTelegram" style="display:none;">
+            <div class="user-card">
+                <span style="font-size:60px;">🔐</span>
+                <h2>Открой через Telegram</h2>
+                <p>Для входа в личный кабинет открой сайт через нашего бота</p>
+                <a href="https://t.me/freegameshub_key_bot" target="_blank" class="btn-telegram-open">
+                    <i class="fab fa-telegram"></i> Открыть в Telegram
+                </a>
+            </div>
+        </div>
+
+        <!-- Если открыто из Telegram -->
+        <div id="telegramContent" style="display:none;">
+            <div class="user-card">
+                <img id="userAvatar" class="user-avatar" src="" alt="Avatar">
+                <h2 class="user-name" id="userName">...</h2>
+                <p class="user-username" id="userUsername">@...</p>
+                <span style="color:#4ecca3;">✅ Авторизован через Telegram</span>
+            </div>
+
+            <div class="keys-section">
+                <h3 class="keys-title">🎁 Мои ключи</h3>
+                <div id="keysList">
+                    <div class="no-keys">
+                        <span style="font-size:40px;">📭</span>
+                        <p>У тебя пока нет выигранных ключей.</p>
+                        <p style="font-size:14px;">Участвуй в розыгрышах!</p>
+                        <a href="giveaway.html" class="btn-back">🎮 Участвовать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Проверяем, открыт ли сайт через Telegram
+        if (window.Telegram && window.Telegram.WebApp) {
+            var tg = window.Telegram.WebApp;
+            tg.ready();
+            
+            var user = tg.initDataUnsafe.user;
+            
+            if (user) {
+                document.getElementById('telegramContent').style.display = 'block';
+                document.getElementById('userName').textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+                document.getElementById('userUsername').textContent = user.username ? '@' + user.username : 'Нет username';
+                
+                if (user.photo_url) {
+                    document.getElementById('userAvatar').src = user.photo_url;
+                } else {
+                    document.getElementById('userAvatar').src = 'https://via.placeholder.com/80/f5c518/000?text=' + user.first_name[0];
+                }
+                
+                // Загружаем ключи из Firebase
+                loadKeys(user.id);
+            } else {
+                document.getElementById('notTelegram').style.display = 'block';
+            }
+        } else {
+            document.getElementById('notTelegram').style.display = 'block';
+        }
+
+        function loadKeys(userId) {
+            // Показываем заглушку (позже подключим Firebase)
+            document.getElementById('keysList').innerHTML = 
+                '<div class="no-keys">' +
+                '<span style="font-size:40px;">📭</span>' +
+                '<p>У тебя пока нет выигранных ключей.</p>' +
+                '<p style="font-size:14px;">Участвуй в розыгрышах!</p>' +
+                '<a href="giveaway.html" class="btn-back">🎮 Участвовать</a>' +
+                '</div>';
+        }
+
+        // Выпадающий список
+        document.getElementById('langDropdownBtn').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdownContent').classList.toggle('open');
+        };
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdownContent').classList.remove('open');
+        });
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var lang = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = lang.toUpperCase();
+                localStorage.setItem('lang', lang);
+                location.reload();
+            };
+        });
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+    </script>
+</body>
+</html>
