@@ -24,6 +24,8 @@
             text-decoration: none;
             color: white;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         .category-card:hover {
             transform: translateY(-10px);
@@ -52,6 +54,9 @@
         }
         .category-card-inner {
             padding: 25px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         .category-title {
             font-size: 24px;
@@ -63,6 +68,7 @@
             color: #aaa;
             font-size: 14px;
             margin-bottom: 18px;
+            flex: 1;
         }
         .category-btn {
             display: inline-block;
@@ -73,6 +79,7 @@
             text-transform: uppercase;
             font-size: 13px;
             transition: all 0.3s;
+            margin-top: auto;
         }
         .btn-epic { background: linear-gradient(135deg, #ff0080, #e94560); color: white; }
         .btn-steam { background: linear-gradient(135deg, #0088cc, #00aaff); color: white; }
@@ -153,7 +160,7 @@
                     <img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg" alt="Steam">
                     <div class="category-card-inner">
                         <h2 class="category-title">Steam</h2>
-                        <p class="category-count" data-key="steam-desc">Лучшие free-to-play игры</p>
+                        <p class="category-count" data-key="steam-desc">Лучшие free-to-play игры<br>&nbsp;</p>
                         <span class="category-btn btn-steam" data-key="steam-btn">Смотреть игры</span>
                     </div>
                 </a>
@@ -162,7 +169,7 @@
                     <img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg" alt="PlayStation">
                     <div class="category-card-inner">
                         <h2 class="category-title">PlayStation</h2>
-                        <p class="category-count" data-key="ps-desc">PS Plus — 3 игры в месяц</p>
+                        <p class="category-count" data-key="ps-desc">PS Plus — 3 игры в месяц<br>&nbsp;</p>
                         <span class="category-btn btn-ps" data-key="ps-btn">Смотреть игры</span>
                     </div>
                 </a>
@@ -171,7 +178,7 @@
                     <img src="https://logodix.com/logo/20376.jpg" alt="Xbox">
                     <div class="category-card-inner">
                         <h2 class="category-title">Xbox</h2>
-                        <p class="category-count" data-key="xbox-desc">Game Pass и Games with Gold</p>
+                        <p class="category-count" data-key="xbox-desc">Game Pass и Games with Gold<br>&nbsp;</p>
                         <span class="category-btn btn-xbox" data-key="xbox-btn">Смотреть игры</span>
                     </div>
                 </a>
