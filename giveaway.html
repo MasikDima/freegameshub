@@ -197,12 +197,12 @@
     var gameRunning = false;
     var gameStarted = false;
     var frameCount = 0;
-    var GRAVITY = 0.08;
-    var JUMP_FORCE = -4;
-    var PIPE_GAP = 220;
+    var GRAVITY = 0.04;
+    var JUMP_FORCE = -3;
+    var PIPE_GAP = 250;
     var PIPE_WIDTH = 50;
-    var PIPE_SPEED = 1;
-    var PIPE_INTERVAL = 150;
+    var PIPE_SPEED = 0.8;
+    var PIPE_INTERVAL = 180;
 
     function startGame() {
         if (gameRunning) return;
@@ -241,26 +241,20 @@
         frameCount++;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Фон
         var grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
         grad.addColorStop(0, '#0a0a2e');
         grad.addColorStop(1, '#050510');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Птичка
         bird.velocity += GRAVITY;
         bird.y += bird.velocity;
-        
-        // Крылья (анимация)
-        var wingFlap = Math.sin(frameCount * 0.3) * 8;
         
         ctx.fillStyle = '#f5c518';
         ctx.beginPath();
         ctx.arc(bird.x, bird.y, bird.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Глаз
         ctx.fillStyle = '#fff';
         ctx.beginPath();
         ctx.arc(bird.x + 8, bird.y - 3, 7, 0, Math.PI * 2);
@@ -270,7 +264,6 @@
         ctx.arc(bird.x + 9, bird.y - 3, 3, 0, Math.PI * 2);
         ctx.fill();
         
-        // Клюв
         ctx.fillStyle = '#ff6600';
         ctx.beginPath();
         ctx.moveTo(bird.x + bird.size, bird.y);
@@ -278,7 +271,6 @@
         ctx.lineTo(bird.x + bird.size, bird.y + 4);
         ctx.fill();
         
-        // Трубы
         if (frameCount % PIPE_INTERVAL === 0) {
             var minHeight = 30;
             var maxHeight = canvas.height - PIPE_GAP - 30;
@@ -290,32 +282,27 @@
             var pipe = pipes[i];
             pipe.x -= PIPE_SPEED;
             
-            // Градиент труб
             var pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
             pipeGrad.addColorStop(0, '#2ecc71');
             pipeGrad.addColorStop(1, '#27ae60');
             ctx.fillStyle = pipeGrad;
             
-            // Верхняя труба
             ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.topHeight);
             ctx.fillStyle = '#1e8449';
             ctx.fillRect(pipe.x - 3, pipe.topHeight - 20, PIPE_WIDTH + 6, 20);
             
-            // Нижняя труба
             var bottomPipeY = pipe.topHeight + PIPE_GAP;
             ctx.fillStyle = pipeGrad;
             ctx.fillRect(pipe.x, bottomPipeY, PIPE_WIDTH, canvas.height - bottomPipeY);
             ctx.fillStyle = '#1e8449';
             ctx.fillRect(pipe.x - 3, bottomPipeY, PIPE_WIDTH + 6, 20);
             
-            // Очки
             if (!pipe.scored && pipe.x + PIPE_WIDTH < bird.x) {
                 pipe.scored = true;
                 score++;
                 updateScore();
             }
             
-            // Столкновение
             var birdLeft = bird.x - bird.size;
             var birdRight = bird.x + bird.size;
             var birdTop = bird.y - bird.size;
@@ -333,7 +320,6 @@
             }
         }
         
-        // Границы
         if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
             endGame();
             return;
@@ -372,7 +358,6 @@
         document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
     }
 
-    // Управление
     document.addEventListener('keydown', function(e) {
         if (e.code === 'Space') {
             e.preventDefault();
@@ -383,7 +368,6 @@
         jump();
     });
 
-    // Выпадающий список
     document.getElementById('langDropdownBtn').onclick = function(e) {
         e.stopPropagation();
         document.getElementById('langDropdownContent').classList.toggle('open');
