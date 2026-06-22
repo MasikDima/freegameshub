@@ -196,13 +196,14 @@
     var score = 0;
     var gameRunning = false;
     var gameStarted = false;
-    var frameCount = 0;
-    var GRAVITY = 0.04;
-    var JUMP_FORCE = -3;
-    var PIPE_GAP = 250;
+    var lastTime = 0;
+    var pipeTimer = 0;
+    var GRAVITY = 500;
+    var JUMP_FORCE = -200;
+    var PIPE_GAP = 200;
     var PIPE_WIDTH = 50;
-    var PIPE_SPEED = 0.8;
-    var PIPE_INTERVAL = 180;
+    var PIPE_SPEED = 100;
+    var PIPE_INTERVAL = 2.0;
 
     function startGame() {
         if (gameRunning) return;
@@ -218,12 +219,13 @@
         bird.velocity = 0;
         pipes = [];
         score = 0;
-        frameCount = 0;
+        lastTime = 0;
+        pipeTimer = 0;
         gameRunning = true;
         gameStarted = true;
         
         updateScore();
-        gameLoop();
+        requestAnimationFrame(gameLoop);
     }
 
     function jump() {
@@ -235,10 +237,14 @@
         document.getElementById('gameScore').textContent = 'Счёт: ' + score;
     }
 
-    function gameLoop() {
+    function gameLoop(timestamp) {
         if (!gameRunning) return;
         
-        frameCount++;
+        if (!lastTime) lastTime = timestamp;
+        var dt = (timestamp - lastTime) / 1000;
+        if (dt > 0.1) dt = 0.1;
+        lastTime = timestamp;
+        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         var grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -247,8 +253,8 @@
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        bird.velocity += GRAVITY;
-        bird.y += bird.velocity;
+        bird.velocity += GRAVITY * dt;
+        bird.y += bird.velocity * dt;
         
         ctx.fillStyle = '#f5c518';
         ctx.beginPath();
@@ -271,7 +277,9 @@
         ctx.lineTo(bird.x + bird.size, bird.y + 4);
         ctx.fill();
         
-        if (frameCount % PIPE_INTERVAL === 0) {
+        pipeTimer += dt;
+        if (pipeTimer >= PIPE_INTERVAL) {
+            pipeTimer = 0;
             var minHeight = 30;
             var maxHeight = canvas.height - PIPE_GAP - 30;
             var pipeHeight = Math.random() * (maxHeight - minHeight) + minHeight;
@@ -280,7 +288,7 @@
         
         for (var i = pipes.length - 1; i >= 0; i--) {
             var pipe = pipes[i];
-            pipe.x -= PIPE_SPEED;
+            pipe.x -= PIPE_SPEED * dt;
             
             var pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
             pipeGrad.addColorStop(0, '#2ecc71');
@@ -365,6 +373,10 @@
         }
     });
     canvas.addEventListener('click', function() {
+        jump();
+    });
+    canvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
         jump();
     });
 
