@@ -100,18 +100,18 @@
     <section class="hero" style="padding:50px 0 30px;">
         <div class="container">
             <h1><i class="fab fa-playstation"></i> PlayStation Plus</h1>
-            <p>Бесплатные игры июня 2026</p>
+            <p>Бесплатные игры каждый месяц</p>
         </div>
     </section>
 
     <section class="games">
-    <div class="container">
-        <div style="text-align:center;padding:20px 0 10px 0;">
-            <span style="background:linear-gradient(135deg,#003087,#0070cc);color:white;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:700;">📅 Июнь 2026</span>
+        <div class="container">
+            <div style="text-align:center;padding:20px 0 10px 0;">
+                <span style="background:linear-gradient(135deg,#003087,#0070cc);color:white;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:700;">📅 Июнь 2026</span>
+            </div>
+            <div class="ps-games-grid" id="psGames"></div>
         </div>
-        <div class="ps-games-grid" id="psGames"></div>
-    </div>
-</section>
+    </section>
 
     <section class="subscribe">
         <div class="container">
@@ -163,23 +163,6 @@
         });
         var savedLang = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-    <script>
-    var psGamesJune = [
-        { title: 'Grounded', platform: 'PS4 & PS5', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', url: 'https://www.playstation.com/games/grounded/' },
-        { title: 'Nickelodeon All-Star Brawl 2', platform: 'PS4 & PS5', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', url: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/' },
-        { title: 'Warhammer 40K: Darktide', platform: 'PS4 & PS5', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', url: 'https://www.playstation.com/en-gb/games/warhammer-40000-darktide/' }
-    ];
-
-    var container = document.getElementById('psGamesJune');
-    container.innerHTML = psGamesJune.map(function(game) {
-        return '<div class="ps-game-card">' +
-            '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.ps-fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
-            '<div class="ps-fallback" style="display:none;background:linear-gradient(135deg,#001a33,#003366);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>' +
-            '<span class="ps-badge-free">PS Plus • ' + game.platform + '</span>' +
-            '<h3 class="ps-game-title">' + game.title + '</h3>' +
-            '<a href="' + game.url + '" class="ps-btn" target="_blank">🎮 Подробнее</a>' +
-            '</div>';
-    }).join('');
-</script>
+    </script>
 </body>
 </html>
