@@ -191,14 +191,14 @@
     <script>
         var canvas = document.getElementById('gameCanvas');
         var ctx = canvas.getContext('2d');
-        var bird = { x: 80, y: 250, size: 25, velocity: 0, gravity: 0.3, jump: -6 };
+        var bird = { x: 80, y: 250, size: 20, velocity: 0, gravity: 0.15, jump: -5 };
         var pipes = [];
         var score = 0;
         var gameRunning = false;
         var gameStarted = false;
-        var pipeGap = 160;
+        var pipeGap = 200;
         var pipeWidth = 50;
-        var pipeSpeed = 1.5;
+        var pipeSpeed = 1.1;
         var frameCount = 0;
 
         function startGame() {
@@ -223,10 +223,9 @@
         }
 
         function jump() {
-            if (!gameRunning) return;
-            bird.velocity = bird.jump;
-            if (bird.velocity > 6) bird.velocity = 6;
-        }
+    if (!gameRunning) return;
+    bird.velocity = bird.jump;
+}
 
         function updateScore() {
             document.getElementById('gameScore').textContent = 'Счёт: ' + score;
