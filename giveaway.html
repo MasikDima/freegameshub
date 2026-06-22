@@ -63,7 +63,6 @@
             box-shadow: none;
         }
         
-        /* Игра */
         #gameCanvas {
             display: none;
             border: 2px solid #f5c518;
@@ -85,7 +84,6 @@
             display: none;
         }
         
-        /* Форма */
         .win-form {
             display: none;
             margin-top: 20px;
@@ -150,13 +148,13 @@
             <a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
             <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
             <a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
-            <a href="giveaway.html" class="store-link active">🎁 Розыгрыш</a>
+            <a href="giveaway.html" class="store-link active"><i class="fas fa-trophy"></i> Розыгрыш</a>
         </div>
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
         <div class="container">
-            <h1>🎁 Розыгрыш ключей</h1>
+            <h1><i class="fas fa-trophy"></i> Розыгрыш ключей</h1>
             <p>Сыграй в мини-игру и получи шанс выиграть ключ!</p>
         </div>
     </section>
@@ -191,17 +189,16 @@
     </footer>
 
     <script>
-        // Flappy Bird мини-игра
         var canvas = document.getElementById('gameCanvas');
         var ctx = canvas.getContext('2d');
-        var bird = { x: 80, y: 250, size: 25, velocity: 0, gravity: 0.5, jump: -8 };
+        var bird = { x: 80, y: 250, size: 25, velocity: 0, gravity: 0.3, jump: -6 };
         var pipes = [];
         var score = 0;
         var gameRunning = false;
         var gameStarted = false;
-        var pipeGap = 130;
+        var pipeGap = 160;
         var pipeWidth = 50;
-        var pipeSpeed = 2;
+        var pipeSpeed = 1.5;
         var frameCount = 0;
 
         function startGame() {
@@ -228,6 +225,7 @@
         function jump() {
             if (!gameRunning) return;
             bird.velocity = bird.jump;
+            if (bird.velocity > 6) bird.velocity = 6;
         }
 
         function updateScore() {
@@ -240,17 +238,9 @@
             frameCount++;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Фон
             ctx.fillStyle = '#0a0a2e';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Звёзды
-            ctx.fillStyle = '#fff';
-            for (var i = 0; i < 20; i++) {
-                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
-            }
-            
-            // Птичка
             bird.velocity += bird.gravity;
             bird.y += bird.velocity;
             
@@ -263,9 +253,8 @@
             ctx.arc(bird.x + 5, bird.y - 5, 6, 0, Math.PI * 2);
             ctx.fill();
             
-            // Трубы
-            if (frameCount % 90 === 0) {
-                var pipeHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
+            if (frameCount % 120 === 0) {
+                var pipeHeight = Math.random() * (canvas.height - pipeGap - 80) + 40;
                 pipes.push({ x: canvas.width, topHeight: pipeHeight, scored: false });
             }
             
@@ -276,14 +265,12 @@
                 ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
                 ctx.fillRect(pipe.x, pipe.topHeight + pipeGap, pipeWidth, canvas.height - pipe.topHeight - pipeGap);
                 
-                // Очки
                 if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
                     pipe.scored = true;
                     score++;
                     updateScore();
                 }
                 
-                // Столкновение
                 if (
                     bird.x + bird.size > pipe.x && bird.x - bird.size < pipe.x + pipeWidth &&
                     (bird.y - bird.size < pipe.topHeight || bird.y + bird.size > pipe.topHeight + pipeGap)
@@ -292,10 +279,8 @@
                 }
             });
             
-            // Удаление труб
             pipes = pipes.filter(function(p) { return p.x > -pipeWidth; });
             
-            // Границы
             if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
                 endGame();
             }
@@ -333,7 +318,6 @@
             document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
         }
 
-        // Управление
         document.addEventListener('keydown', function(e) {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -346,7 +330,6 @@
             jump();
         });
 
-        // Выпадающий список
         document.getElementById('langDropdownBtn').onclick = function(e) {
             e.stopPropagation();
             document.getElementById('langDropdownContent').classList.toggle('open');
