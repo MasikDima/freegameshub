@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Розыгрыши - Free Games Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=45">
+    <style>
+        .giveaway-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .prize-card {
+            background: rgba(10, 10, 30, 0.7);
+            border: 2px solid #f5c518;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .prize-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #f5c518, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .prize-game {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .prize-desc {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .btn-play {
+            display: inline-block;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f5c518, #ff8c00);
+            color: #050510;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-play:hover {
+            box-shadow: 0 0 30px rgba(245, 197, 24, 0.6);
+            transform: scale(1.05);
+        }
+        .btn-play:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        /* Игра */
+        #gameCanvas {
+            display: none;
+            border: 2px solid #f5c518;
+            border-radius: 10px;
+            margin: 20px auto;
+            background: #0a0a2e;
+        }
+        .game-score {
+            font-size: 24px;
+            font-weight: 900;
+            color: #f5c518;
+            margin: 10px 0;
+            display: none;
+        }
+        .game-instructions {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Форма */
+        .win-form {
+            display: none;
+            margin-top: 20px;
+        }
+        .win-form input {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #f5c518;
+            background: rgba(10, 10, 30, 0.8);
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+        .win-form .btn-submit {
+            padding: 12px 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f5c518, #ff8c00);
+            color: #050510;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .participants-count {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="store-nav">
+        <div class="container">
+            <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
+            <a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
+            <a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
+            <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
+            <a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
+            <a href="giveaway.html" class="store-link active">🎁 Розыгрыш</a>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding:50px 0 30px;">
+        <div class="container">
+            <h1>🎁 Розыгрыш ключей</h1>
+            <p>Сыграй в мини-игру и получи шанс выиграть ключ!</p>
+        </div>
+    </section>
+
+    <div class="giveaway-container">
+        <div class="prize-card">
+            <h2 class="prize-title">🎮 РОЗЫГРЫШ КЛЮЧА</h2>
+            <p class="prize-game">Cyberpunk 2077</p>
+            <p class="prize-desc">Пройди мини-игру и набери 20 очков чтобы участвовать!</p>
+            
+            <div class="game-score" id="gameScore">Счёт: 0</div>
+            <canvas id="gameCanvas" width="400" height="500"></canvas>
+            <p class="game-instructions" id="gameInstructions">Нажимай ПРОБЕЛ или кликай чтобы лететь</p>
+            
+            <button class="btn-play" id="btnPlay" onclick="startGame()">🎮 Играть!</button>
+            
+            <div class="win-form" id="winForm">
+                <h3 style="color:#4ecca3;margin-bottom:15px;">✅ 20 очков! Ты участвуешь!</h3>
+                <input type="email" id="emailInput" placeholder="Твой Email">
+                <br>
+                <button class="btn-submit" onclick="submitEntry()">🎁 Участвовать!</button>
+            </div>
+            
+            <p class="participants-count" id="participantsCount">Участников: 0</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Flappy Bird мини-игра
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+        var bird = { x: 80, y: 250, size: 25, velocity: 0, gravity: 0.5, jump: -8 };
+        var pipes = [];
+        var score = 0;
+        var gameRunning = false;
+        var gameStarted = false;
+        var pipeGap = 130;
+        var pipeWidth = 50;
+        var pipeSpeed = 2;
+        var frameCount = 0;
+
+        function startGame() {
+            if (gameRunning) return;
+            
+            canvas.style.display = 'block';
+            document.getElementById('gameScore').style.display = 'block';
+            document.getElementById('gameInstructions').style.display = 'block';
+            document.getElementById('btnPlay').disabled = true;
+            document.getElementById('btnPlay').textContent = '🎮 Играем...';
+            document.getElementById('winForm').style.display = 'none';
+            
+            bird.y = 250;
+            bird.velocity = 0;
+            pipes = [];
+            score = 0;
+            gameRunning = true;
+            gameStarted = true;
+            
+            updateScore();
+            gameLoop();
+        }
+
+        function jump() {
+            if (!gameRunning) return;
+            bird.velocity = bird.jump;
+        }
+
+        function updateScore() {
+            document.getElementById('gameScore').textContent = 'Счёт: ' + score;
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            frameCount++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Фон
+            ctx.fillStyle = '#0a0a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Звёзды
+            ctx.fillStyle = '#fff';
+            for (var i = 0; i < 20; i++) {
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+            }
+            
+            // Птичка
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+            
+            ctx.fillStyle = '#f5c518';
+            ctx.beginPath();
+            ctx.arc(bird.x, bird.y, bird.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(bird.x + 5, bird.y - 5, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Трубы
+            if (frameCount % 90 === 0) {
+                var pipeHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
+                pipes.push({ x: canvas.width, topHeight: pipeHeight, scored: false });
+            }
+            
+            pipes.forEach(function(pipe) {
+                pipe.x -= pipeSpeed;
+                
+                ctx.fillStyle = '#4ecca3';
+                ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
+                ctx.fillRect(pipe.x, pipe.topHeight + pipeGap, pipeWidth, canvas.height - pipe.topHeight - pipeGap);
+                
+                // Очки
+                if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
+                    pipe.scored = true;
+                    score++;
+                    updateScore();
+                }
+                
+                // Столкновение
+                if (
+                    bird.x + bird.size > pipe.x && bird.x - bird.size < pipe.x + pipeWidth &&
+                    (bird.y - bird.size < pipe.topHeight || bird.y + bird.size > pipe.topHeight + pipeGap)
+                ) {
+                    endGame();
+                }
+            });
+            
+            // Удаление труб
+            pipes = pipes.filter(function(p) { return p.x > -pipeWidth; });
+            
+            // Границы
+            if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
+                endGame();
+            }
+            
+            if (gameRunning) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function endGame() {
+            gameRunning = false;
+            document.getElementById('btnPlay').disabled = false;
+            document.getElementById('btnPlay').textContent = '🔄 Попробовать снова';
+            document.getElementById('gameInstructions').style.display = 'none';
+            
+            if (score >= 20) {
+                document.getElementById('winForm').style.display = 'block';
+            }
+        }
+
+        function submitEntry() {
+            var email = document.getElementById('emailInput').value;
+            if (!email) { alert('Введи email!'); return; }
+            
+            var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
+            entries.push({ email: email, date: new Date().toISOString() });
+            localStorage.setItem('giveawayEntries', JSON.stringify(entries));
+            
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Результаты на email.</h3>';
+            updateParticipants();
+        }
+
+        function updateParticipants() {
+            var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
+            document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
+        }
+
+        // Управление
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (!gameRunning && gameStarted) startGame();
+                jump();
+            }
+        });
+        canvas.addEventListener('click', function() {
+            if (!gameRunning && gameStarted) startGame();
+            jump();
+        });
+
+        // Выпадающий список
+        document.getElementById('langDropdownBtn').onclick = function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdownContent').classList.toggle('open');
+        };
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdownContent').classList.remove('open');
+        });
+
+        updateParticipants();
+    </script>
+</body>
+</html>
