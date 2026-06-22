@@ -189,155 +189,210 @@
     </footer>
 
     <script>
-        var canvas = document.getElementById('gameCanvas');
-        var ctx = canvas.getContext('2d');
-        var bird = { x: 80, y: 250, size: 20, velocity: 0, gravity: 0.15, jump: -5 };
-        var pipes = [];
-        var score = 0;
-        var gameRunning = false;
-        var gameStarted = false;
-        var pipeGap = 200;
-        var pipeWidth = 50;
-        var pipeSpeed = 1.1;
-        var frameCount = 0;
+    var canvas = document.getElementById('gameCanvas');
+    var ctx = canvas.getContext('2d');
+    var bird = { x: 80, y: 250, size: 22, velocity: 0 };
+    var pipes = [];
+    var score = 0;
+    var gameRunning = false;
+    var gameStarted = false;
+    var frameCount = 0;
+    var GRAVITY = 0.08;
+    var JUMP_FORCE = -4;
+    var PIPE_GAP = 220;
+    var PIPE_WIDTH = 50;
+    var PIPE_SPEED = 1;
+    var PIPE_INTERVAL = 150;
 
-        function startGame() {
-            if (gameRunning) return;
-            
-            canvas.style.display = 'block';
-            document.getElementById('gameScore').style.display = 'block';
-            document.getElementById('gameInstructions').style.display = 'block';
-            document.getElementById('btnPlay').disabled = true;
-            document.getElementById('btnPlay').textContent = '🎮 Играем...';
-            document.getElementById('winForm').style.display = 'none';
-            
-            bird.y = 250;
-            bird.velocity = 0;
-            pipes = [];
-            score = 0;
-            gameRunning = true;
-            gameStarted = true;
-            
-            updateScore();
-            gameLoop();
+    function startGame() {
+        if (gameRunning) return;
+        
+        canvas.style.display = 'block';
+        document.getElementById('gameScore').style.display = 'block';
+        document.getElementById('gameInstructions').style.display = 'block';
+        document.getElementById('btnPlay').disabled = true;
+        document.getElementById('btnPlay').textContent = '🎮 Играем...';
+        document.getElementById('winForm').style.display = 'none';
+        
+        bird.y = 250;
+        bird.velocity = 0;
+        pipes = [];
+        score = 0;
+        frameCount = 0;
+        gameRunning = true;
+        gameStarted = true;
+        
+        updateScore();
+        gameLoop();
+    }
+
+    function jump() {
+        if (!gameRunning) return;
+        bird.velocity = JUMP_FORCE;
+    }
+
+    function updateScore() {
+        document.getElementById('gameScore').textContent = 'Счёт: ' + score;
+    }
+
+    function gameLoop() {
+        if (!gameRunning) return;
+        
+        frameCount++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Фон
+        var grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, '#0a0a2e');
+        grad.addColorStop(1, '#050510');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Птичка
+        bird.velocity += GRAVITY;
+        bird.y += bird.velocity;
+        
+        // Крылья (анимация)
+        var wingFlap = Math.sin(frameCount * 0.3) * 8;
+        
+        ctx.fillStyle = '#f5c518';
+        ctx.beginPath();
+        ctx.arc(bird.x, bird.y, bird.size, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Глаз
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(bird.x + 8, bird.y - 3, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(bird.x + 9, bird.y - 3, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Клюв
+        ctx.fillStyle = '#ff6600';
+        ctx.beginPath();
+        ctx.moveTo(bird.x + bird.size, bird.y);
+        ctx.lineTo(bird.x + bird.size + 12, bird.y - 2);
+        ctx.lineTo(bird.x + bird.size, bird.y + 4);
+        ctx.fill();
+        
+        // Трубы
+        if (frameCount % PIPE_INTERVAL === 0) {
+            var minHeight = 30;
+            var maxHeight = canvas.height - PIPE_GAP - 30;
+            var pipeHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+            pipes.push({ x: canvas.width, topHeight: pipeHeight, scored: false });
         }
-
-        function jump() {
-    if (!gameRunning) return;
-    bird.velocity = bird.jump;
-}
-
-        function updateScore() {
-            document.getElementById('gameScore').textContent = 'Счёт: ' + score;
-        }
-
-        function gameLoop() {
-            if (!gameRunning) return;
+        
+        for (var i = pipes.length - 1; i >= 0; i--) {
+            var pipe = pipes[i];
+            pipe.x -= PIPE_SPEED;
             
-            frameCount++;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Градиент труб
+            var pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
+            pipeGrad.addColorStop(0, '#2ecc71');
+            pipeGrad.addColorStop(1, '#27ae60');
+            ctx.fillStyle = pipeGrad;
             
-            ctx.fillStyle = '#0a0a2e';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Верхняя труба
+            ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.topHeight);
+            ctx.fillStyle = '#1e8449';
+            ctx.fillRect(pipe.x - 3, pipe.topHeight - 20, PIPE_WIDTH + 6, 20);
             
-            bird.velocity += bird.gravity;
-            bird.y += bird.velocity;
+            // Нижняя труба
+            var bottomPipeY = pipe.topHeight + PIPE_GAP;
+            ctx.fillStyle = pipeGrad;
+            ctx.fillRect(pipe.x, bottomPipeY, PIPE_WIDTH, canvas.height - bottomPipeY);
+            ctx.fillStyle = '#1e8449';
+            ctx.fillRect(pipe.x - 3, bottomPipeY, PIPE_WIDTH + 6, 20);
             
-            ctx.fillStyle = '#f5c518';
-            ctx.beginPath();
-            ctx.arc(bird.x, bird.y, bird.size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(bird.x + 5, bird.y - 5, 6, 0, Math.PI * 2);
-            ctx.fill();
-            
-            if (frameCount % 120 === 0) {
-                var pipeHeight = Math.random() * (canvas.height - pipeGap - 80) + 40;
-                pipes.push({ x: canvas.width, topHeight: pipeHeight, scored: false });
+            // Очки
+            if (!pipe.scored && pipe.x + PIPE_WIDTH < bird.x) {
+                pipe.scored = true;
+                score++;
+                updateScore();
             }
             
-            pipes.forEach(function(pipe) {
-                pipe.x -= pipeSpeed;
-                
-                ctx.fillStyle = '#4ecca3';
-                ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
-                ctx.fillRect(pipe.x, pipe.topHeight + pipeGap, pipeWidth, canvas.height - pipe.topHeight - pipeGap);
-                
-                if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
-                    pipe.scored = true;
-                    score++;
-                    updateScore();
-                }
-                
-                if (
-                    bird.x + bird.size > pipe.x && bird.x - bird.size < pipe.x + pipeWidth &&
-                    (bird.y - bird.size < pipe.topHeight || bird.y + bird.size > pipe.topHeight + pipeGap)
-                ) {
+            // Столкновение
+            var birdLeft = bird.x - bird.size;
+            var birdRight = bird.x + bird.size;
+            var birdTop = bird.y - bird.size;
+            var birdBottom = bird.y + bird.size;
+            
+            if (birdRight > pipe.x && birdLeft < pipe.x + PIPE_WIDTH) {
+                if (birdTop < pipe.topHeight || birdBottom > bottomPipeY) {
                     endGame();
+                    return;
                 }
-            });
-            
-            pipes = pipes.filter(function(p) { return p.x > -pipeWidth; });
-            
-            if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
-                endGame();
             }
             
-            if (gameRunning) {
-                requestAnimationFrame(gameLoop);
+            if (pipe.x < -PIPE_WIDTH) {
+                pipes.splice(i, 1);
             }
         }
-
-        function endGame() {
-            gameRunning = false;
-            document.getElementById('btnPlay').disabled = false;
-            document.getElementById('btnPlay').textContent = '🔄 Попробовать снова';
-            document.getElementById('gameInstructions').style.display = 'none';
-            
-            if (score >= 20) {
-                document.getElementById('winForm').style.display = 'block';
-            }
+        
+        // Границы
+        if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
+            endGame();
+            return;
         }
-
-        function submitEntry() {
-            var email = document.getElementById('emailInput').value;
-            if (!email) { alert('Введи email!'); return; }
-            
-            var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-            entries.push({ email: email, date: new Date().toISOString() });
-            localStorage.setItem('giveawayEntries', JSON.stringify(entries));
-            
-            document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Результаты на email.</h3>';
-            updateParticipants();
+        
+        if (gameRunning) {
+            requestAnimationFrame(gameLoop);
         }
+    }
 
-        function updateParticipants() {
-            var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-            document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
+    function endGame() {
+        gameRunning = false;
+        document.getElementById('btnPlay').disabled = false;
+        document.getElementById('btnPlay').textContent = '🔄 Попробовать снова';
+        document.getElementById('gameInstructions').style.display = 'none';
+        
+        if (score >= 20) {
+            document.getElementById('winForm').style.display = 'block';
         }
+    }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                if (!gameRunning && gameStarted) startGame();
-                jump();
-            }
-        });
-        canvas.addEventListener('click', function() {
-            if (!gameRunning && gameStarted) startGame();
-            jump();
-        });
-
-        document.getElementById('langDropdownBtn').onclick = function(e) {
-            e.stopPropagation();
-            document.getElementById('langDropdownContent').classList.toggle('open');
-        };
-        document.addEventListener('click', function() {
-            document.getElementById('langDropdownContent').classList.remove('open');
-        });
-
+    function submitEntry() {
+        var email = document.getElementById('emailInput').value;
+        if (!email) { alert('Введи email!'); return; }
+        
+        var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
+        entries.push({ email: email, date: new Date().toISOString() });
+        localStorage.setItem('giveawayEntries', JSON.stringify(entries));
+        
+        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Результаты на email.</h3>';
         updateParticipants();
-    </script>
+    }
+
+    function updateParticipants() {
+        var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
+        document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
+    }
+
+    // Управление
+    document.addEventListener('keydown', function(e) {
+        if (e.code === 'Space') {
+            e.preventDefault();
+            jump();
+        }
+    });
+    canvas.addEventListener('click', function() {
+        jump();
+    });
+
+    // Выпадающий список
+    document.getElementById('langDropdownBtn').onclick = function(e) {
+        e.stopPropagation();
+        document.getElementById('langDropdownContent').classList.toggle('open');
+    };
+    document.addEventListener('click', function() {
+        document.getElementById('langDropdownContent').classList.remove('open');
+    });
+
+    updateParticipants();
+</script>
 </body>
 </html>
