@@ -158,15 +158,17 @@
     <div class="cabinet-container">
         <!-- Если открыто НЕ из Telegram -->
         <div class="not-telegram" id="notTelegram" style="display:none;">
-            <div class="user-card">
-                <span style="font-size:60px;">🔐</span>
-                <h2>Открой через Telegram</h2>
-                <p>Для входа в личный кабинет открой сайт через нашего бота</p>
-                <a href="https://t.me/freegameshub_key_bot?start=cabinet" target="_blank" class="btn-telegram-open">
-    <i class="fab fa-telegram"></i> Открыть в Telegram
-</a>
-            </div>
-        </div>
+    <div class="user-card">
+        <span style="font-size:60px;">🔐</span>
+        <h2>Войди через Telegram</h2>
+        <p>Для доступа к личному кабинету авторизуйся</p>
+        <div id="telegramLoginWidget"></div>
+        <p style="font-size:12px;color:#666;margin-top:15px;">Или открой через бота в Telegram на телефоне</p>
+        <a href="https://t.me/freegameshub_key_bot" target="_blank" class="btn-telegram-open" style="margin-top:10px;">
+            <i class="fab fa-telegram"></i> Открыть бота
+        </a>
+    </div>
+</div>
 
         <!-- Если открыто из Telegram -->
         <div id="telegramContent" style="display:none;">
