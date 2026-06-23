@@ -362,37 +362,76 @@
     }
 
     function submitEntry() {
-        var username = document.getElementById('telegramInput').value;
-        if (!username) { alert('Введи Telegram @username!'); return; }
+    var username = document.getElementById('telegramInput').value;
+    if (!username) { alert('Введи Telegram @username!'); return; }
+    
+    db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
+        if (!snapshot.empty) {
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
+            return;
+        }
         
-        db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
-            if (!snapshot.empty) {
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
-                return;
-            }
-            
-            var hasPlayed = localStorage.getItem('giveawayPlayed');
-            if (hasPlayed) {
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
-                return;
-            }
-            
-            db.collection('giveaway_entries').add({
-                username: username,
-                date: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(function() {
-                localStorage.setItem('giveawayPlayed', 'true');
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
-                updateParticipants();
-            });
+        var hasPlayed = localStorage.getItem('giveawayPlayed');
+        if (hasPlayed) {
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
+            return;
+        }
+        
+        db.collection('giveaway_entries').add({
+            username: username,
+            date: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function() {
+            localStorage.setItem('giveawayPlayed', 'true');
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
+            updateParticipants();
+            checkWinner();
         });
-    }
+    });
+}
+
+function checkWinner() {
+    db.collection('giveaway_entries').get().then(function(snapshot) {
+        var count = snapshot.size;
+        document.getElementById('participantsCount').textContent = 'Участников: ' + count;
+        
+        if (count >= 3) {
+            db.collection('giveaway_winner').get().then(function(winnerSnap) {
+                if (winnerSnap.empty) {
+                    // Выбираем победителя
+                    var entries = [];
+                    snapshot.forEach(function(doc) {
+                        entries.push(doc.data().username);
+                    });
+                    var winner = entries[Math.floor(Math.random() * entries.length)];
+                    var masked = winner.substring(0, 2) + '***' + winner.substring(winner.length - 2);
+                    
+                    db.collection('giveaway_winner').add({
+                        username: winner,
+                        masked: masked,
+                        date: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    document.getElementById('winForm').style.display = 'block';
+                    document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + masked + '</b></p>';
+                    document.getElementById('btnPlay').style.display = 'none';
+                } else {
+                    winnerSnap.forEach(function(doc) {
+                        document.getElementById('winForm').style.display = 'block';
+                        document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + doc.data().masked + '</b></p>';
+                        document.getElementById('btnPlay').style.display = 'none';
+                    });
+                }
+            });
+        }
+    });
+}
 
     function updateParticipants() {
-        db.collection('giveaway_entries').get().then(function(snapshot) {
-            document.getElementById('participantsCount').textContent = 'Участников: ' + snapshot.size;
-        });
-    }
+    db.collection('giveaway_entries').get().then(function(snapshot) {
+        document.getElementById('participantsCount').textContent = 'Участников: ' + snapshot.size;
+    });
+    checkWinner();
+}
 
     document.addEventListener('keydown', function(e) {
         if (e.code === 'Space') { e.preventDefault(); jump(); }
@@ -418,7 +457,17 @@
     });
     var savedLang = localStorage.getItem('lang') || 'ru';
     document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-
+// Проверяем победителя при загрузке
+db.collection('giveaway_winner').get().then(function(snapshot) {
+    if (!snapshot.empty) {
+        snapshot.forEach(function(doc) {
+            document.getElementById('winForm').style.display = 'block';
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + doc.data().masked + '</b></p>';
+            document.getElementById('btnPlay').style.display = 'none';
+            // Победитель выбран, описание менять не нужно
+        });
+    }
+});
     updateParticipants();
 </script>
 </body>
