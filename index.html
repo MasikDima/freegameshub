@@ -196,11 +196,86 @@
     </section>
 
     <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
-        </div>
-    </footer>
+    <div class="container">
+        <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
+        <p style="color:#666;font-size:13px;margin-top:5px;">
+            🟢 Онлайн: <span id="onlineCount" style="color:#4ecca3;">0</span> | 
+            👥 Всего посетителей: <span id="totalVisitors" style="color:#f5c518;">0</span>
+        </p>
+    </div>
+</footer>
 
     <script src="script.js?v=50"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+        authDomain: "freegameshub-11215.firebaseapp.com",
+        projectId: "freegameshub-11215",
+        storageBucket: "freegameshub-11215.firebasestorage.app",
+        messagingSenderId: "881848736998",
+        appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+    // Генерируем ID сессии
+    var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
+    localStorage.setItem('sessionId', sessionId);
+
+    // Записываем онлайн
+    var onlineRef = db.collection('online').doc(sessionId);
+    onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    
+    // Удаляем при уходе
+    window.addEventListener('beforeunload', function() {
+        onlineRef.delete();
+    });
+
+    // Обновляем каждые 30 секунд
+    setInterval(function() {
+        onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    }, 30000);
+
+    // Удаляем старые записи (старше 1 минуты)
+    setInterval(function() {
+        var oneMinuteAgo = new Date(Date.now() - 60000);
+        db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(snapshot) {
+            snapshot.forEach(function(doc) { doc.ref.delete(); });
+        });
+    }, 60000);
+
+    // Обновляем счётчики
+    function updateCounters() {
+        db.collection('online').get().then(function(snapshot) {
+            var online = snapshot.size;
+            document.getElementById('onlineCount').textContent = online;
+        });
+        
+        // Общий счётчик (из localStorage всех пользователей)
+        var totalVisitors = parseInt(localStorage.getItem('totalVisitors') || '0');
+        document.getElementById('totalVisitors').textContent = totalVisitors;
+    }
+
+    // Увеличиваем общий счётчик
+    var visited = sessionStorage.getItem('visited');
+    if (!visited) {
+        sessionStorage.setItem('visited', 'true');
+        var totalRef = db.collection('stats').doc('visitors');
+        db.runTransaction(function(transaction) {
+            return transaction.get(totalRef).then(function(doc) {
+                var count = (doc.data() && doc.data().count) || 0;
+                transaction.set(totalRef, { count: count + 1 }, { merge: true });
+                return count + 1;
+            });
+        }).then(function(count) {
+            document.getElementById('totalVisitors').textContent = count;
+        });
+    }
+
+    setInterval(updateCounters, 5000);
+    updateCounters();
+</script>
 </body>
 </html>
