@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=35">
+    <link rel="stylesheet" href="style.css?v=55">
     <style>
         .steam-games-grid {
             display: grid;
@@ -26,43 +26,41 @@
             box-shadow: 0 0 25px rgba(0, 136, 204, 0.2);
             transform: translateY(-3px);
         }
-        .steam-game-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        .steam-game-date {
-            color: #666;
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
+        .steam-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .steam-game-date { color: #666; font-size: 12px; margin-bottom: 12px; }
         .steam-badge-free {
-            display: inline-block;
-            background: linear-gradient(135deg, #00c8ff, #0078ff);
-            color: white;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+            display: inline-block; background: linear-gradient(135deg, #00c8ff, #0078ff); color: white;
+            padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
         }
         .steam-btn {
-            display: block;
-            text-align: center;
-            background: linear-gradient(135deg, #0088cc, #00aaff);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            margin-top: 12px;
-            transition: all 0.3s;
+            display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00aaff);
+            color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700;
+            margin-top: 12px; transition: all 0.3s;
         }
-        .steam-btn:hover {
-            box-shadow: 0 0 25px rgba(0, 136, 204, 0.5);
+        .steam-btn:hover { box-shadow: 0 0 25px rgba(0, 136, 204, 0.5); }
+
+        .burger-menu { display: none; cursor: pointer; font-size: 24px; color: white; }
+        .side-menu {
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
+            background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000;
+            padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        .side-menu.open { left: 0; }
+        .side-menu a {
+            display: block; color: white; text-decoration: none; padding: 15px 10px;
+            font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 999; display: none;
+        }
+        .overlay.show { display: block; }
+        @media (max-width: 768px) {
+            .store-nav { display: none; }
+            .burger-menu { display: block; }
         }
     </style>
 </head>
@@ -70,10 +68,11 @@
 
     <header>
         <div class="container">
+            <span class="burger-menu" onclick="openMenu()">☰</span>
             <div class="logo">
-    <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-    <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-</div>
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
             <div style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
                 <div class="lang-dropdown">
@@ -92,15 +91,15 @@
     </header>
 
     <nav class="store-nav">
-    <div class="container">
-       <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
-<a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
-<a href="steam.html" class="store-link active"><i class="fab fa-steam"></i> Steam</a>
-<a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
-<a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
-<a href="giveaway.html" class="store-link"><i class="fas fa-trophy"></i> Розыгрыш</a>          
-    </div>
-</nav>
+        <div class="container">
+            <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
+            <a href="epic.html" class="store-link"><i class="fas fa-gift"></i> Epic Games</a>
+            <a href="steam.html" class="store-link active"><i class="fab fa-steam"></i> Steam</a>
+            <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
+            <a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
+            <a href="giveaway.html" class="store-link"><i class="fas fa-trophy"></i> Розыгрыш</a>
+        </div>
+    </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
         <div class="container">
@@ -129,124 +128,65 @@
         </div>
     </footer>
 
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="close-btn" onclick="closeMenu()">✕</div>
+        <a href="index.html"><i class="fas fa-home"></i> Главная</a>
+        <a href="epic.html"><i class="fas fa-gift"></i> Epic Games</a>
+        <a href="steam.html" class="active"><i class="fab fa-steam"></i> Steam</a>
+        <a href="ps.html"><i class="fab fa-playstation"></i> PlayStation</a>
+        <a href="xbox.html"><i class="fab fa-xbox"></i> Xbox</a>
+        <a href="giveaway.html"><i class="fas fa-trophy"></i> Розыгрыш</a>
+        <a href="history.html"><i class="fas fa-history"></i> История</a>
+    </div>
+
     <script>
-     var steamGames = [
-    { 
-        title: 'Counter-Strike 2', 
-        date: '21 Aug, 2012', 
-        url: 'https://store.steampowered.com/app/730',
-        image: 'https://wallpapercave.com/wp/wp12803829.jpg'
-    },
-    { 
-        title: 'PUBG: BATTLEGROUNDS', 
-        date: '21 Dec, 2017', 
-        url: 'https://store.steampowered.com/app/578080',
-        image: 'https://wallpaperaccess.com/full/810309.jpg'
-    },
-    { 
-        title: 'Warframe', 
-        date: '25 Mar, 2013', 
-        url: 'https://store.steampowered.com/app/230410',
-        image: 'https://www-static.warframe.com/images/landing/warframe-metacard.png'
-    },
-    { 
-        title: 'Marvel Rivals', 
-        date: '6 Dec, 2024', 
-        url: 'https://store.steampowered.com/app/2767030',
-        image: 'https://www.charlieintel.com/cdn-image/wp-content/uploads/2024/03/29/Marvel-Rivals-Game-Modes-Explained.jpg?width=1080&quality=75&format=auto'
-    },
-    { 
-        title: 'Wuthering Waves', 
-        date: '28 Apr, 2025', 
-        url: 'https://store.steampowered.com/app/3513350',
-        image: 'https://tiermaker.com/images/media/hero_images/2024/16913411/wuthering-waves-tier-list-16913411/169134111719697675.jpg'
-    },
-    { 
-        title: 'Apex Legends', 
-        date: '5 Nov, 2020', 
-        url: 'https://store.steampowered.com/app/1172470',
-        image: 'https://images.wallpapersden.com/image/download/apex-legends-season-18_bmZmZmuUmZqaraWkpJRmbmdlrWZlbWU.jpg'
-    },
-    { 
-        title: 'The Sims 4', 
-        date: '18 Jun, 2020', 
-        url: 'https://store.steampowered.com/app/1222670',
-        image: 'https://drop-assets.ea.com/images/3TVfXhrTgzhtM51RMVsywI/bd83de7daaccdd70c31d981ba52818ae/ts4-basegame-packart-16x9-en.png?im=AspectCrop=(4,3),xPosition=0.5,yPosition=0.5'
-    },
-    { 
-        title: 'Rainbow Six Siege', 
-        date: '1 Dec, 2015', 
-        url: 'https://store.steampowered.com/app/359550',
-        image: 'https://gamingbolt.com/wp-content/uploads/2025/03/rainbow-six-siege-x.jpg'
-    },
-    { 
-        title: 'Dota 2', 
-        date: '9 Jul, 2013', 
-        url: 'https://store.steampowered.com/app/570',
-        image: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/06/dota-2-heroes.jpg'
-    },
-    { 
-        title: 'War Thunder', 
-        date: '15 Aug, 2013', 
-        url: 'https://store.steampowered.com/app/236390',
-        image: 'https://th.bing.com/th/id/R.92b827130b8d8db18711d49c2ebf0ec2?rik=ciPigECl%2bpzFvg&riu=http%3a%2f%2fwarthunder.com%2fupload%2fimage%2fwallpapers%2f1-55_2560x1440_logo_eng.jpg&ehk=EbJugdARTtVxnTyKUVesRCRkQDIy9AQXpQXE9cfA5cU%3d&risl=&pid=ImgRaw&r=0'
-    },
-    { 
-        title: 'NARAKA: BLADEPOINT', 
-        date: '12 Aug, 2021', 
-        url: 'https://store.steampowered.com/app/1203220',
-        image: 'https://cdn.alza.cz/Foto/ImgGalery/Image/naraka-bladepoint-recenze-key-art.jpg'
-    },
-    { 
-        title: 'Overwatch 2', 
-        date: '10 Aug, 2023', 
-        url: 'https://store.steampowered.com/app/2357570',
-        image: 'https://cdn.wccftech.com/wp-content/uploads/2024/07/Overwatch2-HD-scaled.jpg'
-    },
-    { 
-        title: 'Destiny 2', 
-        date: '1 Oct, 2019', 
-        url: 'https://store.steampowered.com/app/1085660',
-        image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c'
-    },
-    { 
-        title: 'TBH: Task Bar Hero', 
-        date: '27 May, 2026', 
-        url: 'https://store.steampowered.com/app/3678970',
-        image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3'
-    }
-];
+        var steamGames = [
+            { title: 'Counter-Strike 2', date: '21 Aug, 2012', url: 'https://store.steampowered.com/app/730', image: 'https://wallpapercave.com/wp/wp12803829.jpg' },
+            { title: 'PUBG: BATTLEGROUNDS', date: '21 Dec, 2017', url: 'https://store.steampowered.com/app/578080', image: 'https://wallpaperaccess.com/full/810309.jpg' },
+            { title: 'Warframe', date: '25 Mar, 2013', url: 'https://store.steampowered.com/app/230410', image: 'https://www-static.warframe.com/images/landing/warframe-metacard.png' },
+            { title: 'Marvel Rivals', date: '6 Dec, 2024', url: 'https://store.steampowered.com/app/2767030', image: 'https://www.charlieintel.com/cdn-image/wp-content/uploads/2024/03/29/Marvel-Rivals-Game-Modes-Explained.jpg?width=1080&quality=75&format=auto' },
+            { title: 'Wuthering Waves', date: '28 Apr, 2025', url: 'https://store.steampowered.com/app/3513350', image: 'https://tiermaker.com/images/media/hero_images/2024/16913411/wuthering-waves-tier-list-16913411/169134111719697675.jpg' },
+            { title: 'Apex Legends', date: '5 Nov, 2020', url: 'https://store.steampowered.com/app/1172470', image: 'https://images.wallpapersden.com/image/download/apex-legends-season-18_bmZmZmuUmZqaraWkpJRmbmdlrWZlbWU.jpg' },
+            { title: 'The Sims 4', date: '18 Jun, 2020', url: 'https://store.steampowered.com/app/1222670', image: 'https://drop-assets.ea.com/images/3TVfXhrTgzhtM51RMVsywI/bd83de7daaccdd70c31d981ba52818ae/ts4-basegame-packart-16x9-en.png?im=AspectCrop=(4,3),xPosition=0.5,yPosition=0.5' },
+            { title: 'Rainbow Six Siege', date: '1 Dec, 2015', url: 'https://store.steampowered.com/app/359550', image: 'https://gamingbolt.com/wp-content/uploads/2025/03/rainbow-six-siege-x.jpg' },
+            { title: 'Dota 2', date: '9 Jul, 2013', url: 'https://store.steampowered.com/app/570', image: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/06/dota-2-heroes.jpg' },
+            { title: 'War Thunder', date: '15 Aug, 2013', url: 'https://store.steampowered.com/app/236390', image: 'https://th.bing.com/th/id/R.92b827130b8d8db18711d49c2ebf0ec2?rik=ciPigECl%2bpzFvg&riu=http%3a%2f%2fwarthunder.com%2fupload%2fimage%2fwallpapers%2f1-55_2560x1440_logo_eng.jpg&ehk=EbJugdARTtVxnTyKUVesRCRkQDIy9AQXpQXE9cfA5cU%3d&risl=&pid=ImgRaw&r=0' },
+            { title: 'NARAKA: BLADEPOINT', date: '12 Aug, 2021', url: 'https://store.steampowered.com/app/1203220', image: 'https://cdn.alza.cz/Foto/ImgGalery/Image/naraka-bladepoint-recenze-key-art.jpg' },
+            { title: 'Overwatch 2', date: '10 Aug, 2023', url: 'https://store.steampowered.com/app/2357570', image: 'https://cdn.wccftech.com/wp-content/uploads/2024/07/Overwatch2-HD-scaled.jpg' },
+            { title: 'Destiny 2', date: '1 Oct, 2019', url: 'https://store.steampowered.com/app/1085660', image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c' },
+            { title: 'TBH: Task Bar Hero', date: '27 May, 2026', url: 'https://store.steampowered.com/app/3678970', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3' }
+        ];
 
         var container = document.getElementById('steamGames');
-      container.innerHTML = steamGames.map(function(game) {
-    return '<div class="steam-game-card">' +
-        '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
-        '<div class="fallback" style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>' +
-        '<span class="steam-badge-free">Free to Play</span>' +
-        '<h3 class="steam-game-title">' + game.title + '</h3>' +
-        '<p class="steam-game-date">📅 ' + game.date + '</p>' +
-        '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
-        '</div>';
-}).join('');
+        container.innerHTML = steamGames.map(function(game) {
+            return '<div class="steam-game-card">' +
+                '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
+                '<div class="fallback" style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>' +
+                '<span class="steam-badge-free">Free to Play</span>' +
+                '<h3 class="steam-game-title">' + game.title + '</h3>' +
+                '<p class="steam-game-date">📅 ' + game.date + '</p>' +
+                '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
+                '</div>';
+        }).join('');
+
+        document.getElementById('langDropdownBtn').onclick = function(e) {
+            e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open');
+        };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var lang = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = lang.toUpperCase();
+                localStorage.setItem('lang', lang); location.reload();
+            };
+        });
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+
+        function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+        function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
     </script>
-<script>
-document.getElementById('langDropdownBtn').onclick = function(e) {
-    e.stopPropagation();
-    document.getElementById('langDropdownContent').classList.toggle('open');
-};
-document.addEventListener('click', function() {
-    document.getElementById('langDropdownContent').classList.remove('open');
-});
-document.querySelectorAll('.lang-option').forEach(function(opt) {
-    opt.onclick = function(e) {
-        e.preventDefault();
-        var lang = this.dataset.lang;
-        document.getElementById('currentLangText').textContent = lang.toUpperCase();
-        localStorage.setItem('lang', lang);
-        location.reload();
-        document.getElementById('langDropdownContent').classList.remove('open');
-    };
-});
-</script>
 </body>
 </html>
