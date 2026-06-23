@@ -412,7 +412,12 @@
 
     // Админ-доступ через поле ввода
 document.querySelector('.prize-title').addEventListener('dblclick', function() {
-    document.getElementById('adminPanel').style.display = 'block';
+    var panel = document.getElementById('adminPanel');
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+    } else {
+        panel.style.display = 'block';
+    }
 });
 
     // Проверка победителя при загрузке
