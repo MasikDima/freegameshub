@@ -340,29 +340,50 @@ footer {
     }
 
     function submitEntry() {
-        var username = document.getElementById('telegramInput').value;
-        if (!username) { alert('Введи Telegram @username!'); return; }
-        
-        db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
-            if (!snapshot.empty) {
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
-                return;
-            }
-            var hasPlayed = localStorage.getItem('giveawayPlayed');
-            if (hasPlayed) {
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
-                return;
-            }
-            db.collection('giveaway_entries').add({
-                username: username, date: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(function() {
-                localStorage.setItem('giveawayPlayed', 'true');
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
-                updateParticipants();
-                checkWinner();
+    var username = document.getElementById('telegramInput').value;
+    if (!username) { alert('Введи Telegram @username!'); return; }
+    
+    // Получаем IP пользователя
+    fetch('https://api.ipify.org?format=json')
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            var ip = data.ip;
+            
+            // Проверяем @username
+            db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
+                if (!snapshot.empty) {
+                    document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
+                    return;
+                }
+                
+                // Проверяем IP
+                db.collection('giveaway_entries').where('ip', '==', ip).get().then(function(ipSnapshot) {
+                    if (!ipSnapshot.empty) {
+                        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого IP уже участвовали!</h3>';
+                        return;
+                    }
+                    
+                    var hasPlayed = localStorage.getItem('giveawayPlayed');
+                    if (hasPlayed) {
+                        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
+                        return;
+                    }
+                    
+                    // Сохраняем с IP
+                    db.collection('giveaway_entries').add({
+                        username: username,
+                        ip: ip,
+                        date: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(function() {
+                        localStorage.setItem('giveawayPlayed', 'true');
+                        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
+                        updateParticipants();
+                        checkWinner();
+                    });
+                });
             });
         });
-    }
+}
 
     function checkWinner() {
         db.collection('giveaway_entries').get().then(function(snapshot) {
