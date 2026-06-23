@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Games Hub - Бесплатные игры</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=50">
+    <link rel="stylesheet" href="style.css?v=55">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
@@ -33,142 +33,59 @@
             transform: translateY(-10px);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
-        .category-card.epic:hover {
-            border-color: rgba(233, 69, 96, 0.6);
-            box-shadow: 0 20px 50px rgba(233, 69, 96, 0.2);
-        }
-        .category-card.steam:hover {
-            border-color: rgba(0, 136, 204, 0.6);
-            box-shadow: 0 20px 50px rgba(0, 136, 204, 0.2);
-        }
-        .category-card.ps:hover {
-            border-color: rgba(0, 112, 204, 0.6);
-            box-shadow: 0 20px 50px rgba(0, 112, 204, 0.2);
-        }
-        .category-card.xbox:hover {
-            border-color: rgba(16, 124, 16, 0.6);
-            box-shadow: 0 20px 50px rgba(16, 124, 16, 0.2);
-        }
-        .category-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        .category-card-inner {
-            padding: 25px 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .category-title {
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-        .category-count {
-            color: #aaa;
-            font-size: 14px;
-            margin-bottom: 18px;
-            flex: 1;
-        }
+        .category-card.epic:hover { border-color: rgba(233, 69, 96, 0.6); box-shadow: 0 20px 50px rgba(233, 69, 96, 0.2); }
+        .category-card.steam:hover { border-color: rgba(0, 136, 204, 0.6); box-shadow: 0 20px 50px rgba(0, 136, 204, 0.2); }
+        .category-card.ps:hover { border-color: rgba(0, 112, 204, 0.6); box-shadow: 0 20px 50px rgba(0, 112, 204, 0.2); }
+        .category-card.xbox:hover { border-color: rgba(16, 124, 16, 0.6); box-shadow: 0 20px 50px rgba(16, 124, 16, 0.2); }
+        .category-card img { width: 100%; height: 180px; object-fit: cover; }
+        .category-card-inner { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; }
+        .category-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; letter-spacing: 1px; }
+        .category-count { color: #aaa; font-size: 14px; margin-bottom: 18px; flex: 1; }
         .category-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 13px;
-            transition: all 0.3s;
-            margin-top: auto;
+            display: inline-block; padding: 12px 30px; border-radius: 30px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; font-size: 13px; transition: all 0.3s; margin-top: auto;
         }
         .btn-epic { background: linear-gradient(135deg, #ff0080, #e94560); color: white; }
         .btn-steam { background: linear-gradient(135deg, #0088cc, #00aaff); color: white; }
         .btn-ps { background: linear-gradient(135deg, #003087, #0070cc); color: white; }
         .btn-xbox { background: linear-gradient(135deg, #107c10, #52d452); color: white; }
-        
-        .hero-small {
-            padding: 60px 0 20px;
-            text-align: center;
-        }
+        .hero-small { padding: 60px 0 20px; text-align: center; }
         .hero-small h1 {
-            font-size: 42px;
-            background: linear-gradient(135deg, #ff0080, #f5c518);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 42px; background: linear-gradient(135deg, #ff0080, #f5c518);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .hero-small p {
-            color: #aaa;
-            font-size: 18px;
+        .hero-small p { color: #aaa; font-size: 18px; }
+
+        /* Бургер-меню */
+        .burger-menu { display: none; cursor: pointer; font-size: 24px; color: white; }
+        .side-menu {
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
+            background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000;
+            padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        .side-menu.open { left: 0; }
+        .side-menu a {
+            display: block; color: white; text-decoration: none; padding: 15px 10px;
+            font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); transition: all 0.2s;
+        }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; border: none; padding: 0; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 999; display: none;
+        }
+        .overlay.show { display: block; }
+        @media (max-width: 768px) {
+            .store-nav { display: none; }
+            .burger-menu { display: block; }
         }
     </style>
-    .burger-menu {
-        display: none;
-        cursor: pointer;
-        font-size: 24px;
-        color: white;
-    }
-    .side-menu {
-        position: fixed;
-        top: 0;
-        left: -280px;
-        width: 280px;
-        height: 100vh;
-        background: rgba(5, 5, 16, 0.98);
-        backdrop-filter: blur(20px);
-        z-index: 1000;
-        padding: 30px 20px;
-        transition: left 0.3s ease;
-        border-right: 1px solid rgba(233, 69, 96, 0.3);
-    }
-    .side-menu.open {
-        left: 0;
-    }
-    .side-menu a {
-        display: block;
-        color: white;
-        text-decoration: none;
-        padding: 15px 10px;
-        font-size: 18px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        transition: all 0.2s;
-    }
-    .side-menu a:hover, .side-menu a.active {
-        color: #ff0080;
-        background: rgba(255,0,128,0.1);
-    }
-    .side-menu .close-btn {
-        text-align: right;
-        font-size: 28px;
-        cursor: pointer;
-        color: #aaa;
-        border: none;
-        padding: 0;
-    }
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.6);
-        z-index: 999;
-        display: none;
-    }
-    .overlay.show {
-        display: block;
-    }
-    @media (max-width: 768px) {
-        .store-nav { display: none; }
-        .burger-menu { display: block; }
-    }
-</style>
 </head>
 <body>
 
     <header>
         <div class="container">
+            <span class="burger-menu" onclick="openMenu()">☰</span>
             <div class="logo">
                 <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
                 <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
@@ -219,7 +136,6 @@
                         <span class="category-btn btn-epic" data-key="epic-btn">Смотреть игры</span>
                     </div>
                 </a>
-
                 <a href="steam.html" class="category-card steam">
                     <img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg" alt="Steam">
                     <div class="category-card-inner">
@@ -228,7 +144,6 @@
                         <span class="category-btn btn-steam" data-key="steam-btn">Смотреть игры</span>
                     </div>
                 </a>
-
                 <a href="ps.html" class="category-card ps">
                     <img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg" alt="PlayStation">
                     <div class="category-card-inner">
@@ -237,7 +152,6 @@
                         <span class="category-btn btn-ps" data-key="ps-btn">Смотреть игры</span>
                     </div>
                 </a>
-
                 <a href="xbox.html" class="category-card xbox">
                     <img src="https://logodix.com/logo/20376.jpg" alt="Xbox">
                     <div class="category-card-inner">
@@ -268,6 +182,18 @@
         </div>
     </footer>
 
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="close-btn" onclick="closeMenu()">✕</div>
+        <a href="index.html" class="active"><i class="fas fa-home"></i> Главная</a>
+        <a href="epic.html"><i class="fas fa-gift"></i> Epic Games</a>
+        <a href="steam.html"><i class="fab fa-steam"></i> Steam</a>
+        <a href="ps.html"><i class="fab fa-playstation"></i> PlayStation</a>
+        <a href="xbox.html"><i class="fab fa-xbox"></i> Xbox</a>
+        <a href="giveaway.html"><i class="fas fa-trophy"></i> Розыгрыш</a>
+        <a href="history.html"><i class="fas fa-history"></i> История</a>
+    </div>
+
     <script src="script.js?v=50"></script>
     <script>
         var firebaseConfig = {
@@ -280,52 +206,37 @@
         };
         firebase.initializeApp(firebaseConfig);
         var db = firebase.firestore();
-
         var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
         localStorage.setItem('sessionId', sessionId);
-
         var onlineRef = db.collection('online').doc(sessionId);
         onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-
-        window.addEventListener('beforeunload', function() {
-            onlineRef.delete();
-        });
-
-        setInterval(function() {
-            onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        }, 30000);
-
+        window.addEventListener('beforeunload', function() { onlineRef.delete(); });
+        setInterval(function() { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 30000);
         setInterval(function() {
             var oneMinuteAgo = new Date(Date.now() - 60000);
-            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(snapshot) {
-                snapshot.forEach(function(doc) { doc.ref.delete(); });
-            });
+            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
         }, 60000);
-
         function updateCounters() {
-            db.collection('online').get().then(function(snapshot) {
-                document.getElementById('onlineCount').textContent = snapshot.size;
-            });
-            db.collection('stats').doc('visitors').get().then(function(doc) {
-                document.getElementById('totalVisitors').textContent = doc.data().count || 0;
-            });
+            db.collection('online').get().then(function(s) { document.getElementById('onlineCount').textContent = s.size; });
+            db.collection('stats').doc('visitors').get().then(function(d) { document.getElementById('totalVisitors').textContent = d.data().count || 0; });
         }
-
         var visited = sessionStorage.getItem('visited');
         if (!visited) {
             sessionStorage.setItem('visited', 'true');
             var totalRef = db.collection('stats').doc('visitors');
-            db.runTransaction(function(transaction) {
-                return transaction.get(totalRef).then(function(doc) {
-                    var count = (doc.data() && doc.data().count) || 0;
-                    transaction.set(totalRef, { count: count + 1 }, { merge: true });
-                    return count + 1;
+            db.runTransaction(function(t) {
+                return t.get(totalRef).then(function(d) {
+                    var c = (d.data() && d.data().count) || 0;
+                    t.set(totalRef, { count: c + 1 }, { merge: true });
+                    return c + 1;
                 });
             });
         }
-
         setInterval(updateCounters, 5000);
         updateCounters();
+
+        function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+        function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
     </script>
 </body>
 </html>
