@@ -5,67 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xbox - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=35">
+    <link rel="stylesheet" href="style.css?v=55">
     <style>
-        .xbox-games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-        .xbox-game-card {
-            background: rgba(10, 10, 30, 0.7);
-            border: 1px solid rgba(16, 124, 16, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-        .xbox-game-card:hover {
-            border-color: rgba(16, 124, 16, 0.6);
-            box-shadow: 0 0 25px rgba(16, 124, 16, 0.2);
-            transform: translateY(-3px);
-        }
-        .xbox-game-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        .xbox-badge-free {
-            display: inline-block;
-            background: linear-gradient(135deg, #107c10, #52d452);
-            color: white;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(16, 124, 16, 0.3);
-            margin-bottom: 12px;
-        }
-        .xbox-btn {
-            display: block;
-            text-align: center;
-            background: linear-gradient(135deg, #107c10, #52d452);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            margin-top: 12px;
-            transition: all 0.3s;
-        }
-        .xbox-btn:hover {
-            box-shadow: 0 0 25px rgba(16, 124, 16, 0.5);
-        }
+        .xbox-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px 0; }
+        .xbox-game-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(16, 124, 16, 0.2); border-radius: 12px; padding: 20px; transition: all 0.3s; backdrop-filter: blur(10px); }
+        .xbox-game-card:hover { border-color: rgba(16, 124, 16, 0.6); box-shadow: 0 0 25px rgba(16, 124, 16, 0.2); transform: translateY(-3px); }
+        .xbox-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .xbox-badge-free { display: inline-block; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(16, 124, 16, 0.3); margin-bottom: 12px; }
+        .xbox-btn { display: block; text-align: center; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
+        .xbox-btn:hover { box-shadow: 0 0 25px rgba(16, 124, 16, 0.5); }
+
+        .burger-menu { display: none; cursor: pointer; font-size: 24px; color: white; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
+        @media (max-width: 768px) { .store-nav { display: none; } .burger-menu { display: block; } }
     </style>
 </head>
 <body>
 
     <header>
         <div class="container">
+            <span class="burger-menu" onclick="openMenu()">☰</span>
             <div class="logo">
                 <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
                 <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
@@ -94,7 +59,7 @@
             <a href="steam.html" class="store-link"><i class="fab fa-steam"></i> Steam</a>
             <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
             <a href="xbox.html" class="store-link active"><i class="fab fa-xbox"></i> Xbox</a>
-            <a href="giveaway.html" class="store-link"><i class="fas fa-trophy"></i> Розыгрыш</a>  
+            <a href="giveaway.html" class="store-link"><i class="fas fa-trophy"></i> Розыгрыш</a>
         </div>
     </nav>
 
@@ -128,6 +93,18 @@
         </div>
     </footer>
 
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="close-btn" onclick="closeMenu()">✕</div>
+        <a href="index.html"><i class="fas fa-home"></i> Главная</a>
+        <a href="epic.html"><i class="fas fa-gift"></i> Epic Games</a>
+        <a href="steam.html"><i class="fab fa-steam"></i> Steam</a>
+        <a href="ps.html"><i class="fab fa-playstation"></i> PlayStation</a>
+        <a href="xbox.html" class="active"><i class="fab fa-xbox"></i> Xbox</a>
+        <a href="giveaway.html"><i class="fas fa-trophy"></i> Розыгрыш</a>
+        <a href="history.html"><i class="fas fa-history"></i> История</a>
+    </div>
+
     <script>
         var xboxGames = [
             { title: 'Junkster', image: 'https://th.bing.com/th?id=OIF.lckp6Jj3qhJ%2fPYhltMqlvA&rs=1&pid=ImgDetMain&o=7&rm=3', url: 'https://www.xbox.com/ru-RU/games/store/junkster/9NZPKBFF0CV9' },
@@ -148,24 +125,16 @@
                 '</div>';
         }).join('');
 
-        document.getElementById('langDropdownBtn').onclick = function(e) {
-            e.stopPropagation();
-            document.getElementById('langDropdownContent').classList.toggle('open');
-        };
-        document.addEventListener('click', function() {
-            document.getElementById('langDropdownContent').classList.remove('open');
-        });
+        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) {
-                e.preventDefault();
-                var lang = this.dataset.lang;
-                document.getElementById('currentLangText').textContent = lang.toUpperCase();
-                localStorage.setItem('lang', lang);
-                location.reload();
-            };
+            opt.onclick = function(e) { e.preventDefault(); var lang = this.dataset.lang; document.getElementById('currentLangText').textContent = lang.toUpperCase(); localStorage.setItem('lang', lang); location.reload(); };
         });
         var savedLang = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+
+        function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+        function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
     </script>
 </body>
 </html>
