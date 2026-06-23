@@ -411,13 +411,19 @@
     }
 
     // Админ-доступ через поле ввода
-document.querySelector('.prize-title').addEventListener('dblclick', function() {
-    var panel = document.getElementById('adminPanel');
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
-    } else {
-        panel.style.display = 'block';
+var clickCount = 0;
+document.querySelector('.prize-title').addEventListener('click', function() {
+    clickCount++;
+    if (clickCount >= 3) {
+        clickCount = 0;
+        var panel = document.getElementById('adminPanel');
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+        }
     }
+    setTimeout(function() { clickCount = 0; }, 1000);
 });
 
     // Проверка победителя при загрузке
