@@ -393,22 +393,27 @@
     }
 
     function resetGiveaway() {
-        if (confirm('Точно сбросить розыгрыш? Все участники и победитель будут удалены.')) {
-            db.collection('giveaway_entries').get().then(function(snapshot) {
-                snapshot.forEach(function(doc) { doc.ref.delete(); });
-            });
-            db.collection('giveaway_winner').get().then(function(snapshot) {
-                snapshot.forEach(function(doc) { doc.ref.delete(); });
-            });
-            localStorage.removeItem('giveawayPlayed');
-            localStorage.removeItem('giveawayEntries');
-            document.getElementById('winForm').style.display = 'none';
-            document.getElementById('btnPlay').style.display = 'inline-block';
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('participantsCount').textContent = 'Участников: 0';
-            alert('✅ Розыгрыш сброшен!');
-        }
+    var password = prompt('Введите пароль для сброса:');
+    if (password !== '10031995') {
+        alert('❌ Неверный пароль!');
+        return;
     }
+    if (confirm('Точно сбросить розыгрыш? Все участники и победитель будут удалены.')) {
+        db.collection('giveaway_entries').get().then(function(snapshot) {
+            snapshot.forEach(function(doc) { doc.ref.delete(); });
+        });
+        db.collection('giveaway_winner').get().then(function(snapshot) {
+            snapshot.forEach(function(doc) { doc.ref.delete(); });
+        });
+        localStorage.removeItem('giveawayPlayed');
+        localStorage.removeItem('giveawayEntries');
+        document.getElementById('winForm').style.display = 'none';
+        document.getElementById('btnPlay').style.display = 'inline-block';
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('participantsCount').textContent = 'Участников: 0';
+        alert('✅ Розыгрыш сброшен!');
+    }
+}
 
     // Админ-доступ через поле ввода
 var clickCount = 0;
