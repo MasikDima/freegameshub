@@ -6,6 +6,8 @@
     <title>Розыгрыши - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=45">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         .giveaway-container {
             max-width: 600px;
@@ -189,6 +191,19 @@
     </footer>
 
     <script>
+    // Firebase
+    var firebaseConfig = {
+        apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+        authDomain: "freegameshub-11215.firebaseapp.com",
+        projectId: "freegameshub-11215",
+        storageBucket: "freegameshub-11215.firebasestorage.app",
+        messagingSenderId: "881848736998",
+        appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+    // Игра
     var canvas = document.getElementById('gameCanvas');
     var ctx = canvas.getContext('2d');
     var bird = { x: 80, y: 250, size: 22, velocity: 0 };
@@ -206,14 +221,14 @@
     var PIPE_INTERVAL = 1.8;
 
     function startGame() {
-    if (gameRunning) return;
-    
-    var hasPlayed = localStorage.getItem('giveawayPlayed');
-    if (hasPlayed) {
-        document.getElementById('winForm').style.display = 'block';
-        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Ты уже участвовал с этого устройства!</h3>';
-        return;
-    }
+        if (gameRunning) return;
+        
+        var hasPlayed = localStorage.getItem('giveawayPlayed');
+        if (hasPlayed) {
+            document.getElementById('winForm').style.display = 'block';
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Ты уже участвовал с этого устройства!</h3>';
+            return;
+        }
         
         canvas.style.display = 'block';
         document.getElementById('gameScore').style.display = 'block';
@@ -263,11 +278,7 @@
         bird.velocity += GRAVITY * dt;
         bird.y += bird.velocity * dt;
         
-        // Подарок
-        var bx = bird.x;
-        var by = bird.y;
-        var s = bird.size;
-        
+        var bx = bird.x, by = bird.y, s = bird.size;
         ctx.fillStyle = '#e94560';
         ctx.fillRect(bx - s, by - s, s * 2, s * 2);
         ctx.fillStyle = '#ff0080';
@@ -289,8 +300,7 @@
         pipeTimer += dt;
         if (pipeTimer >= PIPE_INTERVAL) {
             pipeTimer = 0;
-            var minHeight = 30;
-            var maxHeight = canvas.height - PIPE_GAP - 30;
+            var minHeight = 30, maxHeight = canvas.height - PIPE_GAP - 30;
             var pipeHeight = Math.random() * (maxHeight - minHeight) + minHeight;
             pipes.push({ x: canvas.width, topHeight: pipeHeight, scored: false });
         }
@@ -319,10 +329,8 @@
                 updateScore();
             }
             
-            var birdLeft = bird.x - bird.size;
-            var birdRight = bird.x + bird.size;
-            var birdTop = bird.y - bird.size;
-            var birdBottom = bird.y + bird.size;
+            var birdLeft = bird.x - bird.size, birdRight = bird.x + bird.size;
+            var birdTop = bird.y - bird.size, birdBottom = bird.y + bird.size;
             
             if (birdRight > pipe.x && birdLeft < pipe.x + PIPE_WIDTH) {
                 if (birdTop < pipe.topHeight || birdBottom > bottomPipeY) {
@@ -331,9 +339,7 @@
                 }
             }
             
-            if (pipe.x < -PIPE_WIDTH) {
-                pipes.splice(i, 1);
-            }
+            if (pipe.x < -PIPE_WIDTH) pipes.splice(i, 1);
         }
         
         if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) {
@@ -341,9 +347,7 @@
             return;
         }
         
-        if (gameRunning) {
-            requestAnimationFrame(gameLoop);
-        }
+        if (gameRunning) requestAnimationFrame(gameLoop);
     }
 
     function endGame() {
@@ -358,49 +362,43 @@
     }
 
     function submitEntry() {
-    var username = document.getElementById('telegramInput').value;
-    if (!username) { alert('Введи Telegram @username!'); return; }
-    
-    // Проверяем, не участвовал ли уже этот пользователь
-    var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-    var alreadyEntered = entries.some(function(e) { return e.username === username; });
-    if (alreadyEntered) {
-        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
-        return;
+        var username = document.getElementById('telegramInput').value;
+        if (!username) { alert('Введи Telegram @username!'); return; }
+        
+        db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
+            if (!snapshot.empty) {
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
+                return;
+            }
+            
+            var hasPlayed = localStorage.getItem('giveawayPlayed');
+            if (hasPlayed) {
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
+                return;
+            }
+            
+            db.collection('giveaway_entries').add({
+                username: username,
+                date: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                localStorage.setItem('giveawayPlayed', 'true');
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
+                updateParticipants();
+            });
+        });
     }
-    
-    // Проверяем, не участвовал ли с этого устройства
-    var hasPlayed = localStorage.getItem('giveawayPlayed');
-    if (hasPlayed) {
-        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
-        return;
-    }
-    
-    entries.push({ username: username, date: new Date().toISOString() });
-    localStorage.setItem('giveawayEntries', JSON.stringify(entries));
-    localStorage.setItem('giveawayPlayed', 'true');
-    
-    document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
-    updateParticipants();
-}
+
     function updateParticipants() {
-        var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-        document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
+        db.collection('giveaway_entries').get().then(function(snapshot) {
+            document.getElementById('participantsCount').textContent = 'Участников: ' + snapshot.size;
+        });
     }
 
     document.addEventListener('keydown', function(e) {
-        if (e.code === 'Space') {
-            e.preventDefault();
-            jump();
-        }
+        if (e.code === 'Space') { e.preventDefault(); jump(); }
     });
-    canvas.addEventListener('click', function() {
-        jump();
-    });
-    canvas.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        jump();
-    });
+    canvas.addEventListener('click', jump);
+    canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
 
     document.getElementById('langDropdownBtn').onclick = function(e) {
         e.stopPropagation();
