@@ -149,7 +149,6 @@
             <a href="ps.html" class="store-link"><i class="fab fa-playstation"></i> PlayStation</a>
             <a href="xbox.html" class="store-link"><i class="fab fa-xbox"></i> Xbox</a>
             <a href="giveaway.html" class="store-link active"><i class="fas fa-trophy"></i> Розыгрыш</a>
-            <a href="cabinet.html" class="store-link"><i class="fas fa-user"></i> Кабинет</a>
         </div>
     </nav>
 
@@ -174,7 +173,7 @@
             
             <div class="win-form" id="winForm">
                 <h3 style="color:#4ecca3;margin-bottom:15px;">✅ 20 очков! Ты участвуешь!</h3>
-                <input type="email" id="emailInput" placeholder="Твой Email">
+                <input type="text" id="telegramInput" placeholder="@username">
                 <br>
                 <button class="btn-submit" onclick="submitEntry()">🎁 Участвовать!</button>
             </div>
@@ -257,25 +256,27 @@
         bird.velocity += GRAVITY * dt;
         bird.y += bird.velocity * dt;
         
+        // Подарок
+        var bx = bird.x;
+        var by = bird.y;
+        var s = bird.size;
+        
+        ctx.fillStyle = '#e94560';
+        ctx.fillRect(bx - s, by - s, s * 2, s * 2);
+        ctx.fillStyle = '#ff0080';
+        ctx.fillRect(bx - s - 3, by - s - 5, s * 2 + 6, 10);
         ctx.fillStyle = '#f5c518';
+        ctx.fillRect(bx - 4, by - s, 8, s * 2);
+        ctx.fillRect(bx - s, by - 4, s * 2, 8);
         ctx.beginPath();
-        ctx.arc(bird.x, bird.y, bird.size, 0, Math.PI * 2);
+        ctx.arc(bx - 8, by - s - 2, 8, 0, Math.PI * 2);
         ctx.fill();
-        
-        ctx.fillStyle = '#fff';
         ctx.beginPath();
-        ctx.arc(bird.x + 8, bird.y - 3, 7, 0, Math.PI * 2);
+        ctx.arc(bx + 8, by - s - 2, 8, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = '#ff8c00';
         ctx.beginPath();
-        ctx.arc(bird.x + 9, bird.y - 3, 3, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.fillStyle = '#ff6600';
-        ctx.beginPath();
-        ctx.moveTo(bird.x + bird.size, bird.y);
-        ctx.lineTo(bird.x + bird.size + 12, bird.y - 2);
-        ctx.lineTo(bird.x + bird.size, bird.y + 4);
+        ctx.arc(bx, by - s - 5, 5, 0, Math.PI * 2);
         ctx.fill();
         
         pipeTimer += dt;
@@ -295,7 +296,6 @@
             pipeGrad.addColorStop(0, '#2ecc71');
             pipeGrad.addColorStop(1, '#27ae60');
             ctx.fillStyle = pipeGrad;
-            
             ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.topHeight);
             ctx.fillStyle = '#1e8449';
             ctx.fillRect(pipe.x - 3, pipe.topHeight - 20, PIPE_WIDTH + 6, 20);
@@ -351,14 +351,14 @@
     }
 
     function submitEntry() {
-        var email = document.getElementById('emailInput').value;
-        if (!email) { alert('Введи email!'); return; }
+        var username = document.getElementById('telegramInput').value;
+        if (!username) { alert('Введи Telegram @username!'); return; }
         
         var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-        entries.push({ email: email, date: new Date().toISOString() });
+        entries.push({ username: username, date: new Date().toISOString() });
         localStorage.setItem('giveawayEntries', JSON.stringify(entries));
         
-        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Результаты на email.</h3>';
+        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
         updateParticipants();
     }
 
@@ -388,6 +388,17 @@
     document.addEventListener('click', function() {
         document.getElementById('langDropdownContent').classList.remove('open');
     });
+    document.querySelectorAll('.lang-option').forEach(function(opt) {
+        opt.onclick = function(e) {
+            e.preventDefault();
+            var lang = this.dataset.lang;
+            document.getElementById('currentLangText').textContent = lang.toUpperCase();
+            localStorage.setItem('lang', lang);
+            location.reload();
+        };
+    });
+    var savedLang = localStorage.getItem('lang') || 'ru';
+    document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
 
     updateParticipants();
 </script>
