@@ -351,17 +351,31 @@
     }
 
     function submitEntry() {
-        var username = document.getElementById('telegramInput').value;
-        if (!username) { alert('Введи Telegram @username!'); return; }
-        
-        var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
-        entries.push({ username: username, date: new Date().toISOString() });
-        localStorage.setItem('giveawayEntries', JSON.stringify(entries));
-        
-        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
-        updateParticipants();
+    var username = document.getElementById('telegramInput').value;
+    if (!username) { alert('Введи Telegram @username!'); return; }
+    
+    // Проверяем, не участвовал ли уже этот пользователь
+    var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
+    var alreadyEntered = entries.some(function(e) { return e.username === username; });
+    if (alreadyEntered) {
+        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
+        return;
     }
-
+    
+    // Проверяем, не участвовал ли с этого устройства
+    var hasPlayed = localStorage.getItem('giveawayPlayed');
+    if (hasPlayed) {
+        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
+        return;
+    }
+    
+    entries.push({ username: username, date: new Date().toISOString() });
+    localStorage.setItem('giveawayEntries', JSON.stringify(entries));
+    localStorage.setItem('giveawayPlayed', 'true');
+    
+    document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
+    updateParticipants();
+}
     function updateParticipants() {
         var entries = JSON.parse(localStorage.getItem('giveawayEntries') || '[]');
         document.getElementById('participantsCount').textContent = 'Участников: ' + entries.length;
