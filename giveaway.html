@@ -9,61 +9,66 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-        .giveaway-container { max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; }
-        .prize-card { background: rgba(10, 10, 30, 0.7); border: 2px solid #f5c518; border-radius: 20px; padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); }
-        .prize-title { font-size: 28px; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #f5c518, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: default; }
-        .prize-game { font-size: 22px; color: #fff; margin-bottom: 10px; }
-        .prize-desc { color: #aaa; margin-bottom: 20px; }
-        .btn-play { display: inline-block; padding: 16px 40px; border-radius: 30px; font-weight: 700; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; cursor: pointer; border: none; transition: all 0.3s; }
-        .btn-play:hover { box-shadow: 0 0 30px rgba(245, 197, 24, 0.6); transform: scale(1.05); }
-        .btn-play:disabled { background: #444; color: #888; cursor: not-allowed; box-shadow: none; }
-        #gameCanvas { display: none; border: 2px solid #f5c518; border-radius: 10px; margin: 20px auto; background: #0a0a2e; }
-        .game-score { font-size: 24px; font-weight: 900; color: #f5c518; margin: 10px 0; display: none; }
-        .game-instructions { color: #aaa; font-size: 14px; margin-top: 10px; display: none; }
-        .win-form { display: none; margin-top: 20px; }
-        .win-form input { padding: 12px 20px; border-radius: 8px; border: 1px solid #f5c518; background: rgba(10, 10, 30, 0.8); color: white; font-size: 16px; width: 100%; max-width: 300px; margin-bottom: 10px; }
-        .win-form .btn-submit { padding: 12px 30px; border-radius: 8px; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
-        .participants-count { color: #aaa; font-size: 14px; margin-top: 15px; }
-        .admin-panel { display: none; margin-bottom: 15px; }
-        .btn-reset { background: #e94560; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; }
-        .btn-reset:hover { background: #ff0080; }
-        .archive-item { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; margin-bottom: 10px; text-align: left; }
-        body { display: flex; flex-direction: column; min-height: 100vh; }
-        footer { margin-top: auto; }
+    .giveaway-container { max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+    .prize-card { background: rgba(10, 10, 30, 0.7); border: 2px solid #f5c518; border-radius: 20px; padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); }
+    .prize-title { font-size: 28px; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #f5c518, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: default; }
+    .prize-game { font-size: 22px; color: #fff; margin-bottom: 10px; }
+    .prize-desc { color: #aaa; margin-bottom: 20px; }
+    .btn-play { display: inline-block; padding: 16px 40px; border-radius: 30px; font-weight: 700; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; cursor: pointer; border: none; transition: all 0.3s; }
+    .btn-play:hover { box-shadow: 0 0 30px rgba(245, 197, 24, 0.6); transform: scale(1.05); }
+    .btn-play:disabled { background: #444; color: #888; cursor: not-allowed; box-shadow: none; }
+    #gameCanvas { display: none; border: 2px solid #f5c518; border-radius: 10px; margin: 20px auto; background: #0a0a2e; }
+    .game-score { font-size: 24px; font-weight: 900; color: #f5c518; margin: 10px 0; display: none; }
+    .game-instructions { color: #aaa; font-size: 14px; margin-top: 10px; display: none; }
+    .win-form { display: none; margin-top: 20px; }
+    .win-form input { padding: 12px 20px; border-radius: 8px; border: 1px solid #f5c518; background: rgba(10, 10, 30, 0.8); color: white; font-size: 16px; width: 100%; max-width: 300px; margin-bottom: 10px; }
+    .win-form .btn-submit { padding: 12px 30px; border-radius: 8px; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
+    .participants-count { color: #aaa; font-size: 14px; margin-top: 15px; }
+    .admin-panel { display: none; margin-bottom: 15px; }
+    .btn-reset { background: #e94560; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; }
+    .btn-reset:hover { background: #ff0080; }
+    .archive-item { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; margin-bottom: 10px; text-align: left; }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    footer { margin-top: auto; }
 
-        .burger-menu { display: none; cursor: pointer; font-size: 24px; color: white; }
-        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
-        .side-menu.open { left: 0; }
-        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-        .overlay.show { display: block; }
-        @media (max-width: 768px) { .store-nav { display: none; } .burger-menu { display: block; } }
-    </style>
+    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
+    .side-menu.open { left: 0; }
+    .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+    .overlay.show { display: block; }
+    @media (max-width: 768px) {
+        .store-nav { display: none; }
+        .burger-menu { display: block; }
+        header .container { flex-wrap: wrap; }
+        .logo { order: 1; width: 100%; text-align: center; margin-bottom: 10px; }
+        .burger-menu { order: 2; }
+        .header-right { order: 3; }
+    }
+</style>
 </head>
 <body>
 
     <header>
-    <div class="container">
-        <div class="logo" style="text-align:center;margin-bottom:12px;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="logo">
             <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
             <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
-            <span class="burger-menu" onclick="openMenu()" style="font-size:44px;">☰</span>
-            <div style="display:flex;align-items:center;gap:15px;">
-                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-                <div class="lang-dropdown">
-                    <button class="lang-dropdown-btn" id="langDropdownBtn">
-                        <span id="currentLangText">RU</span>
-                        <span class="arrow">▼</span>
-                    </button>
-                    <div class="lang-dropdown-content" id="langDropdownContent">
-                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
-                    </div>
+        <span class="burger-menu" onclick="openMenu()">☰</span>
+        <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+            <div class="lang-dropdown">
+                <button class="lang-dropdown-btn" id="langDropdownBtn">
+                    <span id="currentLangText">RU</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="lang-dropdown-content" id="langDropdownContent">
+                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
                 </div>
             </div>
         </div>
