@@ -411,18 +411,9 @@
     }
 
     // Админ-доступ через поле ввода
-setTimeout(function() {
-    var input = document.getElementById('telegramInput');
-    if (input) {
-        input.addEventListener('input', function() {
-            if (this.value === 'reset123') {
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('winForm').style.display = 'block';
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🔑 Админ-панель</h3>';
-            }
-        });
-    }
-}, 1000);
+document.querySelector('.prize-title').addEventListener('dblclick', function() {
+    document.getElementById('adminPanel').style.display = 'block';
+});
 
     // Проверка победителя при загрузке
     db.collection('giveaway_winner').get().then(function(snapshot) {
