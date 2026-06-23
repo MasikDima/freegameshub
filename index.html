@@ -103,6 +103,67 @@
             font-size: 18px;
         }
     </style>
+    .burger-menu {
+        display: none;
+        cursor: pointer;
+        font-size: 24px;
+        color: white;
+    }
+    .side-menu {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        background: rgba(5, 5, 16, 0.98);
+        backdrop-filter: blur(20px);
+        z-index: 1000;
+        padding: 30px 20px;
+        transition: left 0.3s ease;
+        border-right: 1px solid rgba(233, 69, 96, 0.3);
+    }
+    .side-menu.open {
+        left: 0;
+    }
+    .side-menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 15px 10px;
+        font-size: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.2s;
+    }
+    .side-menu a:hover, .side-menu a.active {
+        color: #ff0080;
+        background: rgba(255,0,128,0.1);
+    }
+    .side-menu .close-btn {
+        text-align: right;
+        font-size: 28px;
+        cursor: pointer;
+        color: #aaa;
+        border: none;
+        padding: 0;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 999;
+        display: none;
+    }
+    .overlay.show {
+        display: block;
+    }
+    @media (max-width: 768px) {
+        .store-nav { display: none; }
+        .burger-menu { display: block; }
+    }
+</style>
 </head>
 <body>
 
