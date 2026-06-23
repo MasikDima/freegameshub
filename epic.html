@@ -12,6 +12,7 @@
     <header>
         <div class="container">
             <div class="logo">
+                <a href="epic.html" class="active"><i class="fas fa-gift"></i> Epic Games</a>
     <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
     <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
 </div>
@@ -102,6 +103,20 @@
         });
         var savedLang = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-    </script>
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<div class="side-menu" id="sideMenu">
+    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <a href="index.html"><i class="fas fa-home"></i> Главная</a>
+    <a href="epic.html" class="active"><i class="fas fa-gift"></i> Epic Games</a>
+    <a href="steam.html"><i class="fab fa-steam"></i> Steam</a>
+    <a href="ps.html"><i class="fab fa-playstation"></i> PlayStation</a>
+    <a href="xbox.html"><i class="fab fa-xbox"></i> Xbox</a>
+    <a href="giveaway.html"><i class="fas fa-trophy"></i> Розыгрыш</a>
+    <a href="history.html"><i class="fas fa-history"></i> История</a>
+</div>
+<script>
+    function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+    function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+</script>
 </body>
 </html>
