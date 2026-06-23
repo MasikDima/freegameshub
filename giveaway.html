@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Розыгрыши - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=45">
+    <link rel="stylesheet" href="style.css?v=50">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
@@ -30,6 +30,7 @@
             background: linear-gradient(135deg, #f5c518, #ff8c00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: default;
         }
         .prize-game {
             font-size: 22px;
@@ -64,7 +65,6 @@
             cursor: not-allowed;
             box-shadow: none;
         }
-        
         #gameCanvas {
             display: none;
             border: 2px solid #f5c518;
@@ -85,7 +85,6 @@
             margin-top: 10px;
             display: none;
         }
-        
         .win-form {
             display: none;
             margin-top: 20px;
@@ -130,17 +129,20 @@
             font-weight: 700;
             font-size: 14px;
         }
-        .btn-reset:hover {
-            background: #ff0080;
+        .btn-reset:hover { background: #ff0080; }
+        .archive-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
         }
         body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-footer {
-    margin-top: auto;
-}
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        footer { margin-top: auto; }
     </style>
 </head>
 <body>
@@ -187,29 +189,45 @@ footer {
     </section>
 
     <div class="giveaway-container">
-        <div class="prize-card">
-            <h2 class="prize-title">🎮 РОЗЫГРЫШ КЛЮЧА</h2>
-            <p class="prize-game">Cyberpunk 2077</p>
-            <p class="prize-desc">Пройди мини-игру и набери 20 очков чтобы участвовать!</p>
-            
-            <div class="game-score" id="gameScore">Счёт: 0</div>
-            <canvas id="gameCanvas" width="400" height="500"></canvas>
-            <p class="game-instructions" id="gameInstructions">Нажимай ПРОБЕЛ или кликай чтобы лететь</p>
-            
-            <div class="admin-panel" id="adminPanel">
-                <button class="btn-reset" onclick="resetGiveaway()">🔄 Сбросить розыгрыш</button>
+        <div style="text-align:center;padding:20px 0 10px 0;">
+            <button class="filter-btn active" onclick="switchGiveawayTab('current', this)">🎮 Текущий</button>
+            <button class="filter-btn" onclick="switchGiveawayTab('archive', this)">📦 Архив</button>
+        </div>
+
+        <div id="currentGiveaway">
+            <div class="prize-card">
+                <h2 class="prize-title">🎮 РОЗЫГРЫШ КЛЮЧА</h2>
+                <p class="prize-game">Cyberpunk 2077</p>
+                <p class="prize-desc">Пройди мини-игру и набери 20 очков чтобы участвовать!</p>
+                
+                <div class="game-score" id="gameScore">Счёт: 0</div>
+                <canvas id="gameCanvas" width="400" height="500"></canvas>
+                <p class="game-instructions" id="gameInstructions">Нажимай ПРОБЕЛ или кликай чтобы лететь</p>
+                
+                <div class="admin-panel" id="adminPanel">
+                    <button class="btn-reset" onclick="resetGiveaway()">🔄 Сбросить розыгрыш</button>
+                </div>
+                
+                <button class="btn-play" id="btnPlay" onclick="startGame()">🎮 Играть!</button>
+                
+                <div class="win-form" id="winForm">
+                    <h3 style="color:#4ecca3;margin-bottom:15px;">✅ 20 очков! Ты участвуешь!</h3>
+                    <input type="text" id="telegramInput" placeholder="@username">
+                    <br>
+                    <button class="btn-submit" onclick="submitEntry()">🎁 Участвовать!</button>
+                </div>
+                
+                <p class="participants-count" id="participantsCount">Участников: 0</p>
             </div>
-            
-            <button class="btn-play" id="btnPlay" onclick="startGame()">🎮 Играть!</button>
-            
-            <div class="win-form" id="winForm">
-                <h3 style="color:#4ecca3;margin-bottom:15px;">✅ 20 очков! Ты участвуешь!</h3>
-                <input type="text" id="telegramInput" placeholder="@username">
-                <br>
-                <button class="btn-submit" onclick="submitEntry()">🎁 Участвовать!</button>
+        </div>
+
+        <div id="archiveGiveaway" style="display:none;">
+            <div class="prize-card">
+                <h2 class="prize-title">📦 Архив розыгрышей</h2>
+                <div id="archiveList">
+                    <p style="color:#aaa;">Загрузка...</p>
+                </div>
             </div>
-            
-            <p class="participants-count" id="participantsCount">Участников: 0</p>
         </div>
     </div>
 
@@ -237,7 +255,6 @@ footer {
     var pipes = [];
     var score = 0;
     var gameRunning = false;
-    var gameStarted = false;
     var lastTime = 0;
     var pipeTimer = 0;
     var GRAVITY = 700;
@@ -247,32 +264,54 @@ footer {
     var PIPE_SPEED = 150;
     var PIPE_INTERVAL = 1.8;
 
+    function switchGiveawayTab(tab, btn) {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        if (tab === 'current') {
+            document.getElementById('currentGiveaway').style.display = 'block';
+            document.getElementById('archiveGiveaway').style.display = 'none';
+        } else {
+            document.getElementById('currentGiveaway').style.display = 'none';
+            document.getElementById('archiveGiveaway').style.display = 'block';
+            loadArchive();
+        }
+    }
+
+    function loadArchive() {
+        db.collection('giveaway_archive').orderBy('date', 'desc').get().then(function(snapshot) {
+            var container = document.getElementById('archiveList');
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="color:#aaa;">Пока нет завершённых розыгрышей.</p>';
+            } else {
+                container.innerHTML = '';
+                snapshot.forEach(function(doc) {
+                    var data = doc.data();
+                    container.innerHTML += '<div class="archive-item">' +
+                        '<p style="font-weight:700;">🎮 ' + data.game + '</p>' +
+                        '<p style="color:#aaa;font-size:14px;">Победитель: <b>' + data.winner + '</b></p>' +
+                        '<p style="color:#666;font-size:12px;">📅 ' + new Date(data.date.toDate()).toLocaleDateString('ru-RU') + '</p>' +
+                        '</div>';
+                });
+            }
+        });
+    }
+
     function startGame() {
         if (gameRunning) return;
-        
         var hasPlayed = localStorage.getItem('giveawayPlayed');
         if (hasPlayed) {
             document.getElementById('winForm').style.display = 'block';
-            document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Ты уже участвовал с этого устройства!</h3>';
+            document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Ты уже участвовал!</h3>';
             return;
         }
-        
         canvas.style.display = 'block';
         document.getElementById('gameScore').style.display = 'block';
         document.getElementById('gameInstructions').style.display = 'block';
         document.getElementById('btnPlay').disabled = true;
         document.getElementById('btnPlay').textContent = '🎮 Играем...';
         document.getElementById('winForm').style.display = 'none';
-        
-        bird.y = 250;
-        bird.velocity = 0;
-        pipes = [];
-        score = 0;
-        lastTime = 0;
-        pipeTimer = 0;
+        bird.y = 250; bird.velocity = 0; pipes = []; score = 0; lastTime = 0; pipeTimer = 0;
         gameRunning = true;
-        gameStarted = true;
-        
         updateScore();
         requestAnimationFrame(gameLoop);
     }
@@ -286,12 +325,10 @@ footer {
         var dt = (timestamp - lastTime) / 1000;
         if (dt > 0.1) dt = 0.1;
         lastTime = timestamp;
-        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
         grad.addColorStop(0, '#0a0a2e'); grad.addColorStop(1, '#050510');
         ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
         bird.velocity += GRAVITY * dt; bird.y += bird.velocity * dt;
         var bx = bird.x, by = bird.y, s = bird.size;
         ctx.fillStyle = '#e94560'; ctx.fillRect(bx - s, by - s, s * 2, s * 2);
@@ -300,14 +337,12 @@ footer {
         ctx.beginPath(); ctx.arc(bx - 8, by - s - 2, 8, 0, Math.PI * 2); ctx.fill();
         ctx.beginPath(); ctx.arc(bx + 8, by - s - 2, 8, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ff8c00'; ctx.beginPath(); ctx.arc(bx, by - s - 5, 5, 0, Math.PI * 2); ctx.fill();
-        
         pipeTimer += dt;
         if (pipeTimer >= PIPE_INTERVAL) {
             pipeTimer = 0;
             var minHeight = 30, maxHeight = canvas.height - PIPE_GAP - 30;
             pipes.push({ x: canvas.width, topHeight: Math.random() * (maxHeight - minHeight) + minHeight, scored: false });
         }
-        
         for (var i = pipes.length - 1; i >= 0; i--) {
             var pipe = pipes[i]; pipe.x -= PIPE_SPEED * dt;
             var pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
@@ -317,16 +352,13 @@ footer {
             var bottomPipeY = pipe.topHeight + PIPE_GAP;
             ctx.fillStyle = pipeGrad; ctx.fillRect(pipe.x, bottomPipeY, PIPE_WIDTH, canvas.height - bottomPipeY);
             ctx.fillStyle = '#1e8449'; ctx.fillRect(pipe.x - 3, bottomPipeY, PIPE_WIDTH + 6, 20);
-            
             if (!pipe.scored && pipe.x + PIPE_WIDTH < bird.x) { pipe.scored = true; score++; updateScore(); }
-            
             var bl = bird.x - bird.size, br = bird.x + bird.size, bt = bird.y - bird.size, bb = bird.y + bird.size;
             if (br > pipe.x && bl < pipe.x + PIPE_WIDTH) {
                 if (bt < pipe.topHeight || bb > bottomPipeY) { endGame(); return; }
             }
             if (pipe.x < -PIPE_WIDTH) pipes.splice(i, 1);
         }
-        
         if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) { endGame(); return; }
         if (gameRunning) requestAnimationFrame(gameLoop);
     }
@@ -340,50 +372,28 @@ footer {
     }
 
     function submitEntry() {
-    var username = document.getElementById('telegramInput').value;
-    if (!username) { alert('Введи Telegram @username!'); return; }
-    
-    // Получаем IP пользователя
-    fetch('https://api.ipify.org?format=json')
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
-            var ip = data.ip;
-            
-            // Проверяем @username
-            db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
-                if (!snapshot.empty) {
-                    document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
-                    return;
-                }
-                
-                // Проверяем IP
-                db.collection('giveaway_entries').where('ip', '==', ip).get().then(function(ipSnapshot) {
-                    if (!ipSnapshot.empty) {
-                        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого IP уже участвовали!</h3>';
-                        return;
-                    }
-                    
-                    var hasPlayed = localStorage.getItem('giveawayPlayed');
-                    if (hasPlayed) {
-                        document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
-                        return;
-                    }
-                    
-                    // Сохраняем с IP
-                    db.collection('giveaway_entries').add({
-                        username: username,
-                        ip: ip,
-                        date: firebase.firestore.FieldValue.serverTimestamp()
-                    }).then(function() {
-                        localStorage.setItem('giveawayPlayed', 'true');
-                        document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре! Победителя объявим в Telegram!</h3>';
-                        updateParticipants();
-                        checkWinner();
-                    });
-                });
+        var username = document.getElementById('telegramInput').value;
+        if (!username) { alert('Введи Telegram @username!'); return; }
+        db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
+            if (!snapshot.empty) {
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>';
+                return;
+            }
+            var hasPlayed = localStorage.getItem('giveawayPlayed');
+            if (hasPlayed) {
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>';
+                return;
+            }
+            db.collection('giveaway_entries').add({
+                username: username, date: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(function() {
+                localStorage.setItem('giveawayPlayed', 'true');
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре!</h3>';
+                updateParticipants();
+                checkWinner();
             });
         });
-}
+    }
 
     function checkWinner() {
         db.collection('giveaway_entries').get().then(function(snapshot) {
@@ -399,13 +409,18 @@ footer {
                         db.collection('giveaway_winner').add({
                             username: winner, masked: masked, date: firebase.firestore.FieldValue.serverTimestamp()
                         });
+                        db.collection('giveaway_archive').add({
+                            game: document.querySelector('.prize-game').textContent,
+                            winner: masked,
+                            date: firebase.firestore.FieldValue.serverTimestamp()
+                        });
                         document.getElementById('winForm').style.display = 'block';
-                        document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + masked + '</b></p>';
+                        document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + masked + '</b></p>';
                         document.getElementById('btnPlay').style.display = 'none';
                     } else {
                         winnerSnap.forEach(function(doc) {
                             document.getElementById('winForm').style.display = 'block';
-                            document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + doc.data().masked + '</b></p>';
+                            document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + doc.data().masked + '</b></p>';
                             document.getElementById('btnPlay').style.display = 'none';
                         });
                     }
@@ -422,64 +437,47 @@ footer {
     }
 
     function resetGiveaway() {
-    var password = prompt('Введите пароль для сброса:');
-    if (password !== '10031995') {
-        alert('❌ Неверный пароль!');
-        return;
-    }
-    if (confirm('Точно сбросить розыгрыш? Все участники и победитель будут удалены.')) {
-        db.collection('giveaway_entries').get().then(function(snapshot) {
-            snapshot.forEach(function(doc) { doc.ref.delete(); });
-        });
-        db.collection('giveaway_winner').get().then(function(snapshot) {
-            snapshot.forEach(function(doc) { doc.ref.delete(); });
-        });
-        localStorage.removeItem('giveawayPlayed');
-        localStorage.removeItem('giveawayEntries');
-        document.getElementById('winForm').style.display = 'none';
-        document.getElementById('btnPlay').style.display = 'inline-block';
-        document.getElementById('adminPanel').style.display = 'none';
-        document.getElementById('participantsCount').textContent = 'Участников: 0';
-        alert('✅ Розыгрыш сброшен!');
-    }
-}
-
-    // Админ-доступ через поле ввода
-var clickCount = 0;
-document.querySelector('.prize-title').addEventListener('click', function() {
-    clickCount++;
-    if (clickCount >= 3) {
-        clickCount = 0;
-        var panel = document.getElementById('adminPanel');
-        if (panel.style.display === 'block') {
-            panel.style.display = 'none';
-        } else {
-            panel.style.display = 'block';
+        var password = prompt('Введите пароль для сброса:');
+        if (password !== '10031995') { alert('❌ Неверный пароль!'); return; }
+        if (confirm('Точно сбросить розыгрыш?')) {
+            db.collection('giveaway_entries').get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+            db.collection('giveaway_winner').get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+            localStorage.removeItem('giveawayPlayed');
+            document.getElementById('winForm').style.display = 'none';
+            document.getElementById('btnPlay').style.display = 'inline-block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('participantsCount').textContent = 'Участников: 0';
+            alert('✅ Розыгрыш сброшен!');
         }
     }
-    setTimeout(function() { clickCount = 0; }, 1000);
-});
 
-    // Проверка победителя при загрузке
+    var clickCount = 0;
+    document.querySelector('.prize-title').addEventListener('click', function() {
+        clickCount++;
+        if (clickCount >= 3) {
+            clickCount = 0;
+            var panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+        setTimeout(function() { clickCount = 0; }, 1000);
+    });
+
     db.collection('giveaway_winner').get().then(function(snapshot) {
         if (!snapshot.empty) {
             snapshot.forEach(function(doc) {
                 document.getElementById('winForm').style.display = 'block';
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p style="font-size:20px;">Победитель: <b>' + doc.data().masked + '</b></p>';
+                document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + doc.data().masked + '</b></p>';
                 document.getElementById('btnPlay').style.display = 'none';
             });
         }
     });
 
-    document.addEventListener('keydown', function(e) {
-        if (e.code === 'Space') { e.preventDefault(); jump(); }
-    });
+    document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
     canvas.addEventListener('click', jump);
     canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
 
     document.getElementById('langDropdownBtn').onclick = function(e) {
-        e.stopPropagation();
-        document.getElementById('langDropdownContent').classList.toggle('open');
+        e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open');
     };
     document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
     document.querySelectorAll('.lang-option').forEach(function(opt) {
@@ -487,8 +485,7 @@ document.querySelector('.prize-title').addEventListener('click', function() {
             e.preventDefault();
             var lang = this.dataset.lang;
             document.getElementById('currentLangText').textContent = lang.toUpperCase();
-            localStorage.setItem('lang', lang);
-            location.reload();
+            localStorage.setItem('lang', lang); location.reload();
         };
     });
     var savedLang = localStorage.getItem('lang') || 'ru';
