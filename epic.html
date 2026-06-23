@@ -16,13 +16,13 @@
     .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
     .overlay.show { display: block; }
     @media (max-width: 768px) {
-        .store-nav { display: none; }
-        .burger-menu { display: block; }
-        header .container { flex-wrap: wrap; }
-        .logo { order: 1; width: 100%; text-align: center; margin-bottom: 10px; }
-        .burger-menu { order: 2; }
-        .header-right { order: 3; }
-    }
+    .store-nav { display: none; }
+    .burger-menu { display: block !important; }
+    header .container { flex-wrap: wrap; justify-content: space-between !important; }
+    .logo { order: 1; width: 100%; text-align: center; margin-bottom: 10px; }
+    .burger-menu { order: 2; margin-right: 0 !important; }
+    .header-right { order: 3; display: flex !important; }
+}
 </style>
 </head>
 <body>
