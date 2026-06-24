@@ -6,103 +6,86 @@
     <title>Free Games Hub - Бесплатные игры</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=55">
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-    .categories-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 25px;
-        padding: 40px 0;
-    }
-    .category-card {
-        background: rgba(10, 10, 30, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        overflow: hidden;
-        text-align: center;
-        transition: all 0.4s;
-        backdrop-filter: blur(10px);
-        text-decoration: none;
-        color: white;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    .category-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
-    .category-card.epic:hover { border-color: rgba(233, 69, 96, 0.6); box-shadow: 0 20px 50px rgba(233, 69, 96, 0.2); }
-    .category-card.steam:hover { border-color: rgba(0, 136, 204, 0.6); box-shadow: 0 20px 50px rgba(0, 136, 204, 0.2); }
-    .category-card.ps:hover { border-color: rgba(0, 112, 204, 0.6); box-shadow: 0 20px 50px rgba(0, 112, 204, 0.2); }
-    .category-card.xbox:hover { border-color: rgba(16, 124, 16, 0.6); box-shadow: 0 20px 50px rgba(16, 124, 16, 0.2); }
-    .category-card img { width: 100%; height: 180px; object-fit: cover; }
-    .category-card-inner { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; }
-    .category-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; letter-spacing: 1px; }
-    .category-count { color: #aaa; font-size: 14px; margin-bottom: 18px; flex: 1; }
-    .category-btn {
-        display: inline-block; padding: 12px 30px; border-radius: 30px; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase; font-size: 13px; transition: all 0.3s; margin-top: auto;
-    }
-    .btn-epic { background: linear-gradient(135deg, #ff0080, #e94560); color: white; }
-    .btn-steam { background: linear-gradient(135deg, #0088cc, #00aaff); color: white; }
-    .btn-ps { background: linear-gradient(135deg, #003087, #0070cc); color: white; }
-    .btn-xbox { background: linear-gradient(135deg, #107c10, #52d452); color: white; }
-    .hero-small { padding: 60px 0 20px; text-align: center; }
-    .hero-small h1 {
-        font-size: 42px; background: linear-gradient(135deg, #ff0080, #f5c518);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero-small p { color: #aaa; font-size: 18px; }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; padding: 40px 0; }
+        .category-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; text-align: center; transition: all 0.4s; backdrop-filter: blur(10px); text-decoration: none; color: white; display: flex; flex-direction: column; }
+        .category-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .category-card img { width: 100%; height: 180px; object-fit: cover; }
+        .category-card-inner { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; }
+        .category-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+        .category-count { color: #aaa; font-size: 14px; margin-bottom: 18px; flex: 1; }
+        .category-btn { display: inline-block; padding: 12px 30px; border-radius: 30px; font-weight: 700; text-transform: uppercase; font-size: 13px; margin-top: auto; }
+        .btn-epic { background: linear-gradient(135deg, #ff0080, #e94560); color: white; }
+        .btn-steam { background: linear-gradient(135deg, #0088cc, #00aaff); color: white; }
+        .btn-ps { background: linear-gradient(135deg, #003087, #0070cc); color: white; }
+        .btn-xbox { background: linear-gradient(135deg, #107c10, #52d452); color: white; }
+        .hero-small { padding: 60px 0 20px; text-align: center; }
+        .hero-small h1 { font-size: 42px; background: linear-gradient(135deg, #ff0080, #f5c518); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-small p { color: #aaa; font-size: 18px; }
 
-    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
-    .side-menu {
-        position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
-        background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000;
-        padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3);
-    }
-    .side-menu.open { left: 0; }
-    .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-    .overlay.show { display: block; }
-.header-container { display: flex; align-items: center; justify-content: space-between; }
-.header-right { display: flex; align-items: center; gap: 15px; }
-.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+        /* Бургер */
+        .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
-@media (max-width: 768px) {
-    .store-nav { display: none; }
-    .header-container { flex-wrap: wrap; }
-    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; }
-    .header-right { margin-left: auto; }
-}
-</style>
+        @media (max-width: 768px) {
+            .store-nav { display: none; }
+            .header-desktop { display: block !important; text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .header-desktop .header-right { display: none; }
+            .mobile-row { display: flex !important; align-items: center; justify-content: space-between; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
+    </style>
 </head>
 <body>
 
     <header>
-    <div class="container header-container">
-        <div class="logo">
-            <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-            <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-        </div>
-        <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+        <!-- ПК версия -->
+        <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn">
+                        <span id="currentLangText">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+        <!-- Мобильная версия -->
+        <div class="container mobile-row" style="display:none;">
+            <span class="burger-menu" onclick="openMenu()">☰</span>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtnMob">
+                        <span id="currentLangTextMob">RU</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="lang-dropdown-content" id="langDropdownContentMob">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <nav class="store-nav">
         <div class="container">
@@ -117,66 +100,24 @@
 
     <section class="hero-small">
         <div class="container">
-            <h1 data-key="hero-title"><i class="fas fa-gamepad"></i> Бесплатные игры</h1>
-            <p data-key="hero-subtitle">Выбери платформу и забирай игры бесплатно!</p>
+            <h1><i class="fas fa-gamepad"></i> Бесплатные игры</h1>
+            <p>Выбери платформу и забирай игры бесплатно!</p>
         </div>
     </section>
 
     <section class="games">
         <div class="container">
             <div class="categories-grid">
-                <a href="epic.html" class="category-card epic">
-                    <img src="https://www.nintenderos.com/wp-content/uploads/2021/02/epic-games-dark-logo.jpg" alt="Epic Games">
-                    <div class="category-card-inner">
-                        <h2 class="category-title">Epic Games</h2>
-                        <p class="category-count" data-key="epic-desc">Бесплатные раздачи каждую неделю</p>
-                        <span class="category-btn btn-epic" data-key="epic-btn">Смотреть игры</span>
-                    </div>
-                </a>
-                <a href="steam.html" class="category-card steam">
-                    <img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg" alt="Steam">
-                    <div class="category-card-inner">
-                        <h2 class="category-title">Steam</h2>
-                        <p class="category-count" data-key="steam-desc">Лучшие free-to-play игры<br>&nbsp;</p>
-                        <span class="category-btn btn-steam" data-key="steam-btn">Смотреть игры</span>
-                    </div>
-                </a>
-                <a href="ps.html" class="category-card ps">
-                    <img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg" alt="PlayStation">
-                    <div class="category-card-inner">
-                        <h2 class="category-title">PlayStation</h2>
-                        <p class="category-count" data-key="ps-desc">PS Plus — 3 игры в месяц<br>&nbsp;</p>
-                        <span class="category-btn btn-ps" data-key="ps-btn">Смотреть игры</span>
-                    </div>
-                </a>
-                <a href="xbox.html" class="category-card xbox">
-                    <img src="https://logodix.com/logo/20376.jpg" alt="Xbox">
-                    <div class="category-card-inner">
-                        <h2 class="category-title">Xbox</h2>
-                        <p class="category-count" data-key="xbox-desc">Game Pass и Games with Gold<br>&nbsp;</p>
-                        <span class="category-btn btn-xbox" data-key="xbox-btn">Смотреть игры</span>
-                    </div>
-                </a>
+                <a href="epic.html" class="category-card epic"><img src="https://www.nintenderos.com/wp-content/uploads/2021/02/epic-games-dark-logo.jpg"><div class="category-card-inner"><h2 class="category-title">Epic Games</h2><p class="category-count">Бесплатные раздачи каждую неделю</p><span class="category-btn btn-epic">Смотреть игры</span></div></a>
+                <a href="steam.html" class="category-card steam"><img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg"><div class="category-card-inner"><h2 class="category-title">Steam</h2><p class="category-count">Лучшие free-to-play игры<br>&nbsp;</p><span class="category-btn btn-steam">Смотреть игры</span></div></a>
+                <a href="ps.html" class="category-card ps"><img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg"><div class="category-card-inner"><h2 class="category-title">PlayStation</h2><p class="category-count">PS Plus — 3 игры в месяц<br>&nbsp;</p><span class="category-btn btn-ps">Смотреть игры</span></div></a>
+                <a href="xbox.html" class="category-card xbox"><img src="https://logodix.com/logo/20376.jpg"><div class="category-card-inner"><h2 class="category-title">Xbox</h2><p class="category-count">Game Pass и Games with Gold<br>&nbsp;</p><span class="category-btn btn-xbox">Смотреть игры</span></div></a>
             </div>
         </div>
     </section>
 
-    <section class="subscribe">
-        <div class="container">
-            <h2 data-key="subscribe-title">Узнай первым!</h2>
-            <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления о новых раздачах</p>
-            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
-        </div>
-    </section>
-
     <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
-            <p style="color:#666;font-size:13px;margin-top:5px;">
-                🟢 Онлайн: <span id="onlineCount" style="color:#4ecca3;">0</span> | 
-                👥 Всего: <span id="totalVisitors" style="color:#f5c518;">0</span>
-            </p>
-        </div>
+        <div class="container"><p>© 2026 Free Games Hub.</p></div>
     </footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
@@ -191,49 +132,30 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script src="script.js?v=50"></script>
     <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
-            authDomain: "freegameshub-11215.firebaseapp.com",
-            projectId: "freegameshub-11215",
-            storageBucket: "freegameshub-11215.firebasestorage.app",
-            messagingSenderId: "881848736998",
-            appId: "1:881848736998:web:a377c4b757e8c026f9af27"
-        };
-        firebase.initializeApp(firebaseConfig);
-        var db = firebase.firestore();
-        var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
-        localStorage.setItem('sessionId', sessionId);
-        var onlineRef = db.collection('online').doc(sessionId);
-        onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        window.addEventListener('beforeunload', function() { onlineRef.delete(); });
-        setInterval(function() { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 30000);
-        setInterval(function() {
-            var oneMinuteAgo = new Date(Date.now() - 60000);
-            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-        }, 60000);
-        function updateCounters() {
-            db.collection('online').get().then(function(s) { document.getElementById('onlineCount').textContent = s.size; });
-            db.collection('stats').doc('visitors').get().then(function(d) { document.getElementById('totalVisitors').textContent = d.data().count || 0; });
-        }
-        var visited = sessionStorage.getItem('visited');
-        if (!visited) {
-            sessionStorage.setItem('visited', 'true');
-            var totalRef = db.collection('stats').doc('visitors');
-            db.runTransaction(function(t) {
-                return t.get(totalRef).then(function(d) {
-                    var c = (d.data() && d.data().count) || 0;
-                    t.set(totalRef, { count: c + 1 }, { merge: true });
-                    return c + 1;
-                });
-            });
-        }
-        setInterval(updateCounters, 5000);
-        updateCounters();
-
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+
+        // Языки для ПК
+        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+        // Языки для мобильной версии
+        document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var lang = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = lang.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = lang.toUpperCase();
+                localStorage.setItem('lang', lang);
+                location.reload();
+            };
+        });
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
     </script>
 </body>
 </html>
