@@ -70,23 +70,25 @@
             </div>
         </div>
         <!-- Мобильная версия -->
-        <div class="container mobile-row" style="display:none;">
-            <span class="burger-menu" onclick="openMenu()">☰</span>
-            <div style="display:flex;align-items:center;gap:10px;">
-                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-                <div class="lang-dropdown">
-                    <button class="lang-dropdown-btn" id="langDropdownBtnMob">
-                        <span id="currentLangTextMob">RU</span>
-                        <span class="arrow">▼</span>
-                    </button>
-                    <div class="lang-dropdown-content" id="langDropdownContentMob">
-                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
-                    </div>
+<div class="container mobile-row" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:nowrap;gap:10px;">
+        <span class="burger-menu" onclick="openMenu()" style="flex-shrink:0;">☰</span>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;white-space:nowrap;">📦 История</a>
+            <div class="lang-dropdown" style="flex-shrink:0;">
+                <button class="lang-dropdown-btn" id="langDropdownBtnMob" style="white-space:nowrap;">
+                    <span id="currentLangTextMob">RU</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="lang-dropdown-content" id="langDropdownContentMob">
+                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </header>
 
     <nav class="store-nav">
