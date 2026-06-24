@@ -24,6 +24,9 @@ var translations = {
         'ps-btn': 'Смотреть игры',
         'xbox-desc': 'Game Pass и Games with Gold',
         'xbox-btn': 'Смотреть игры'
+        'online-text': '🟢 Онлайн',
+'total-text': '👥 Всего',
+'telegram-btn': '📱 Подписаться на Telegram'
     },
     es: {
         'hero-title': '🎮 Juegos Gratis',
@@ -49,6 +52,9 @@ var translations = {
         'ps-btn': 'Ver juegos',
         'xbox-desc': 'Game Pass y Games with Gold',
         'xbox-btn': 'Ver juegos'
+        'online-text': '🟢 En línea',
+'total-text': '👥 Total',
+'telegram-btn': '📱 Suscríbete en Telegram'
     },
     en: {
         'hero-title': '🎮 Free Games',
@@ -74,6 +80,9 @@ var translations = {
         'ps-btn': 'View games',
         'xbox-desc': 'Game Pass & Games with Gold',
         'xbox-btn': 'View games'
+        'online-text': '🟢 Online',
+'total-text': '👥 Total',
+'telegram-btn': '📱 Subscribe on Telegram'
     }
 };
 
