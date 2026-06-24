@@ -21,18 +21,17 @@
 
 @media (max-width: 768px) {
     .store-nav { display: none; }
-    .header-desktop { flex-wrap: wrap; justify-content: center; }
+    .header-desktop { flex-wrap: wrap; justify-content: center; position: relative; min-height: 90px; }
     .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; position: absolute; left: 20px; }
-    .header-right { margin-left: auto; }
-    header .container { position: relative; }
+    .burger-menu { display: block !important; position: absolute; left: 20px; bottom: 0; }
+    .header-right { position: absolute; right: 20px; bottom: 0; display: flex; align-items: center; gap: 10px; }
 }
 </style>
 </head>
 <body>
 
     <header>
-    <div class="container header-desktop">
+    <div class="container header-desktop" style="min-height:50px;">
         <div class="logo">
             <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
             <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
