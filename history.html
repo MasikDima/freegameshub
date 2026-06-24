@@ -7,108 +7,81 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=55">
     <style>
-    .history-card {
-        background: #0f0f2a;
-        border: 1px solid #1a1a3e;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 15px;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
-    .history-card img {
-        width: 150px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        background: #1a1a3e;
-    }
-    .badge-ended {
-        background: #666;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 15px;
-        font-size: 12px;
-        display: inline-block;
-        margin-bottom: 8px;
-    }
-    .empty-history {
-        text-align: center;
-        color: #aaa;
-        padding: 60px 20px;
-    }
+        .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
-    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
-    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
-    .side-menu.open { left: 0; }
-    .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-    .overlay.show { display: block; }
-.header-container { display: flex; align-items: center; justify-content: space-between; }
-.header-right { display: flex; align-items: center; gap: 15px; }
-.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+        .history-card { background: #0f0f2a; border: 1px solid #1a1a3e; border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; gap: 20px; align-items: center; }
+        .history-card img { width: 150px; height: 80px; object-fit: cover; border-radius: 8px; background: #1a1a3e; }
+        .badge-ended { background: #666; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; display: inline-block; margin-bottom: 8px; }
+        .empty-history { text-align: center; color: #aaa; padding: 60px 20px; }
 
-@media (max-width: 768px) {
-    .store-nav { display: none; }
-    .header-container { flex-wrap: wrap; }
-    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; }
-    .header-right { margin-left: auto; }
-}
-
-    @media (max-width: 600px) {
-        .history-card { flex-direction: column; }
-        .history-card img { width: 100%; height: 150px; }
-    }
-</style>
+        @media (max-width: 1024px) {
+            .store-nav { display: none; }
+            .header-desktop .header-right { display: none !important; }
+            .header-desktop { text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .mobile-row { display: block !important; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .history-card { flex-direction: column; }
+            .history-card img { width: 100%; height: 150px; }
+        }
+    </style>
 </head>
 <body>
 
     <header>
-    <div class="container header-container">
-        <div class="logo">
-            <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-            <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-        </div>
-        <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+        <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+        <div class="container mobile-row" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                <span class="burger-menu" onclick="openMenu()">☰</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-btn" id="langDropdownBtnMob"><span id="currentLangTextMob">RU</span><span class="arrow">▼</span></button>
+                        <div class="lang-dropdown-content" id="langDropdownContentMob">
+                            <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                            <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                            <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <section class="hero" style="padding:40px 0;">
-        <div class="container">
-            <h1 data-key="history-heading">📦 История всех раздач</h1>
-            <p data-key="history-desc">Игры, которые уже закончились</p>
-        </div>
+        <div class="container"><h1 data-key="history-heading">📦 История всех раздач</h1><p data-key="history-desc">Игры, которые уже закончились</p></div>
     </section>
 
     <section style="padding:20px 0 60px 0;">
-        <div class="container" id="historyContainer">
-            <p class="empty-history" data-key="loading">Загрузка...</p>
-        </div>
+        <div class="container" id="historyContainer"><p class="empty-history" data-key="loading">Загрузка...</p></div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
-        </div>
-    </footer>
+    <footer><div class="container"><p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p></div></footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
@@ -123,70 +96,42 @@
     </div>
 
     <script>
+        var t2 = {
+            ru: { 'history-heading':'📦 История всех раздач','history-desc':'Игры, которые уже закончились','loading':'Загрузка...','empty':'Пока здесь нет игр.','ended':'📦 Раздача завершена','store':'Магазин' },
+            es: { 'history-heading':'📦 Historial','history-desc':'Juegos terminados','loading':'Cargando...','empty':'No hay juegos aún.','ended':'📦 Oferta terminada','store':'Tienda' },
+            en: { 'history-heading':'📦 History','history-desc':'Ended giveaways','loading':'Loading...','empty':'No games yet.','ended':'📦 Giveaway Ended','store':'Store' }
+        };
+        var lang = localStorage.getItem('lang') || 'ru';
+        function t(k) { return t2[lang][k] || k; }
+        function updateTexts() { document.querySelectorAll('[data-key]').forEach(function(el) { el.textContent = t(el.dataset.key); }); }
+
+        function renderHistory() {
+            var c = document.getElementById('historyContainer');
+            var saved = localStorage.getItem('allHistory');
+            var games = saved ? JSON.parse(saved) : [];
+            games = games.filter(function(g) { return [5,6].indexOf(g.id) === -1; });
+            if (!games.length) c.innerHTML = '<p class="empty-history">'+t('empty')+'</p>';
+            else c.innerHTML = games.reverse().map(function(g) {
+                return '<div class="history-card"><img src="'+g.image+'" onerror="this.style.display=\'none\'"><div><span class="badge-ended">'+t('ended')+'</span><h3>'+g.title+'</h3><p style="color:#aaa;">'+t('store')+': '+g.store+'</p></div></div>';
+            }).join('');
+        }
+
+        function switchLang(l) { lang = l; localStorage.setItem('lang', l); updateTexts(); renderHistory(); }
+
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
-        var t2 = {
-            ru: {
-                'history-title': 'История раздач', 'back-home': '← На главную', 'history-heading': '📦 История всех раздач',
-                'history-desc': 'Игры, которые уже закончились', 'loading': 'Загрузка...',
-                'empty': 'Пока здесь нет игр. Когда раздачи закончатся — они появятся здесь.', 'ended': '📦 Раздача завершена', 'store': 'Магазин'
-            },
-            es: {
-                'history-title': 'Historial', 'back-home': '← Inicio', 'history-heading': '📦 Historial de juegos',
-                'history-desc': 'Juegos que ya terminaron', 'loading': 'Cargando...',
-                'empty': 'Aún no hay juegos.', 'ended': '📦 Oferta terminada', 'store': 'Tienda'
-            },
-            en: {
-                'history-title': 'History', 'back-home': '← Home', 'history-heading': '📦 All Giveaways History',
-                'history-desc': 'Games that have ended', 'loading': 'Loading...',
-                'empty': 'No games yet.', 'ended': '📦 Giveaway Ended', 'store': 'Store'
-            }
-        };
-
-        var lang = localStorage.getItem('lang') || 'ru';
-
-        function updateTexts(l) {
-            document.querySelectorAll('[data-key]').forEach(function(el) { el.textContent = t2[l][el.dataset.key] || ''; });
-        }
-
-        function updateLangDisplay(l) {
-            document.getElementById('currentLangText').textContent = l.toUpperCase();
-            document.querySelectorAll('.lang-option').forEach(function(opt) { opt.classList.toggle('active', opt.dataset.lang === l); });
-        }
-
-        function renderHistory(l) {
-            var container = document.getElementById('historyContainer');
-            var saved = localStorage.getItem('allHistory');
-            var historyGames = saved ? JSON.parse(saved) : [];
-            var alwaysFreeIds = [5, 6];
-            historyGames = historyGames.filter(function(game) { return alwaysFreeIds.indexOf(game.id) === -1; });
-            if (historyGames.length === 0) {
-                container.innerHTML = '<p class="empty-history">' + t2[l]['empty'] + '</p>';
-            } else {
-                container.innerHTML = historyGames.reverse().map(function(game) {
-                    return '<div class="history-card">' +
-                        '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
-                        '<div class="history-info">' +
-                        '<span class="badge-ended">' + t2[l]['ended'] + '</span>' +
-                        '<h3 class="game-title">' + game.title + '</h3>' +
-                        '<p style="color:#aaa;">' + t2[l]['store'] + ': ' + game.store + '</p>' +
-                        '</div></div>';
-                }).join('');
-            }
-        }
-
-        function switchLang(l) { lang = l; localStorage.setItem('lang', l); updateTexts(l); updateLangDisplay(l); renderHistory(l); }
-
         document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+        document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); switchLang(this.dataset.lang); document.getElementById('langDropdownContent').classList.remove('open'); };
+            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); switchLang(l); };
         });
-
-        updateTexts(lang);
-        updateLangDisplay(lang);
-        renderHistory(lang);
+        var sl = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = sl.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+        updateTexts(); renderHistory();
     </script>
 </body>
 </html>
