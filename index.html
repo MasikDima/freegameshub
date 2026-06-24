@@ -35,11 +35,12 @@
 
        @media (max-width: 768px) {
     .store-nav { display: none; }
-    .header-desktop { display: block !important; text-align: center; }
-    .header-desktop .logo { margin-bottom: 8px; }
     .header-desktop .header-right { display: none !important; }
     .header-desktop .burger-menu { display: none !important; }
+    .header-desktop { text-align: center; }
+    .header-desktop .logo { margin-bottom: 8px; }
     .mobile-row { display: block !important; padding: 0 15px; }
+    .mobile-row .burger-menu { display: block !important; }
 }
     </style>
 </head>
@@ -70,7 +71,7 @@
         <!-- Мобильная версия -->
 <div class="container mobile-row" style="display:none;">
     <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:nowrap;gap:10px;">
-        <span class="burger-menu" onclick="openMenu()" style="flex-shrink:0;">☰</span>
+        <span class="burger-menu" onclick="openMenu()" style="flex-shrink:0;display:block;">☰</span>
         <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
             <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;white-space:nowrap;">📦 История</a>
             <div class="lang-dropdown" style="flex-shrink:0;">
