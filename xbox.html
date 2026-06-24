@@ -6,61 +6,72 @@
     <title>Xbox - Free Games Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=55">
-   <style>
-    .xbox-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px 0; }
-    .xbox-game-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(16, 124, 16, 0.2); border-radius: 12px; padding: 20px; transition: all 0.3s; backdrop-filter: blur(10px); }
-    .xbox-game-card:hover { border-color: rgba(16, 124, 16, 0.6); box-shadow: 0 0 25px rgba(16, 124, 16, 0.2); transform: translateY(-3px); }
-    .xbox-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
-    .xbox-badge-free { display: inline-block; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(16, 124, 16, 0.3); margin-bottom: 12px; }
-    .xbox-btn { display: block; text-align: center; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
-    .xbox-btn:hover { box-shadow: 0 0 25px rgba(16, 124, 16, 0.5); }
+    <style>
+        .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
-    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
-    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
-    .side-menu.open { left: 0; }
-    .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-    .overlay.show { display: block; }
-    .header-container { display: flex; align-items: center; justify-content: space-between; }
-.header-right { display: flex; align-items: center; gap: 15px; }
-.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+        .xbox-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px 0; }
+        .xbox-game-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(16, 124, 16, 0.2); border-radius: 12px; padding: 20px; transition: all 0.3s; backdrop-filter: blur(10px); }
+        .xbox-game-card:hover { border-color: rgba(16, 124, 16, 0.6); box-shadow: 0 0 25px rgba(16, 124, 16, 0.2); transform: translateY(-3px); }
+        .xbox-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .xbox-badge-free { display: inline-block; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(16, 124, 16, 0.3); margin-bottom: 12px; }
+        .xbox-btn { display: block; text-align: center; background: linear-gradient(135deg, #107c10, #52d452); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
+        .xbox-btn:hover { box-shadow: 0 0 25px rgba(16, 124, 16, 0.5); }
 
-@media (max-width: 768px) {
-    .store-nav { display: none; }
-    .header-container { flex-wrap: wrap; }
-    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; }
-    .header-right { margin-left: auto; }
-}
-</style>
+        @media (max-width: 1024px) {
+            .store-nav { display: none; }
+            .header-desktop .header-right { display: none !important; }
+            .header-desktop { text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .mobile-row { display: block !important; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
+    </style>
 </head>
 <body>
 
-   <header>
-    <div class="container header-container">
-        <div class="logo">
-            <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-            <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-        </div>
-        <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+    <header>
+        <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+        <div class="container mobile-row" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                <span class="burger-menu" onclick="openMenu()">☰</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-btn" id="langDropdownBtnMob"><span id="currentLangTextMob">RU</span><span class="arrow">▼</span></button>
+                        <div class="lang-dropdown-content" id="langDropdownContentMob">
+                            <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                            <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                            <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <nav class="store-nav">
         <div class="container">
             <a href="index.html" class="store-link"><i class="fas fa-home"></i> Главная</a>
@@ -73,10 +84,7 @@
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
-        <div class="container">
-            <h1><i class="fab fa-xbox"></i> Xbox Game Pass</h1>
-            <p>Бесплатные игры июня 2026</p>
-        </div>
+        <div class="container"><h1><i class="fab fa-xbox"></i> Xbox Game Pass</h1><p>Бесплатные игры июня 2026</p></div>
     </section>
 
     <section class="games">
@@ -88,19 +96,7 @@
         </div>
     </section>
 
-    <section class="subscribe">
-        <div class="container">
-            <h2>Нужна подписка Game Pass</h2>
-            <p>Для получения игр оформи подписку Xbox Game Pass Ultimate</p>
-            <a href="https://www.xbox.com/ru-RU/xbox-game-pass" class="btn-telegram" target="_blank">🟢 Узнать про Game Pass</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
-        </div>
-    </footer>
+    <footer><div class="container"><p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p></div></footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
@@ -122,28 +118,26 @@
             { title: 'Abyssus', image: 'https://gamefabrique.com/i/pc/abyssus.jpg', url: 'https://www.xbox.com/ru-RU/games/store/abyssus/9P8NKVVB0XQJ/0010' },
             { title: 'RV There Yet?', image: 'https://www.gamereactor.se/media/27/rvthereyet_4722783b.jpg', url: 'https://www.xbox.com/ru-ru/games/store/rv-there-yet/9mw79bjvf3qx' }
         ];
-
-        var container = document.getElementById('xboxGames');
-        container.innerHTML = xboxGames.map(function(game) {
-            return '<div class="xbox-game-card">' +
-                '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.xbox-fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
-                '<div class="xbox-fallback" style="display:none;background:linear-gradient(135deg,#0a2a0a,#1a4a1a);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🟢</div>' +
-                '<span class="xbox-badge-free">Game Pass</span>' +
-                '<h3 class="xbox-game-title">' + game.title + '</h3>' +
-                '<a href="' + game.url + '" class="xbox-btn" target="_blank">🟢 Подробнее</a>' +
-                '</div>';
+        document.getElementById('xboxGames').innerHTML = xboxGames.map(function(g) {
+            return '<div class="xbox-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
+            '<div style="display:none;background:linear-gradient(135deg,#0a2a0a,#1a4a1a);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🟢</div>'+
+            '<span class="xbox-badge-free">Game Pass</span><h3 class="xbox-game-title">'+g.title+'</h3>'+
+            '<a href="'+g.url+'" class="xbox-btn" target="_blank">🟢 Подробнее</a></div>';
         }).join('');
-
-        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
-        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-        document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var lang = this.dataset.lang; document.getElementById('currentLangText').textContent = lang.toUpperCase(); localStorage.setItem('lang', lang); location.reload(); };
-        });
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+
+        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+        document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+        });
+        var sl = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = sl.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
     </script>
 </body>
 </html>
