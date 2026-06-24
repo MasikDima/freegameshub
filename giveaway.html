@@ -42,23 +42,21 @@
     @media (max-width: 768px) {
     .store-nav { display: none; }
     .burger-menu { display: block !important; }
-    header .container { flex-wrap: wrap; justify-content: space-between !important; }
-    .logo { order: 1; width: 100%; text-align: center; margin-bottom: 10px; }
-    .burger-menu { order: 2; margin-right: 0 !important; }
-    .header-right { order: 3; display: flex !important; }
+    header .container { flex-wrap: wrap; }
+    .logo { order: 1; width: 100%; text-align: center; margin-bottom: 8px; }
+    .burger-menu { order: 2; }
+    .header-right { order: 3; margin-left: auto; }
 }
 </style>
 </head>
 <body>
 
     <header>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
         <div class="logo">
             <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
             <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
         </div>
-    </div>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:8px;">
         <span class="burger-menu" onclick="openMenu()">☰</span>
         <div class="header-right" style="display:flex;align-items:center;gap:15px;">
             <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
