@@ -9,74 +9,84 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-    .giveaway-container { max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; }
-    .prize-card { background: rgba(10, 10, 30, 0.7); border: 2px solid #f5c518; border-radius: 20px; padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); }
-    .prize-title { font-size: 28px; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #f5c518, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: default; }
-    .prize-game { font-size: 22px; color: #fff; margin-bottom: 10px; }
-    .prize-desc { color: #aaa; margin-bottom: 20px; }
-    .btn-play { display: inline-block; padding: 16px 40px; border-radius: 30px; font-weight: 700; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; cursor: pointer; border: none; transition: all 0.3s; }
-    .btn-play:hover { box-shadow: 0 0 30px rgba(245, 197, 24, 0.6); transform: scale(1.05); }
-    .btn-play:disabled { background: #444; color: #888; cursor: not-allowed; box-shadow: none; }
-    #gameCanvas { display: none; border: 2px solid #f5c518; border-radius: 10px; margin: 20px auto; background: #0a0a2e; }
-    .game-score { font-size: 24px; font-weight: 900; color: #f5c518; margin: 10px 0; display: none; }
-    .game-instructions { color: #aaa; font-size: 14px; margin-top: 10px; display: none; }
-    .win-form { display: none; margin-top: 20px; }
-    .win-form input { padding: 12px 20px; border-radius: 8px; border: 1px solid #f5c518; background: rgba(10, 10, 30, 0.8); color: white; font-size: 16px; width: 100%; max-width: 300px; margin-bottom: 10px; }
-    .win-form .btn-submit { padding: 12px 30px; border-radius: 8px; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
-    .participants-count { color: #aaa; font-size: 14px; margin-top: 15px; }
-    .admin-panel { display: none; margin-bottom: 15px; }
-    .btn-reset { background: #e94560; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; }
-    .btn-reset:hover { background: #ff0080; }
-    .archive-item { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; margin-bottom: 10px; text-align: left; }
-    body { display: flex; flex-direction: column; min-height: 100vh; }
-    footer { margin-top: auto; }
+        .giveaway-container { max-width: 600px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        .prize-card { background: rgba(10, 10, 30, 0.7); border: 2px solid #f5c518; border-radius: 20px; padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); }
+        .prize-title { font-size: 28px; font-weight: 900; margin-bottom: 15px; background: linear-gradient(135deg, #f5c518, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: default; }
+        .prize-game { font-size: 22px; color: #fff; margin-bottom: 10px; }
+        .prize-desc { color: #aaa; margin-bottom: 20px; }
+        .btn-play { display: inline-block; padding: 16px 40px; border-radius: 30px; font-weight: 700; font-size: 18px; text-transform: uppercase; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; cursor: pointer; border: none; }
+        .btn-play:hover { box-shadow: 0 0 30px rgba(245, 197, 24, 0.6); transform: scale(1.05); }
+        .btn-play:disabled { background: #444; color: #888; cursor: not-allowed; }
+        #gameCanvas { display: none; border: 2px solid #f5c518; border-radius: 10px; margin: 20px auto; background: #0a0a2e; }
+        .game-score { font-size: 24px; font-weight: 900; color: #f5c518; margin: 10px 0; display: none; }
+        .game-instructions { color: #aaa; font-size: 14px; margin-top: 10px; display: none; }
+        .win-form { display: none; margin-top: 20px; }
+        .win-form input { padding: 12px 20px; border-radius: 8px; border: 1px solid #f5c518; background: rgba(10, 10, 30, 0.8); color: white; font-size: 16px; width: 100%; max-width: 300px; margin-bottom: 10px; }
+        .win-form .btn-submit { padding: 12px 30px; border-radius: 8px; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; font-weight: 700; border: none; cursor: pointer; font-size: 16px; }
+        .participants-count { color: #aaa; font-size: 14px; margin-top: 15px; }
+        .admin-panel { display: none; margin-bottom: 15px; }
+        .btn-reset { background: #e94560; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; }
+        .btn-reset:hover { background: #ff0080; }
+        .archive-item { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; margin-bottom: 10px; text-align: left; }
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+        footer { margin-top: auto; }
 
-    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
-    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3); }
-    .side-menu.open { left: 0; }
-    .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
-    .overlay.show { display: block; }
-    .header-container { display: flex; align-items: center; justify-content: space-between; }
-.header-right { display: flex; align-items: center; gap: 15px; }
-.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+        .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
-@media (max-width: 768px) {
-    .store-nav { display: none; }
-    .header-container { flex-wrap: wrap; }
-    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; }
-    .header-right { margin-left: auto; }
-}
-</style>
+        @media (max-width: 1024px) {
+            .store-nav { display: none; }
+            .header-desktop .header-right { display: none !important; }
+            .header-desktop { text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .mobile-row { display: block !important; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
+    </style>
 </head>
 <body>
 
     <header>
-    <div class="container header-container">
-        <div class="logo">
-            <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-            <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-        </div>
-        <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+        <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+        <div class="container mobile-row" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                <span class="burger-menu" onclick="openMenu()">☰</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-btn" id="langDropdownBtnMob"><span id="currentLangTextMob">RU</span><span class="arrow">▼</span></button>
+                        <div class="lang-dropdown-content" id="langDropdownContentMob">
+                            <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                            <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                            <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <nav class="store-nav">
         <div class="container">
@@ -90,10 +100,7 @@
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
-        <div class="container">
-            <h1><i class="fas fa-trophy"></i> Розыгрыш ключей</h1>
-            <p>Сыграй в мини-игру и получи шанс выиграть ключ!</p>
-        </div>
+        <div class="container"><h1><i class="fas fa-trophy"></i> Розыгрыш ключей</h1><p>Сыграй в мини-игру и получи шанс выиграть ключ!</p></div>
     </section>
 
     <div class="giveaway-container">
@@ -101,7 +108,6 @@
             <button class="filter-btn active" onclick="switchGiveawayTab('current', this)">🎮 Текущий</button>
             <button class="filter-btn" onclick="switchGiveawayTab('archive', this)">📦 Архив</button>
         </div>
-
         <div id="currentGiveaway">
             <div class="prize-card">
                 <h2 class="prize-title">🎮 РОЗЫГРЫШ КЛЮЧА</h2>
@@ -110,9 +116,7 @@
                 <div class="game-score" id="gameScore">Счёт: 0</div>
                 <canvas id="gameCanvas" width="400" height="500"></canvas>
                 <p class="game-instructions" id="gameInstructions">Нажимай ПРОБЕЛ или кликай чтобы лететь</p>
-                <div class="admin-panel" id="adminPanel">
-                    <button class="btn-reset" onclick="resetGiveaway()">🔄 Сбросить розыгрыш</button>
-                </div>
+                <div class="admin-panel" id="adminPanel"><button class="btn-reset" onclick="resetGiveaway()">🔄 Сбросить розыгрыш</button></div>
                 <button class="btn-play" id="btnPlay" onclick="startGame()">🎮 Играть!</button>
                 <div class="win-form" id="winForm">
                     <h3 style="color:#4ecca3;margin-bottom:15px;">✅ 20 очков! Ты участвуешь!</h3>
@@ -122,20 +126,12 @@
                 <p class="participants-count" id="participantsCount">Участников: 0</p>
             </div>
         </div>
-
         <div id="archiveGiveaway" style="display:none;">
-            <div class="prize-card">
-                <h2 class="prize-title">📦 Архив розыгрышей</h2>
-                <div id="archiveList"><p style="color:#aaa;">Загрузка...</p></div>
-            </div>
+            <div class="prize-card"><h2 class="prize-title">📦 Архив розыгрышей</h2><div id="archiveList"><p style="color:#aaa;">Загрузка...</p></div></div>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
-        </div>
-    </footer>
+    <footer><div class="container"><p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p></div></footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
@@ -160,69 +156,42 @@
     };
     firebase.initializeApp(firebaseConfig);
     var db = firebase.firestore();
-
     var canvas = document.getElementById('gameCanvas');
     var ctx = canvas.getContext('2d');
     var bird = { x: 80, y: 250, size: 22, velocity: 0 };
-    var pipes = [];
-    var score = 0;
-    var gameRunning = false;
-    var lastTime = 0;
-    var pipeTimer = 0;
-    var GRAVITY = 700;
-    var JUMP_FORCE = -250;
-    var PIPE_GAP = 180;
-    var PIPE_WIDTH = 50;
-    var PIPE_SPEED = 150;
-    var PIPE_INTERVAL = 1.8;
+    var pipes = []; var score = 0; var gameRunning = false;
+    var lastTime = 0; var pipeTimer = 0;
+    var GRAVITY = 700; var JUMP_FORCE = -250; var PIPE_GAP = 180; var PIPE_WIDTH = 50; var PIPE_SPEED = 150; var PIPE_INTERVAL = 1.8;
 
     function switchGiveawayTab(tab, btn) {
         document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        if (tab === 'current') {
-            document.getElementById('currentGiveaway').style.display = 'block';
-            document.getElementById('archiveGiveaway').style.display = 'none';
-        } else {
-            document.getElementById('currentGiveaway').style.display = 'none';
-            document.getElementById('archiveGiveaway').style.display = 'block';
-            loadArchive();
-        }
+        document.getElementById('currentGiveaway').style.display = tab === 'current' ? 'block' : 'none';
+        document.getElementById('archiveGiveaway').style.display = tab === 'archive' ? 'block' : 'none';
+        if (tab === 'archive') loadArchive();
     }
-
     function loadArchive() {
         db.collection('giveaway_archive').orderBy('date', 'desc').get().then(function(snapshot) {
-            var container = document.getElementById('archiveList');
-            if (snapshot.empty) {
-                container.innerHTML = '<p style="color:#aaa;">Пока нет завершённых розыгрышей.</p>';
-            } else {
-                container.innerHTML = '';
+            var c = document.getElementById('archiveList');
+            if (snapshot.empty) c.innerHTML = '<p style="color:#aaa;">Пока нет завершённых розыгрышей.</p>';
+            else {
+                c.innerHTML = '';
                 snapshot.forEach(function(doc) {
-                    var data = doc.data();
-                    container.innerHTML += '<div class="archive-item"><p style="font-weight:700;">🎮 ' + data.game + '</p><p style="color:#aaa;font-size:14px;">Победитель: <b>' + data.winner + '</b></p><p style="color:#666;font-size:12px;">📅 ' + new Date(data.date.toDate()).toLocaleDateString('ru-RU') + '</p></div>';
+                    var d = doc.data();
+                    c.innerHTML += '<div class="archive-item"><p style="font-weight:700;">🎮 ' + d.game + '</p><p style="color:#aaa;">Победитель: <b>' + d.winner + '</b></p><p style="color:#666;font-size:12px;">📅 ' + new Date(d.date.toDate()).toLocaleDateString('ru-RU') + '</p></div>';
                 });
             }
         });
     }
-
     function startGame() {
         if (gameRunning) return;
-        var hasPlayed = localStorage.getItem('giveawayPlayed');
-        if (hasPlayed) { document.getElementById('winForm').style.display = 'block'; document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Ты уже участвовал!</h3>'; return; }
-        canvas.style.display = 'block';
-        document.getElementById('gameScore').style.display = 'block';
-        document.getElementById('gameInstructions').style.display = 'block';
-        document.getElementById('btnPlay').disabled = true;
-        document.getElementById('btnPlay').textContent = '🎮 Играем...';
-        document.getElementById('winForm').style.display = 'none';
-        bird.y = 250; bird.velocity = 0; pipes = []; score = 0; lastTime = 0; pipeTimer = 0;
-        gameRunning = true;
-        updateScore();
-        requestAnimationFrame(gameLoop);
+        if (localStorage.getItem('giveawayPlayed')) { document.getElementById('winForm').style.display='block'; document.getElementById('winForm').innerHTML='<h3 style="color:#e94560;">⚠️ Ты уже участвовал!</h3>'; return; }
+        canvas.style.display='block'; document.getElementById('gameScore').style.display='block'; document.getElementById('gameInstructions').style.display='block';
+        document.getElementById('btnPlay').disabled=true; document.getElementById('btnPlay').textContent='🎮 Играем...'; document.getElementById('winForm').style.display='none';
+        bird.y=250; bird.velocity=0; pipes=[]; score=0; lastTime=0; pipeTimer=0; gameRunning=true; updateScore(); requestAnimationFrame(gameLoop);
     }
-
     function jump() { if (!gameRunning) return; bird.velocity = JUMP_FORCE; }
     function updateScore() { document.getElementById('gameScore').textContent = 'Счёт: ' + score; }
-
     function gameLoop(timestamp) {
         if (!gameRunning) return;
         if (!lastTime) lastTime = timestamp;
@@ -239,126 +208,91 @@
         ctx.beginPath(); ctx.arc(bx + 8, by - s - 2, 8, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ff8c00'; ctx.beginPath(); ctx.arc(bx, by - s - 5, 5, 0, Math.PI * 2); ctx.fill();
         pipeTimer += dt;
-        if (pipeTimer >= PIPE_INTERVAL) { pipeTimer = 0; var minH = 30, maxH = canvas.height - PIPE_GAP - 30; pipes.push({ x: canvas.width, topHeight: Math.random() * (maxH - minH) + minH, scored: false }); }
+        if (pipeTimer >= PIPE_INTERVAL) { pipeTimer = 0; var mH = 30, xH = canvas.height - PIPE_GAP - 30; pipes.push({ x: canvas.width, topHeight: Math.random() * (xH - mH) + mH, scored: false }); }
         for (var i = pipes.length - 1; i >= 0; i--) {
-            var pipe = pipes[i]; pipe.x -= PIPE_SPEED * dt;
-            var pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0); pipeGrad.addColorStop(0, '#2ecc71'); pipeGrad.addColorStop(1, '#27ae60');
-            ctx.fillStyle = pipeGrad; ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.topHeight);
-            ctx.fillStyle = '#1e8449'; ctx.fillRect(pipe.x - 3, pipe.topHeight - 20, PIPE_WIDTH + 6, 20);
-            var bY = pipe.topHeight + PIPE_GAP;
-            ctx.fillStyle = pipeGrad; ctx.fillRect(pipe.x, bY, PIPE_WIDTH, canvas.height - bY);
-            ctx.fillStyle = '#1e8449'; ctx.fillRect(pipe.x - 3, bY, PIPE_WIDTH + 6, 20);
-            if (!pipe.scored && pipe.x + PIPE_WIDTH < bird.x) { pipe.scored = true; score++; updateScore(); }
+            var p = pipes[i]; p.x -= PIPE_SPEED * dt;
+            var pG = ctx.createLinearGradient(p.x, 0, p.x + PIPE_WIDTH, 0); pG.addColorStop(0, '#2ecc71'); pG.addColorStop(1, '#27ae60');
+            ctx.fillStyle = pG; ctx.fillRect(p.x, 0, PIPE_WIDTH, p.topHeight);
+            ctx.fillStyle = '#1e8449'; ctx.fillRect(p.x - 3, p.topHeight - 20, PIPE_WIDTH + 6, 20);
+            var bY = p.topHeight + PIPE_GAP;
+            ctx.fillStyle = pG; ctx.fillRect(p.x, bY, PIPE_WIDTH, canvas.height - bY);
+            ctx.fillStyle = '#1e8449'; ctx.fillRect(p.x - 3, bY, PIPE_WIDTH + 6, 20);
+            if (!p.scored && p.x + PIPE_WIDTH < bird.x) { p.scored = true; score++; updateScore(); }
             var bl = bird.x - bird.size, br = bird.x + bird.size, bt = bird.y - bird.size, bb = bird.y + bird.size;
-            if (br > pipe.x && bl < pipe.x + PIPE_WIDTH) { if (bt < pipe.topHeight || bb > bY) { endGame(); return; } }
-            if (pipe.x < -PIPE_WIDTH) pipes.splice(i, 1);
+            if (br > p.x && bl < p.x + PIPE_WIDTH) { if (bt < p.topHeight || bb > bY) { endGame(); return; } }
+            if (p.x < -PIPE_WIDTH) pipes.splice(i, 1);
         }
         if (bird.y - bird.size < 0 || bird.y + bird.size > canvas.height) { endGame(); return; }
         if (gameRunning) requestAnimationFrame(gameLoop);
     }
-
     function endGame() {
         gameRunning = false;
-        document.getElementById('btnPlay').disabled = false;
-        document.getElementById('btnPlay').textContent = '🔄 Попробовать снова';
+        document.getElementById('btnPlay').disabled = false; document.getElementById('btnPlay').textContent = '🔄 Попробовать снова';
         document.getElementById('gameInstructions').style.display = 'none';
         if (score >= 20) document.getElementById('winForm').style.display = 'block';
     }
-
     function submitEntry() {
-        var username = document.getElementById('telegramInput').value;
-        if (!username) { alert('Введи Telegram @username!'); return; }
-        db.collection('giveaway_entries').where('username', '==', username).get().then(function(snapshot) {
-            if (!snapshot.empty) { document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>'; return; }
-            var hasPlayed = localStorage.getItem('giveawayPlayed');
-            if (hasPlayed) { document.getElementById('winForm').innerHTML = '<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>'; return; }
-            db.collection('giveaway_entries').add({ username: username, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
-                localStorage.setItem('giveawayPlayed', 'true');
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#4ecca3;">✅ Ты в игре!</h3>';
+        var u = document.getElementById('telegramInput').value;
+        if (!u) { alert('Введи Telegram @username!'); return; }
+        db.collection('giveaway_entries').where('username','==',u).get().then(function(s) {
+            if (!s.empty) { document.getElementById('winForm').innerHTML='<h3 style="color:#e94560;">⚠️ Этот @username уже участвует!</h3>'; return; }
+            if (localStorage.getItem('giveawayPlayed')) { document.getElementById('winForm').innerHTML='<h3 style="color:#e94560;">⚠️ С этого устройства уже участвовали!</h3>'; return; }
+            db.collection('giveaway_entries').add({ username: u, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+                localStorage.setItem('giveawayPlayed','true');
+                document.getElementById('winForm').innerHTML='<h3 style="color:#4ecca3;">✅ Ты в игре!</h3>';
                 updateParticipants(); checkWinner();
             });
         });
     }
-
     function checkWinner() {
-        db.collection('giveaway_entries').get().then(function(snapshot) {
-            var count = snapshot.size;
-            document.getElementById('participantsCount').textContent = 'Участников: ' + count;
-            if (count >= 100) {
-                db.collection('giveaway_winner').get().then(function(winnerSnap) {
-                    if (winnerSnap.empty) {
-                        var entries = []; snapshot.forEach(function(doc) { entries.push(doc.data().username); });
-                        var winner = entries[Math.floor(Math.random() * entries.length)];
-                        var masked = winner.substring(0, 2) + '***' + winner.substring(winner.length - 2);
-                        db.collection('giveaway_winner').add({ username: winner, masked: masked, date: firebase.firestore.FieldValue.serverTimestamp() });
-                        db.collection('giveaway_archive').add({ game: document.querySelector('.prize-game').textContent, winner: masked, date: firebase.firestore.FieldValue.serverTimestamp() });
-                        document.getElementById('winForm').style.display = 'block';
-                        document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + masked + '</b></p>';
-                        document.getElementById('btnPlay').style.display = 'none';
-                    } else {
-                        winnerSnap.forEach(function(doc) {
-                            document.getElementById('winForm').style.display = 'block';
-                            document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + doc.data().masked + '</b></p>';
-                            document.getElementById('btnPlay').style.display = 'none';
-                        });
-                    }
+        db.collection('giveaway_entries').get().then(function(s) {
+            var c = s.size; document.getElementById('participantsCount').textContent = 'Участников: ' + c;
+            if (c >= 100) {
+                db.collection('giveaway_winner').get().then(function(w) {
+                    if (w.empty) {
+                        var e = []; s.forEach(function(d) { e.push(d.data().username); });
+                        var win = e[Math.floor(Math.random() * e.length)];
+                        var m = win.substring(0,2) + '***' + win.substring(win.length-2);
+                        db.collection('giveaway_winner').add({ username: win, masked: m, date: firebase.firestore.FieldValue.serverTimestamp() });
+                        db.collection('giveaway_archive').add({ game: document.querySelector('.prize-game').textContent, winner: m, date: firebase.firestore.FieldValue.serverTimestamp() });
+                        document.getElementById('winForm').style.display='block';
+                        document.getElementById('winForm').innerHTML='<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>'+m+'</b></p>';
+                        document.getElementById('btnPlay').style.display='none';
+                    } else { w.forEach(function(d) { document.getElementById('winForm').style.display='block'; document.getElementById('winForm').innerHTML='<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>'+d.data().masked+'</b></p>'; document.getElementById('btnPlay').style.display='none'; }); }
                 });
             }
         });
     }
-
-    function updateParticipants() {
-        db.collection('giveaway_entries').get().then(function(s) { document.getElementById('participantsCount').textContent = 'Участников: ' + s.size; });
-        checkWinner();
-    }
-
+    function updateParticipants() { db.collection('giveaway_entries').get().then(function(s) { document.getElementById('participantsCount').textContent = 'Участников: ' + s.size; }); checkWinner(); }
     function resetGiveaway() {
-        var password = prompt('Введите пароль для сброса:');
-        if (password !== '10031995') { alert('❌ Неверный пароль!'); return; }
-        if (confirm('Точно сбросить розыгрыш?')) {
+        var p = prompt('Введите пароль:'); if (p !== '10031995') { alert('❌ Неверный пароль!'); return; }
+        if (confirm('Точно сбросить?')) {
             db.collection('giveaway_entries').get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
             db.collection('giveaway_winner').get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-            localStorage.removeItem('giveawayPlayed');
-            document.getElementById('winForm').style.display = 'none';
-            document.getElementById('btnPlay').style.display = 'inline-block';
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('participantsCount').textContent = 'Участников: 0';
-            alert('✅ Розыгрыш сброшен!');
+            localStorage.removeItem('giveawayPlayed'); document.getElementById('winForm').style.display='none';
+            document.getElementById('btnPlay').style.display='inline-block'; document.getElementById('adminPanel').style.display='none';
+            document.getElementById('participantsCount').textContent='Участников: 0'; alert('✅ Розыгрыш сброшен!');
         }
     }
-
-    var clickCount = 0;
-    document.querySelector('.prize-title').addEventListener('click', function() {
-        clickCount++;
-        if (clickCount >= 3) { clickCount = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; }
-        setTimeout(function() { clickCount = 0; }, 1000);
-    });
-
-    db.collection('giveaway_winner').get().then(function(snapshot) {
-        if (!snapshot.empty) {
-            snapshot.forEach(function(doc) {
-                document.getElementById('winForm').style.display = 'block';
-                document.getElementById('winForm').innerHTML = '<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>' + doc.data().masked + '</b></p>';
-                document.getElementById('btnPlay').style.display = 'none';
-            });
-        }
-    });
-
+    var cc = 0;
+    document.querySelector('.prize-title').addEventListener('click', function() { cc++; if (cc >= 3) { cc = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; } setTimeout(function() { cc = 0; }, 1000); });
+    db.collection('giveaway_winner').get().then(function(s) { if (!s.empty) { s.forEach(function(d) { document.getElementById('winForm').style.display='block'; document.getElementById('winForm').innerHTML='<h3 style="color:#f5c518;">🏆 Розыгрыш завершён!</h3><p>Победитель: <b>'+d.data().masked+'</b></p>'; document.getElementById('btnPlay').style.display='none'; }); } });
     document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
-    canvas.addEventListener('click', jump);
-    canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
-
-    document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
-    document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-    document.querySelectorAll('.lang-option').forEach(function(opt) {
-        opt.onclick = function(e) { e.preventDefault(); var lang = this.dataset.lang; document.getElementById('currentLangText').textContent = lang.toUpperCase(); localStorage.setItem('lang', lang); location.reload(); };
-    });
-    var savedLang = localStorage.getItem('lang') || 'ru';
-    document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+    canvas.addEventListener('click', jump); canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
 
     function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
     function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
+    document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+    document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+    document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+    document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+    document.querySelectorAll('.lang-option').forEach(function(opt) {
+        opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+    });
+    var sl = localStorage.getItem('lang') || 'ru';
+    document.getElementById('currentLangText').textContent = sl.toUpperCase();
+    document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
     updateParticipants();
 </script>
 </body>
