@@ -6,6 +6,8 @@
     <title>Free Games Hub - Бесплатные игры</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=55">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; padding: 40px 0; }
         .category-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden; text-align: center; transition: all 0.4s; backdrop-filter: blur(10px); text-decoration: none; color: white; display: flex; flex-direction: column; }
@@ -23,7 +25,6 @@
         .hero-small h1 { font-size: 42px; background: linear-gradient(135deg, #ff0080, #f5c518); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-small p { color: #aaa; font-size: 18px; }
 
-        /* Бургер */
         .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
         .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
         .side-menu.open { left: 0; }
@@ -33,21 +34,19 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
         .overlay.show { display: block; }
 
-       @media (max-width: 1024px) {
-    .store-nav { display: none; }
-    .header-desktop .header-right { display: none !important; }
-    .header-desktop .burger-menu { display: none !important; }
-    .header-desktop { text-align: center; }
-    .header-desktop .logo { margin-bottom: 8px; }
-    .mobile-row { display: block !important; padding: 0 15px; }
-    .mobile-row .burger-menu { display: block !important; }
-}
+        @media (max-width: 1024px) {
+            .store-nav { display: none; }
+            .header-desktop .header-right { display: none !important; }
+            .header-desktop { text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .mobile-row { display: block !important; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- ПК версия -->
         <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
             <div class="logo">
                 <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
@@ -56,10 +55,7 @@
             <div class="header-right" style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
                 <div class="lang-dropdown">
-                    <button class="lang-dropdown-btn" id="langDropdownBtn">
-                        <span id="currentLangText">RU</span>
-                        <span class="arrow">▼</span>
-                    </button>
+                    <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
                     <div class="lang-dropdown-content" id="langDropdownContent">
                         <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
                         <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
@@ -68,26 +64,22 @@
                 </div>
             </div>
         </div>
-        <!-- Мобильная версия -->
-<div class="container mobile-row" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:nowrap;gap:10px;">
-        <span class="burger-menu" onclick="openMenu()" style="flex-shrink:0;display:block;">☰</span>
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;white-space:nowrap;">📦 История</a>
-            <div class="lang-dropdown" style="flex-shrink:0;">
-                <button class="lang-dropdown-btn" id="langDropdownBtnMob" style="white-space:nowrap;">
-                    <span id="currentLangTextMob">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContentMob">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+        <div class="container mobile-row" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                <span class="burger-menu" onclick="openMenu()">☰</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-btn" id="langDropdownBtnMob"><span id="currentLangTextMob">RU</span><span class="arrow">▼</span></button>
+                        <div class="lang-dropdown-content" id="langDropdownContentMob">
+                            <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                            <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                            <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
     </header>
 
     <nav class="store-nav">
@@ -119,8 +111,22 @@
         </div>
     </section>
 
+    <section class="subscribe">
+        <div class="container">
+            <h2>Узнай первым!</h2>
+            <p>Подпишись на Telegram и получай уведомления о новых раздачах</p>
+            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
+        </div>
+    </section>
+
     <footer>
-        <div class="container"><p>© 2026 Free Games Hub.</p></div>
+        <div class="container">
+            <p>© 2026 Free Games Hub. Все ссылки ведут на официальные магазины.</p>
+            <p style="color:#666;font-size:13px;margin-top:5px;">
+                🟢 Онлайн: <span id="onlineCount" style="color:#4ecca3;">0</span> | 
+                👥 Всего: <span id="totalVisitors" style="color:#f5c518;">0</span>
+            </p>
+        </div>
     </footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
@@ -139,26 +145,51 @@
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
-        // Языки для ПК
         document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-        // Языки для мобильной версии
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
-
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) {
-                e.preventDefault();
-                var lang = this.dataset.lang;
-                document.getElementById('currentLangText').textContent = lang.toUpperCase();
-                document.getElementById('currentLangTextMob').textContent = lang.toUpperCase();
-                localStorage.setItem('lang', lang);
-                location.reload();
-            };
+            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
         });
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-        document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
+        var sl = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = sl.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+    </script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+            authDomain: "freegameshub-11215.firebaseapp.com",
+            projectId: "freegameshub-11215",
+            storageBucket: "freegameshub-11215.firebasestorage.app",
+            messagingSenderId: "881848736998",
+            appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+        var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
+        localStorage.setItem('sessionId', sessionId);
+        var onlineRef = db.collection('online').doc(sessionId);
+        onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        window.addEventListener('beforeunload', function() { onlineRef.delete(); });
+        setInterval(function() { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 30000);
+        setInterval(function() {
+            var oneMinuteAgo = new Date(Date.now() - 60000);
+            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+        }, 60000);
+        function updateCounters() {
+            db.collection('online').get().then(function(s) { document.getElementById('onlineCount').textContent = s.size; });
+            db.collection('stats').doc('visitors').get().then(function(d) { document.getElementById('totalVisitors').textContent = d.data().count || 0; });
+        }
+        var visited = sessionStorage.getItem('visited');
+        if (!visited) {
+            sessionStorage.setItem('visited', 'true');
+            var totalRef = db.collection('stats').doc('visitors');
+            db.runTransaction(function(t) { return t.get(totalRef).then(function(d) { var c = (d.data() && d.data().count) || 0; t.set(totalRef, { count: c + 1 }, { merge: true }); return c + 1; }); });
+        }
+        setInterval(updateCounters, 5000);
+        updateCounters();
     </script>
 </body>
 </html>
