@@ -7,95 +7,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=55">
     <style>
-    .steam-games-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 20px;
-        padding: 20px 0;
-    }
-    .steam-game-card {
-        background: rgba(10, 10, 30, 0.7);
-        border: 1px solid rgba(0, 136, 204, 0.2);
-        border-radius: 12px;
-        padding: 20px;
-        transition: all 0.3s;
-        backdrop-filter: blur(10px);
-    }
-    .steam-game-card:hover {
-        border-color: rgba(0, 136, 204, 0.6);
-        box-shadow: 0 0 25px rgba(0, 136, 204, 0.2);
-        transform: translateY(-3px);
-    }
-    .steam-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
-    .steam-game-date { color: #666; font-size: 12px; margin-bottom: 12px; }
-    .steam-badge-free {
-        display: inline-block; background: linear-gradient(135deg, #00c8ff, #0078ff); color: white;
-        padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
-    }
-    .steam-btn {
-        display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00aaff);
-        color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700;
-        margin-top: 12px; transition: all 0.3s;
-    }
-    .steam-btn:hover { box-shadow: 0 0 25px rgba(0, 136, 204, 0.5); }
+        .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
+        .side-menu.open { left: 0; }
+        .side-menu a { display: block; color: white; text-decoration: none; padding: 15px 10px; font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
+        .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
+        .overlay.show { display: block; }
 
-    .burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
-    .side-menu {
-        position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
-        background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px); z-index: 1000;
-        padding: 30px 20px; transition: left 0.3s ease; border-right: 1px solid rgba(233, 69, 96, 0.3);
-    }
-    .side-menu.open { left: 0; }
-    .side-menu a {
-        display: block; color: white; text-decoration: none; padding: 15px 10px;
-        font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .side-menu a:hover, .side-menu a.active { color: #ff0080; background: rgba(255,0,128,0.1); }
-    .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
-    .overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6); z-index: 999; display: none;
-    }
-    .overlay.show { display: block; }
-    .header-container { display: flex; align-items: center; justify-content: space-between; }
-.header-right { display: flex; align-items: center; gap: 15px; }
-.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+        .steam-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px 0; }
+        .steam-game-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(0, 136, 204, 0.2); border-radius: 12px; padding: 20px; transition: all 0.3s; backdrop-filter: blur(10px); }
+        .steam-game-card:hover { border-color: rgba(0, 136, 204, 0.6); box-shadow: 0 0 25px rgba(0, 136, 204, 0.2); transform: translateY(-3px); }
+        .steam-game-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        .steam-game-date { color: #666; font-size: 12px; margin-bottom: 12px; }
+        .steam-badge-free { display: inline-block; background: linear-gradient(135deg, #00c8ff, #0078ff); color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 200, 255, 0.3); }
+        .steam-btn { display: block; text-align: center; background: linear-gradient(135deg, #0088cc, #00aaff); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
+        .steam-btn:hover { box-shadow: 0 0 25px rgba(0, 136, 204, 0.5); }
 
-@media (max-width: 768px) {
-    .store-nav { display: none; }
-    .header-container { flex-wrap: wrap; }
-    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { display: block !important; }
-    .header-right { margin-left: auto; }
-}
-</style>
+        @media (max-width: 1024px) {
+            .store-nav { display: none; }
+            .header-desktop .header-right { display: none !important; }
+            .header-desktop { text-align: center; }
+            .header-desktop .logo { margin-bottom: 8px; }
+            .mobile-row { display: block !important; padding: 0 15px; }
+            .mobile-row .burger-menu { display: block !important; }
+        }
+    </style>
 </head>
 <body>
 
     <header>
-    <div class="container header-container">
-        <div class="logo">
-            <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-            <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-        </div>
-        <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right">
-            <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
-            <div class="lang-dropdown">
-                <button class="lang-dropdown-btn" id="langDropdownBtn">
-                    <span id="currentLangText">RU</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="lang-dropdown-content" id="langDropdownContent">
-                    <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
-                    <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
-                    <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+        <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </div>
+            <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <div class="lang-dropdown">
+                    <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
+                    <div class="lang-dropdown-content" id="langDropdownContent">
+                        <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                        <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                        <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+        <div class="container mobile-row" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+                <span class="burger-menu" onclick="openMenu()">☰</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                    <div class="lang-dropdown">
+                        <button class="lang-dropdown-btn" id="langDropdownBtnMob"><span id="currentLangTextMob">RU</span><span class="arrow">▼</span></button>
+                        <div class="lang-dropdown-content" id="langDropdownContentMob">
+                            <a href="#" data-lang="ru" class="lang-option active">🇷🇺 Русский</a>
+                            <a href="#" data-lang="es" class="lang-option">🇪🇸 Español</a>
+                            <a href="#" data-lang="en" class="lang-option">🇬🇧 English</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <nav class="store-nav">
         <div class="container">
@@ -109,31 +85,14 @@
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
-        <div class="container">
-            <h1><i class="fab fa-steam"></i> Steam</h1>
-            <p>Лучшие бесплатные игры навсегда</p>
-        </div>
+        <div class="container"><h1><i class="fab fa-steam"></i> Steam</h1><p>Лучшие бесплатные игры навсегда</p></div>
     </section>
 
     <section class="games">
-        <div class="container">
-            <div class="steam-games-grid" id="steamGames"></div>
-        </div>
+        <div class="container"><div class="steam-games-grid" id="steamGames"></div></div>
     </section>
 
-    <section class="subscribe">
-        <div class="container">
-            <h2>Узнай первым!</h2>
-            <p>Подпишись на уведомления в Telegram</p>
-            <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p>
-        </div>
-    </footer>
+    <footer><div class="container"><p>© 2026 Free Games Hub. <a href="index.html">На главную</a></p></div></footer>
 
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
@@ -164,36 +123,26 @@
             { title: 'Destiny 2', date: '1 Oct, 2019', url: 'https://store.steampowered.com/app/1085660', image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c' },
             { title: 'TBH: Task Bar Hero', date: '27 May, 2026', url: 'https://store.steampowered.com/app/3678970', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
-
-        var container = document.getElementById('steamGames');
-        container.innerHTML = steamGames.map(function(game) {
-            return '<div class="steam-game-card">' +
-                '<img src="' + game.image + '" alt="' + game.title + '" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.parentElement.querySelector(\'.fallback\').style.display=\'flex\';this.style.display=\'none\';">' +
-                '<div class="fallback" style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>' +
-                '<span class="steam-badge-free">Free to Play</span>' +
-                '<h3 class="steam-game-title">' + game.title + '</h3>' +
-                '<p class="steam-game-date">📅 ' + game.date + '</p>' +
-                '<a href="' + game.url + '" class="steam-btn" target="_blank">🎮 Играть бесплатно</a>' +
-                '</div>';
+        document.getElementById('steamGames').innerHTML = steamGames.map(function(g) {
+            return '<div class="steam-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
+            '<div style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>'+
+            '<span class="steam-badge-free">Free to Play</span><h3 class="steam-game-title">'+g.title+'</h3><p class="steam-game-date">📅 '+g.date+'</p>'+
+            '<a href="'+g.url+'" class="steam-btn" target="_blank">🎮 Играть бесплатно</a></div>';
         }).join('');
-
-        document.getElementById('langDropdownBtn').onclick = function(e) {
-            e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open');
-        };
-        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-        document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) {
-                e.preventDefault();
-                var lang = this.dataset.lang;
-                document.getElementById('currentLangText').textContent = lang.toUpperCase();
-                localStorage.setItem('lang', lang); location.reload();
-            };
-        });
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+
+        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+        document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+        document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+        document.querySelectorAll('.lang-option').forEach(function(opt) {
+            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+        });
+        var sl = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = sl.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
     </script>
 </body>
 </html>
