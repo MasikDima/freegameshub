@@ -34,13 +34,14 @@
         .overlay.show { display: block; }
 
         @media (max-width: 768px) {
-            .store-nav { display: none; }
-            .header-desktop { display: block !important; text-align: center; }
-            .header-desktop .logo { margin-bottom: 8px; }
-            .header-desktop .header-right { display: none; }
-            .mobile-row { display: flex !important; align-items: center; justify-content: space-between; padding: 0 15px; }
-            .mobile-row .burger-menu { display: block !important; }
-        }
+    .store-nav { display: none; }
+    .header-desktop { display: block !important; text-align: center; }
+    .header-desktop .logo { margin-bottom: 8px; }
+    .header-desktop .header-right { display: none !important; }
+    .header-desktop .burger-menu { display: none !important; }
+    .mobile-row { display: flex !important; align-items: center; justify-content: space-between; padding: 0 15px; }
+    .mobile-row .burger-menu { display: block !important; }
+}
     </style>
 </head>
 <body>
