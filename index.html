@@ -53,7 +53,7 @@
                 <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
             </div>
             <div class="header-right" style="display:flex;align-items:center;gap:15px;">
-                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
+                <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;" data-key="history-btn">📦 История</a>
                 <div class="lang-dropdown">
                     <button class="lang-dropdown-btn" id="langDropdownBtn"><span id="currentLangText">RU</span><span class="arrow">▼</span></button>
                     <div class="lang-dropdown-content" id="langDropdownContent">
@@ -96,32 +96,32 @@
     <section class="hero-small">
         <div class="container">
             <h1 data-key="hero-title"><i class="fas fa-gamepad"></i> Бесплатные игры</h1>
-<p data-key="hero-subtitle">Выбери платформу и забирай игры бесплатно!</p>
+            <p data-key="hero-subtitle">Выбери платформу и забирай игры бесплатно!</p>
         </div>
     </section>
 
     <section class="games">
         <div class="container">
             <div class="categories-grid">
-                <a href="epic.html" class="category-card epic"><img src="https://www.nintenderos.com/wp-content/uploads/2021/02/epic-games-dark-logo.jpg"><div class="category-card-inner"><h2 class="category-title">Epic Games</h2><p class="category-count">Бесплатные раздачи каждую неделю</p><span class="category-btn btn-epic">Смотреть игры</span></div></a>
-                <a href="steam.html" class="category-card steam"><img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg"><div class="category-card-inner"><h2 class="category-title">Steam</h2><p class="category-count">Лучшие free-to-play игры<br>&nbsp;</p><span class="category-btn btn-steam">Смотреть игры</span></div></a>
-                <a href="ps.html" class="category-card ps"><img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg"><div class="category-card-inner"><h2 class="category-title">PlayStation</h2><p class="category-count">PS Plus — 3 игры в месяц<br>&nbsp;</p><span class="category-btn btn-ps">Смотреть игры</span></div></a>
-                <a href="xbox.html" class="category-card xbox"><img src="https://logodix.com/logo/20376.jpg"><div class="category-card-inner"><h2 class="category-title">Xbox</h2><p class="category-count">Game Pass и Games with Gold<br>&nbsp;</p><span class="category-btn btn-xbox">Смотреть игры</span></div></a>
+                <a href="epic.html" class="category-card epic"><img src="https://www.nintenderos.com/wp-content/uploads/2021/02/epic-games-dark-logo.jpg"><div class="category-card-inner"><h2 class="category-title">Epic Games</h2><p class="category-count" data-key="epic-desc">Бесплатные раздачи каждую неделю</p><span class="category-btn btn-epic" data-key="epic-btn">Смотреть игры</span></div></a>
+                <a href="steam.html" class="category-card steam"><img src="https://images.hdqwalls.com/download/steam-brand-logo-2560x1440.jpg"><div class="category-card-inner"><h2 class="category-title">Steam</h2><p class="category-count" data-key="steam-desc">Лучшие free-to-play игры<br>&nbsp;</p><span class="category-btn btn-steam" data-key="steam-btn">Смотреть игры</span></div></a>
+                <a href="ps.html" class="category-card ps"><img src="https://www.presse-citron.net/app/uploads/2020/05/Section-PlayStation.jpg"><div class="category-card-inner"><h2 class="category-title">PlayStation</h2><p class="category-count" data-key="ps-desc">PS Plus — 3 игры в месяц<br>&nbsp;</p><span class="category-btn btn-ps" data-key="ps-btn">Смотреть игры</span></div></a>
+                <a href="xbox.html" class="category-card xbox"><img src="https://logodix.com/logo/20376.jpg"><div class="category-card-inner"><h2 class="category-title">Xbox</h2><p class="category-count" data-key="xbox-desc">Game Pass и Games with Gold<br>&nbsp;</p><span class="category-btn btn-xbox" data-key="xbox-btn">Смотреть игры</span></div></a>
             </div>
         </div>
     </section>
 
     <section class="subscribe">
         <div class="container">
-            <h2>Узнай первым!</h2>
-            <p>Подпишись на Telegram и получай уведомления о новых раздачах</p>
+            <h2 data-key="subscribe-title">Узнай первым!</h2>
+            <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления</p>
             <a href="https://t.me/ТВОЙ_КАНАЛ" class="btn-telegram" target="_blank">📱 Подписаться на Telegram</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span>
+            <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
             <p style="color:#666;font-size:13px;margin-top:5px;">
                 🟢 Онлайн: <span id="onlineCount" style="color:#4ecca3;">0</span> | 
                 👥 Всего: <span id="totalVisitors" style="color:#f5c518;">0</span>
@@ -141,6 +141,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
+    <script src="script.js?v=55"></script>
     <script>
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
