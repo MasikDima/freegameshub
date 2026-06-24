@@ -39,26 +39,29 @@
     .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
     .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
     .overlay.show { display: block; }
-    @media (max-width: 768px) {
+    .header-container { display: flex; align-items: center; justify-content: space-between; }
+.header-right { display: flex; align-items: center; gap: 15px; }
+.burger-menu { display: none; cursor: pointer; font-size: 44px; color: white; }
+
+@media (max-width: 768px) {
     .store-nav { display: none; }
+    .header-container { flex-wrap: wrap; }
+    .logo { width: 100%; text-align: center; margin-bottom: 8px; }
     .burger-menu { display: block !important; }
-    header .container { flex-wrap: wrap; }
-    .logo { order: 1; width: 100%; text-align: center; margin-bottom: 8px; }
-    .burger-menu { order: 2; }
-    .header-right { order: 3; margin-left: auto; }
+    .header-right { margin-left: auto; }
 }
 </style>
 </head>
 <body>
 
     <header>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+    <div class="container header-container">
         <div class="logo">
             <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
             <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
         </div>
         <span class="burger-menu" onclick="openMenu()">☰</span>
-        <div class="header-right" style="display:flex;align-items:center;gap:15px;">
+        <div class="header-right">
             <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;">📦 История</a>
             <div class="lang-dropdown">
                 <button class="lang-dropdown-btn" id="langDropdownBtn">
