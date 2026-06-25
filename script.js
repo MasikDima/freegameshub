@@ -90,8 +90,10 @@ var translations = {
 var games = [
     { id: 1, title: 'Citizen Sleeper', image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲', desc: { ru: 'Ролевая игра в киберпанк-мире.', es: 'Juego de rol cyberpunk.', en: 'Cyberpunk RPG.' } },
     { id: 2, title: 'ROBOBEAT', image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e', usualPrice: '19.49€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🤖', desc: { ru: 'Ритм-шутер с роботами!', es: '¡Shooter rítmico con robots!', en: 'Rhythm shooter with robots!' } },
-    { id: 3, title: 'RollerCoaster Tycoon 3', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg', usualPrice: '19.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition', status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🎢', desc: { ru: 'Строй парк аттракционов!', es: '¡Construye tu parque!', en: 'Build your theme park!' } },
-    { id: 4, title: 'Voidwrought', image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b', status: 'new', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🕳️', desc: { ru: 'Мрачная метроидвания.', es: 'Metroidvania oscura.', en: 'Dark metroidvania.' } },
+    { id: 3, title: 'RollerCoaster Tycoon 3', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg', usualPrice: '19.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition', status: 'active', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🎢', desc: { ru: 'Строй парк аттракционов!', es: '¡Construye tu parque!', en: 'Build your theme park!' } },
+    { id: 4, title: 'Voidwrought', image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b', status: 'active', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🕳️', desc: { ru: 'Мрачная метроидвания.', es: 'Metroidvania oscura.', en: 'Dark metroidvania.' } },
+    { id: 24, title: 'I Have No Mouth, and I Must Scream', image: 'https://cdn.flickeringmyth.com/wp-content/uploads/2025/03/I-Have-No-Mouth-and-I-Must-Scream.jpg', usualPrice: '5.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/i-have-no-mouth-and-i-must-scream', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '😱', desc: { ru: 'Культовый хоррор-квест.', es: 'Aventura de terror de culto.', en: 'Cult horror adventure.' } },
+    { id: 25, title: 'River City Girls 2', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202502/2500/4b05e131a3a025d4cb069740b0903e19afa0b0a528d2dbe1.jpg', usualPrice: '29.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/river-city-girls-2', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '👊', desc: { ru: 'Битэмап с аниме-девушками!', es: '¡Beat \'em up con chicas anime!', en: 'Beat \'em up with anime girls!' } },
     { id: 5, title: 'Valorant', image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/valorant', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯', desc: { ru: 'Тактический шутер от Riot Games.', es: 'Shooter táctico de Riot Games.', en: 'Tactical shooter from Riot Games.' } },
     { id: 6, title: 'Fall Guys', image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/fall-guys', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '👑', desc: { ru: 'Королевская битва с человечками.', es: 'Battle royale con muñecos.', en: 'Battle royale with cute beans.' } },
     { id: 7, title: 'Counter-Strike 2', image: 'https://wallpapercave.com/wp/wp12803829.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/730', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫', desc: { ru: 'Легендарный тактический шутер.', es: 'Legendario shooter táctico.', en: 'Legendary tactical shooter.' } },
@@ -108,11 +110,9 @@ var games = [
     { id: 18, title: 'Overwatch 2', image: 'https://cdn.wccftech.com/wp-content/uploads/2024/07/Overwatch2-HD-scaled.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/2357570', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '⚡', desc: { ru: 'Геройский шутер Blizzard.', es: 'Shooter de héroes Blizzard.', en: 'Hero shooter by Blizzard.' } },
     { id: 19, title: 'Destiny 2', image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/1085660', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🌌', desc: { ru: 'Космический шутер Bungie.', es: 'Shooter espacial Bungie.', en: 'Space shooter by Bungie.' } },
     { id: 20, title: 'TBH: Task Bar Hero', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/3678970', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '💻', desc: { ru: 'Уникальная инди-игра.', es: 'Juego indie único.', en: 'Unique indie game.' } },
-    { id: 21, title: 'Grounded', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/grounded/',  emoji: '🐜', desc: { ru: 'Выживание в мире насекомых!', es: '¡Supervivencia en el mundo de los insectos!', en: 'Survival in the world of insects!' } },
-    { id: 22, title: 'Nickelodeon All-Star Brawl 2', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', usualPrice: '49.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/',  emoji: '🥊', desc: { ru: 'Файтинг с героями Nickelodeon!', es: '¡Lucha con héroes de Nickelodeon!', en: 'Fight with Nickelodeon heroes!' } },
-    { id: 23, title: 'Warhammer 40K: Darktide', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/es-es/games/warhammer-40000-darktide/', emoji: '⚔️', desc: { ru: 'Эпический экшен Warhammer!', es: '¡Acción épica Warhammer!', en: 'Epic Warhammer action!' } },
-        { id: 24, title: 'I Have No Mouth, and I Must Scream', image: 'https://cdn.flickeringmyth.com/wp-content/uploads/2025/03/I-Have-No-Mouth-and-I-Must-Scream.jpg', usualPrice: '5.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/i-have-no-mouth-and-i-must-scream', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '😱', desc: { ru: 'Культовый хоррор-квест.', es: 'Aventura de terror de culto.', en: 'Cult horror adventure.' } },
-    { id: 25, title: 'River City Girls 2', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202502/2500/4b05e131a3a025d4cb069740b0903e19afa0b0a528d2dbe1.jpg', usualPrice: '29.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/river-city-girls-2', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '👊', desc: { ru: 'Битэмап с аниме-девушками!', es: '¡Beat \'em up con chicas anime!', en: 'Beat \'em up with anime girls!' } }
+    { id: 21, title: 'Grounded', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/grounded/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '🐜', desc: { ru: 'Выживание в мире насекомых!', es: '¡Supervivencia en el mundo de los insectos!', en: 'Survival in the world of insects!' } },
+    { id: 22, title: 'Nickelodeon All-Star Brawl 2', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', usualPrice: '49.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '🥊', desc: { ru: 'Файтинг с героями Nickelodeon!', es: '¡Lucha con héroes de Nickelodeon!', en: 'Fight with Nickelodeon heroes!' } },
+    { id: 23, title: 'Warhammer 40K: Darktide', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/es-es/games/warhammer-40000-darktide/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '⚔️', desc: { ru: 'Эпический экшен Warhammer!', es: '¡Acción épica Warhammer!', en: 'Epic Warhammer action!' } }
 ];
 
 // ========== ЯЗЫК ==========
@@ -139,13 +139,7 @@ function switchLanguage(lang) {
 document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
 document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
 document.querySelectorAll('.lang-option').forEach(function(opt) {
-    opt.onclick = function(e) {
-        e.preventDefault();
-        var lang = this.dataset.lang;
-        document.getElementById('currentLangText').textContent = lang.toUpperCase();
-        switchLanguage(lang);
-        document.getElementById('langDropdownContent').classList.remove('open');
-    };
+    opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); switchLanguage(l); document.getElementById('langDropdownContent').classList.remove('open'); };
 });
 
 // ========== ФУНКЦИИ ИГР ==========
@@ -154,32 +148,24 @@ function getDesc(game) { return game.desc[currentLang] || game.desc.en; }
 function getStatusText(game) {
     var now = new Date();
     if (game.status === 'new' && game.startDate) {
-        var start = new Date(game.startDate);
-        if (start <= now) {
-            game.status = 'active';
-        }
+        if (new Date(game.startDate) <= now) game.status = 'active';
     }
     if (game.status === 'active' && game.endDate) {
-        var end = new Date(game.endDate);
-        if (Math.floor((end - now) / (1000 * 60 * 60 * 24)) <= 1) return t('filter-expiring');
+        if (Math.floor((new Date(game.endDate) - now) / (1000 * 60 * 60 * 24)) <= 1) return t('filter-expiring');
     }
     return game.status === 'new' ? t('filter-new') : t('filter-active');
 }
 
 function getBadge(game) {
-    var now = new Date();
     if (game.status === 'active' && game.endDate) {
-        var end = new Date(game.endDate);
-        if (Math.floor((end - now) / (1000 * 60 * 60 * 24)) <= 1) return 'badge-expiring';
+        if (Math.floor((new Date(game.endDate) - new Date()) / (1000 * 60 * 60 * 24)) <= 1) return 'badge-expiring';
     }
     return game.status === 'new' ? 'badge-new' : 'badge-active';
 }
 
 function getCard(game) {
-    var now = new Date();
     if (game.status === 'active' && game.endDate) {
-        var end = new Date(game.endDate);
-        if (Math.floor((end - now) / (1000 * 60 * 60 * 24)) <= 1) return 'expiring';
+        if (Math.floor((new Date(game.endDate) - new Date()) / (1000 * 60 * 60 * 24)) <= 1) return 'expiring';
     }
     return game.status === 'new' ? 'new' : 'active-game';
 }
@@ -189,15 +175,12 @@ function getTime(game) {
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
         if (start <= now) {
-            // Раздача уже началась — меняем статус
             game.status = 'active';
-            // Считаем до конца
             if (game.endDate) {
-                var end = new Date(game.endDate);
-                var diff = end - now;
-                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                var diff = new Date(game.endDate) - now;
+                var days = Math.floor(diff / 86400000);
+                var hours = Math.floor((diff % 86400000) / 3600000);
+                var mins = Math.floor((diff % 3600000) / 60000);
                 if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
                 if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
                 return '⏰ ' + mins + ' мин';
@@ -205,21 +188,20 @@ function getTime(game) {
             return '♾️ Навсегда';
         }
         var diff = start - now;
-        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var mins = Math.floor((diff % 3600000) / 60000);
         if (days > 0) return '⏰ Старт через ' + days + 'д ' + hours + 'ч ' + mins + 'м';
         if (hours > 0) return '⏰ Старт через ' + hours + 'ч ' + mins + 'м';
         return '⏰ Старт через ' + mins + ' мин';
     }
     if (game.endDate) {
-        var end = new Date(game.endDate);
-        var diff = end - now;
-        if (diff > 999 * 24 * 60 * 60 * 1000) return '♾️ Навсегда';
+        var diff = new Date(game.endDate) - now;
+        if (diff > 999 * 86400000) return '♾️ Навсегда';
         if (diff <= 0) return '⏰ Закончилось';
-        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var mins = Math.floor((diff % 3600000) / 60000);
         if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
         if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
         if (mins > 0) return '⏰ ' + mins + ' мин';
@@ -233,14 +215,12 @@ function renderGames(filter) {
     var container = document.getElementById('gamesContainer');
     if (!container) return;
     var now = new Date();
-    var finished = [];
-    var stillActive = [];
+    var finished = [], stillActive = [];
     games.forEach(function(game) {
         if (game.status === 'active' && game.endDate) {
-            var end = new Date(game.endDate);
-            if (end <= now && end.getFullYear() < 2099) { finished.push(game); }
-            else { stillActive.push(game); }
-        } else { stillActive.push(game); }
+            if (new Date(game.endDate) <= now && new Date(game.endDate).getFullYear() < 2099) finished.push(game);
+            else stillActive.push(game);
+        } else stillActive.push(game);
     });
     if (finished.length > 0) {
         var saved = localStorage.getItem('allHistory');
@@ -254,23 +234,23 @@ function renderGames(filter) {
         games = stillActive;
     }
     var list = games;
-if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
-if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
-if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
+    if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
+    if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
+    if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
 
-// Сортировка: игры с таймером сверху, вечные снизу
-if (filter === 'all' || filter === 'active') {
-    list.sort(function(a, b) {
-        var aIsTimed = a.endDate && new Date(a.endDate).getFullYear() < 2099;
-        var bIsTimed = b.endDate && new Date(b.endDate).getFullYear() < 2099;
-        if (aIsTimed && !bIsTimed) return -1;
-        if (!aIsTimed && bIsTimed) return 1;
-        return 0;
-    });
-}
+    if (filter === 'all' || filter === 'active') {
+        list.sort(function(a, b) {
+            var aTimed = a.endDate && new Date(a.endDate).getFullYear() < 2099;
+            var bTimed = b.endDate && new Date(b.endDate).getFullYear() < 2099;
+            if (aTimed && !bTimed) return -1;
+            if (!aTimed && bTimed) return 1;
+            return 0;
+        });
+    }
+
     container.innerHTML = list.map(function(game) {
         return '<div class="game-card ' + getCard(game) + '">' +
-            '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
+            '<img src="' + game.image + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
             '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
             '<div class="game-info"><span class="game-badge ' + getBadge(game) + '">' + getStatusText(game) + '</span>' +
             '<h3 class="game-title">' + game.title + '</h3><p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
@@ -300,12 +280,11 @@ document.querySelectorAll('.filter-btn').forEach(function(btn) {
 function detectLanguage() {
     var saved = localStorage.getItem('lang');
     if (saved) return saved;
-    var browserLang = navigator.language || navigator.userLanguage;
-    if (browserLang.indexOf('ru') === 0) return 'ru';
-    if (browserLang.indexOf('es') === 0) return 'es';
-    if (browserLang.indexOf('en') === 0) return 'en';
+    var l = navigator.language || navigator.userLanguage;
+    if (l.indexOf('ru') === 0) return 'ru';
+    if (l.indexOf('es') === 0) return 'es';
+    if (l.indexOf('en') === 0) return 'en';
     return 'en';
 }
-var detectedLang = detectLanguage();
-switchLanguage(detectedLang);
+switchLanguage(detectLanguage());
 renderGames();
