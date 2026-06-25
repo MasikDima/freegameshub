@@ -322,17 +322,20 @@ if (s.size >= limit) checkWinner(gameId, s);
     }
 
     function resetAllGiveaways() {
-        var p = prompt('Введите пароль:'); if (p !== '10031995') return;
-        if (confirm('Точно сбросить ВСЕ розыгрыши?')) {
-            giveawayGames.forEach(function(g) {
-                db.collection('giveaway_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-                db.collection('winner_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-                localStorage.removeItem('played_' + g.id);
-            });
-            alert('✅ Все розыгрыши сброшены!');
-            loadGiveaways();
-        }
+    var p = prompt('Введите пароль:'); if (p !== '10031995') return;
+    if (confirm('Точно сбросить ВСЕ розыгрыши?')) {
+        giveawayGames.forEach(function(g) {
+            db.collection('giveaway_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+            db.collection('winner_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+        });
+        // Очищаем все localStorage ключи
+        Object.keys(localStorage).forEach(function(key) {
+            if (key.indexOf('played_') === 0) localStorage.removeItem(key);
+        });
+        alert('✅ Все розыгрыши сброшены!');
+        setTimeout(function() { location.reload(); }, 500);
     }
+}
 
     var cc = 0;
     document.querySelector('h1').addEventListener('click', function() { cc++; if (cc >= 3) { cc = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; } setTimeout(function() { cc = 0; }, 1000); });
