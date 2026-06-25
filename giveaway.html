@@ -141,9 +141,7 @@
         { id: 'mafia2', title: 'Mafia 2', image: 'https://th.bing.com/th/id/R.7fa568a2fb0ea968b7cb7e16a43dd35b?rik=Bn67lilUbhUeww&pid=ImgRaw&r=0', desc: 'Набери 20 очков!', maxPlayers: 200 }
     ];
 
-    // IP пользователя
     var userIP = '';
-
     fetch('https://api.ipify.org?format=json')
         .then(function(r) { return r.json(); })
         .then(function(d) { userIP = d.ip; })
@@ -159,83 +157,64 @@
                 '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                 '<h3 class="prize-game">' + game.title + '</h3>' +
                 '<p class="prize-desc">' + game.desc + '</p>' +
-'<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 Розыгрыш при ' + (game.maxPlayers || 100) + ' участниках</p>'
+                '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 Розыгрыш при ' + (game.maxPlayers || 100) + ' участниках</p>' +
                 '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')">🎮 Играть!</button>' +
                 '<p class="participants-count" id="count-' + game.id + '">Участников: 0</p>' +
                 '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
             container.appendChild(card);
-setTimeout(function() { loadGameData(game.id); }, 100);
+            setTimeout(function() { loadGameData(game.id); }, 100);
         });
     }
 
     function loadGameData(gameId) {
-    var countEl = document.getElementById('count-' + gameId);
-    if (!countEl) return;
-    
-    db.collection('giveaway_' + gameId).get().then(function(s) {
-        countEl.textContent = 'Участников: ' + s.size;
-        var game = giveawayGames.find(function(g) { return g.id === gameId; });
-        var limit = game.maxPlayers || 100;
-        if (s.size >= limit) checkWinner(gameId, s);
-    });
-    db.collection('winner_' + gameId).get().then(function(s) {
-        if (!s.empty) {
-            s.forEach(function(d) {
-                var winnerEl = document.getElementById('winner-' + gameId);
-                var btnEl = document.getElementById('btn-' + gameId);
-                if (winnerEl) {
-                    winnerEl.style.display = 'block';
-                    winnerEl.textContent = '🏆 Победитель: ' + d.data().masked;
-                }
-                if (btnEl) {
-                    btnEl.disabled = true;
-                    btnEl.textContent = 'Розыгрыш завершён';
-                }
-            });
-        }
-    });
-}
+        var countEl = document.getElementById('count-' + gameId);
+        if (!countEl) return;
+        db.collection('giveaway_' + gameId).get().then(function(s) {
+            countEl.textContent = 'Участников: ' + s.size;
+            var game = giveawayGames.find(function(g) { return g.id === gameId; });
+            var limit = game.maxPlayers || 100;
+            if (s.size >= limit) checkWinner(gameId, s);
+        });
+        db.collection('winner_' + gameId).get().then(function(s) {
+            if (!s.empty) {
+                s.forEach(function(d) {
+                    var winnerEl = document.getElementById('winner-' + gameId);
+                    var btnEl = document.getElementById('btn-' + gameId);
+                    if (winnerEl) { winnerEl.style.display = 'block'; winnerEl.textContent = '🏆 Победитель: ' + d.data().masked; }
+                    if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Розыгрыш завершён'; }
+                });
+            }
+        });
+    }
 
     function checkWinner(gameId, snapshot) {
-    var game = giveawayGames.find(function(g) { return g.id === gameId; });
-    var limit = game.maxPlayers || 100;
-    
-    if (snapshot.size < limit) return;
-    
-    db.collection('winner_' + gameId).get().then(function(w) {
-        if (!w.empty) return;
-        var entries = [];
-        snapshot.forEach(function(d) { entries.push(d.data().username); });
-        
-        // Криптографически безопасный выбор
-        var randomArray = new Uint32Array(1);
-        window.crypto.getRandomValues(randomArray);
-        var winner = entries[randomArray[0] % entries.length];
-        
-        var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
-        db.collection('winner_' + gameId).add({ username: winner, masked: masked });
-        document.getElementById('winner-' + gameId).style.display = 'block';
-        document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + masked;
-        document.getElementById('btn-' + gameId).disabled = true;
-        document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
-    });
-}
+        var game = giveawayGames.find(function(g) { return g.id === gameId; });
+        var limit = game.maxPlayers || 100;
+        if (snapshot.size < limit) return;
+        db.collection('winner_' + gameId).get().then(function(w) {
+            if (!w.empty) return;
+            var entries = [];
+            snapshot.forEach(function(d) { entries.push(d.data().username); });
+            var randomArray = new Uint32Array(1);
+            window.crypto.getRandomValues(randomArray);
+            var winner = entries[randomArray[0] % entries.length];
+            var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
+            db.collection('winner_' + gameId).add({ username: winner, masked: masked });
+            document.getElementById('winner-' + gameId).style.display = 'block';
+            document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + masked;
+            document.getElementById('btn-' + gameId).disabled = true;
+            document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
+        });
+    }
 
     function startGame(gameId) {
-        // Защита: localStorage
-        if (localStorage.getItem('played_' + gameId)) { 
-            alert('⚠️ Ты уже участвовал в этом розыгрыше с этого устройства!'); return; 
-        }
-
-        // Защита: IP (если загрузился)
+        if (localStorage.getItem('played_' + gameId)) { alert('⚠️ Ты уже участвовал!'); return; }
         if (userIP && userIP !== 'unknown') {
             db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ С этого IP уже участвовали в розыгрыше!'); return; }
+                if (!s.empty) { alert('⚠️ С этого IP уже участвовали!'); return; }
                 launchGame(gameId);
             });
-        } else {
-            launchGame(gameId);
-        }
+        } else { launchGame(gameId); }
     }
 
     function launchGame(gameId) {
@@ -243,28 +222,20 @@ setTimeout(function() { loadGameData(game.id); }, 100);
         var canvas = document.createElement('canvas');
         canvas.width = 400; canvas.height = 500;
         canvas.style.cssText = 'display:block;margin:20px auto;border:2px solid #f5c518;border-radius:10px;background:#0a0a2e;';
-        
         var modal = document.createElement('div');
         modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
-        
         var scoreDiv = document.createElement('div');
         scoreDiv.style.cssText = 'color:#f5c518;font-size:24px;font-weight:900;margin-bottom:10px;';
         scoreDiv.textContent = 'Счёт: 0';
-
         var closeBtn = document.createElement('button');
         closeBtn.textContent = '✕ Закрыть';
         closeBtn.style.cssText = 'margin-top:10px;padding:10px 20px;background:#e94560;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;';
-
-        modal.appendChild(scoreDiv);
-        modal.appendChild(canvas);
-        modal.appendChild(closeBtn);
+        modal.appendChild(scoreDiv); modal.appendChild(canvas); modal.appendChild(closeBtn);
         document.body.appendChild(modal);
 
         var ctx = canvas.getContext('2d');
         var bird = { x: 80, y: 250, size: 22, velocity: 0 };
-        var pipes = [];
-        var gameRunning = true;
-        var lastTime = 0, pipeTimer = 0;
+        var pipes = []; var gameRunning = true; var lastTime = 0, pipeTimer = 0;
         var GRAVITY = 700, JUMP = -250, GAP = 180, SPEED = 150, INTERVAL = 1.8;
 
         function jump() { if (!gameRunning) return; bird.velocity = JUMP; }
@@ -308,21 +279,15 @@ setTimeout(function() { loadGameData(game.id); }, 100);
                 if (username) {
                     db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
                         if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
-                        db.collection('giveaway_' + gameId).add({ 
-                            username: username, 
-                            ip: userIP,
-                            date: firebase.firestore.FieldValue.serverTimestamp() 
-                        }).then(function() {
+                        db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
                             localStorage.setItem('played_' + gameId, 'true');
-                            loadGameData(gameId);
-                            closeModal();
+                            loadGameData(gameId); closeModal();
                         });
                     });
                 } else { closeModal(); }
             } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
         }
         function closeModal() { document.body.removeChild(modal); }
-        
         closeBtn.onclick = function() { gameRunning = false; closeModal(); };
         document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
         canvas.addEventListener('click', jump);
@@ -331,20 +296,17 @@ setTimeout(function() { loadGameData(game.id); }, 100);
     }
 
     function resetAllGiveaways() {
-    var p = prompt('Введите пароль:'); if (p !== '10031995') return;
-    if (confirm('Точно сбросить ВСЕ розыгрыши?')) {
-        giveawayGames.forEach(function(g) {
-            db.collection('giveaway_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-            db.collection('winner_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-        });
-        // Очищаем все localStorage ключи
-        Object.keys(localStorage).forEach(function(key) {
-            if (key.indexOf('played_') === 0) localStorage.removeItem(key);
-        });
-        alert('✅ Все розыгрыши сброшены!');
-        setTimeout(function() { location.reload(); }, 500);
+        var p = prompt('Введите пароль:'); if (p !== '10031995') return;
+        if (confirm('Точно сбросить ВСЕ розыгрыши?')) {
+            giveawayGames.forEach(function(g) {
+                db.collection('giveaway_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+                db.collection('winner_' + g.id).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+            });
+            Object.keys(localStorage).forEach(function(key) { if (key.indexOf('played_') === 0) localStorage.removeItem(key); });
+            alert('✅ Все розыгрыши сброшены!');
+            setTimeout(function() { location.reload(); }, 500);
+        }
     }
-}
 
     var cc = 0;
     document.querySelector('h1').addEventListener('click', function() { cc++; if (cc >= 3) { cc = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; } setTimeout(function() { cc = 0; }, 1000); });
