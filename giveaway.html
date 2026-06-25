@@ -135,12 +135,10 @@
     var db = firebase.firestore();
 
     var giveawayGames = [
-        { id: 'cyberpunk', title: 'Cyberpunk 2077', image: 'https://cdn1.epicgames.com/offer/0584d2013f0149a791e7b9bad0eec102/EGS_Cyberpunk2077_CDPROJEKTRED_S1_2560x1440-aaa123', desc: 'Набери 20 очков!' },
-        { id: 'eldenring', title: 'Elden Ring', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qkG4e0bPRSHXuKXD6y.png', desc: 'Пройди мини-игру!' },
-        { id: 'baldursgate3', title: 'Baldur\'s Gate 3', image: 'https://cdn1.epicgames.com/offer/2f03a9f5c3c64e8b9b9b9b9b9b9b9b9b/EGS_BaldursGate3_LarianStudios_S1_2560x1440-bbb456', desc: '20 очков = участие!' },
-        { id: 'starfield', title: 'Starfield', image: 'https://cdn1.epicgames.com/offer/5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a/EGS_Starfield_Bethesda_S1_2560x1440-ccc789', desc: 'Сыграй и выиграй!' },
-        { id: 'spiderman', title: 'Spider-Man Remastered', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202008/1020/PR5qKv6qG4e0bPRSHXuKXD6y.png', desc: 'Победи в мини-игре!' },
-        { id: 'mafia2', title: 'Mafia 2', image: 'https://th.bing.com/th/id/R.7fa568a2fb0ea968b7cb7e16a43dd35b?rik=Bn67lilUbhUeww&pid=ImgRaw&r=0', desc: 'Набери 20 очков!' }
+        { id: 'easternexorcist', title: 'Eastern Exorcist', image: 'https://i.ytimg.com/vi/2ro-Wd5P5fE/maxresdefault.jpg', desc: 'Сыграй и выиграй!', maxPlayers: 100 },
+        { id: 'steelrats', title: 'Steel Rats', image: 'https://www.pcgamesn.com/wp-content/sites/pcgamesn/2018/11/steel-rats.jpg', desc: 'Набери 20 очков!', maxPlayers: 100 },
+        { id: 'mafia3', title: 'Mafia 3', image: 'https://images5.alphacoders.com/693/thumb-1920-693371.jpg', desc: 'Пройди мини-игру!', maxPlayers: 300 },
+        { id: 'mafia2', title: 'Mafia 2', image: 'https://th.bing.com/th/id/R.7fa568a2fb0ea968b7cb7e16a43dd35b?rik=Bn67lilUbhUeww&pid=ImgRaw&r=0', desc: 'Набери 20 очков!', maxPlayers: 200 }
     ];
 
     // IP пользователя
@@ -172,7 +170,9 @@
     function loadGameData(gameId) {
         db.collection('giveaway_' + gameId).get().then(function(s) {
             document.getElementById('count-' + gameId).textContent = 'Участников: ' + s.size;
-            if (s.size >= 100) checkWinner(gameId, s);
+            var game = giveawayGames.find(function(g) { return g.id === gameId; });
+var limit = game.maxPlayers || 100;
+if (s.size >= limit) checkWinner(gameId, s);
         });
         db.collection('winner_' + gameId).get().then(function(s) {
             if (!s.empty) {
@@ -187,19 +187,24 @@
     }
 
     function checkWinner(gameId, snapshot) {
-        db.collection('winner_' + gameId).get().then(function(w) {
-            if (!w.empty) return;
-            var entries = [];
-            snapshot.forEach(function(d) { entries.push(d.data().username); });
-            var winner = entries[Math.floor(Math.random() * entries.length)];
-            var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
-            db.collection('winner_' + gameId).add({ username: winner, masked: masked });
-            document.getElementById('winner-' + gameId).style.display = 'block';
-            document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + masked;
-            document.getElementById('btn-' + gameId).disabled = true;
-            document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
-        });
-    }
+    var game = giveawayGames.find(function(g) { return g.id === gameId; });
+    var limit = game.maxPlayers || 100;
+    
+    if (snapshot.size < limit) return;
+    
+    db.collection('winner_' + gameId).get().then(function(w) {
+        if (!w.empty) return;
+        var entries = [];
+        snapshot.forEach(function(d) { entries.push(d.data().username); });
+        var winner = entries[Math.floor(Math.random() * entries.length)];
+        var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
+        db.collection('winner_' + gameId).add({ username: winner, masked: masked });
+        document.getElementById('winner-' + gameId).style.display = 'block';
+        document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + masked;
+        document.getElementById('btn-' + gameId).disabled = true;
+        document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
+    });
+}
 
     function startGame(gameId) {
         // Защита: localStorage
