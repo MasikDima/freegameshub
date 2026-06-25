@@ -254,9 +254,20 @@ function renderGames(filter) {
         games = stillActive;
     }
     var list = games;
-    if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
-    if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
-    if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
+if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
+if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
+if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
+
+// Сортировка: игры с таймером сверху, вечные снизу
+if (filter === 'all' || filter === 'active') {
+    list.sort(function(a, b) {
+        var aIsTimed = a.endDate && new Date(a.endDate).getFullYear() < 2099;
+        var bIsTimed = b.endDate && new Date(b.endDate).getFullYear() < 2099;
+        if (aIsTimed && !bIsTimed) return -1;
+        if (!aIsTimed && bIsTimed) return 1;
+        return 0;
+    });
+}
     container.innerHTML = list.map(function(game) {
         return '<div class="game-card ' + getCard(game) + '">' +
             '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
