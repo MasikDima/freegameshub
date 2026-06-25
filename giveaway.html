@@ -169,23 +169,32 @@ setTimeout(function() { loadGameData(game.id); }, 100);
     }
 
     function loadGameData(gameId) {
-        db.collection('giveaway_' + gameId).get().then(function(s) {
-            document.getElementById('count-' + gameId).textContent = 'Участников: ' + s.size;
-            var game = giveawayGames.find(function(g) { return g.id === gameId; });
-var limit = game.maxPlayers || 100;
-if (s.size >= limit) checkWinner(gameId, s);
-        });
-        db.collection('winner_' + gameId).get().then(function(s) {
-            if (!s.empty) {
-                s.forEach(function(d) {
-                    document.getElementById('winner-' + gameId).style.display = 'block';
-                    document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + d.data().masked;
-                    document.getElementById('btn-' + gameId).disabled = true;
-                    document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
-                });
-            }
-        });
-    }
+    var countEl = document.getElementById('count-' + gameId);
+    if (!countEl) return;
+    
+    db.collection('giveaway_' + gameId).get().then(function(s) {
+        countEl.textContent = 'Участников: ' + s.size;
+        var game = giveawayGames.find(function(g) { return g.id === gameId; });
+        var limit = game.maxPlayers || 100;
+        if (s.size >= limit) checkWinner(gameId, s);
+    });
+    db.collection('winner_' + gameId).get().then(function(s) {
+        if (!s.empty) {
+            s.forEach(function(d) {
+                var winnerEl = document.getElementById('winner-' + gameId);
+                var btnEl = document.getElementById('btn-' + gameId);
+                if (winnerEl) {
+                    winnerEl.style.display = 'block';
+                    winnerEl.textContent = '🏆 Победитель: ' + d.data().masked;
+                }
+                if (btnEl) {
+                    btnEl.disabled = true;
+                    btnEl.textContent = 'Розыгрыш завершён';
+                }
+            });
+        }
+    });
+}
 
     function checkWinner(gameId, snapshot) {
     var game = giveawayGames.find(function(g) { return g.id === gameId; });
