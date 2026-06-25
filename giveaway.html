@@ -9,11 +9,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
-        .giveaway-container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-        .giveaway-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .giveaway-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .giveaway-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
         .prize-card { background: rgba(10, 10, 30, 0.7); border: 2px solid #f5c518; border-radius: 20px; padding: 25px; text-align: center; backdrop-filter: blur(10px); }
         .prize-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
-        .prize-title { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
         .prize-game { font-size: 18px; color: #f5c518; margin-bottom: 10px; }
         .prize-desc { color: #aaa; font-size: 13px; margin-bottom: 15px; }
         .btn-play { display: block; width: 100%; padding: 14px; border-radius: 30px; font-weight: 700; font-size: 16px; text-transform: uppercase; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; cursor: pointer; border: none; }
@@ -37,12 +36,16 @@
         footer { margin-top: auto; }
 
         @media (max-width: 1024px) {
+            .giveaway-grid { grid-template-columns: repeat(2, 1fr); }
             .store-nav { display: none; }
             .header-desktop .header-right { display: none !important; }
             .header-desktop { text-align: center; }
             .header-desktop .logo { margin-bottom: 8px; }
             .mobile-row { display: block !important; padding: 0 15px; }
             .mobile-row .burger-menu { display: block !important; }
+        }
+        @media (max-width: 600px) {
+            .giveaway-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -131,7 +134,6 @@
     firebase.initializeApp(firebaseConfig);
     var db = firebase.firestore();
 
-    // Список розыгрышей
     var giveawayGames = [
         { id: 'cyberpunk', title: 'Cyberpunk 2077', image: 'https://cdn1.epicgames.com/offer/0584d2013f0149a791e7b9bad0eec102/EGS_Cyberpunk2077_CDPROJEKTRED_S1_2560x1440-aaa123', desc: 'Набери 20 очков!' },
         { id: 'eldenring', title: 'Elden Ring', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qkG4e0bPRSHXuKXD6y.png', desc: 'Пройди мини-игру!' },
@@ -140,10 +142,17 @@
         { id: 'spiderman', title: 'Spider-Man Remastered', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202008/1020/PR5qKv6qG4e0bPRSHXuKXD6y.png', desc: 'Победи в мини-игре!' }
     ];
 
+    // IP пользователя
+    var userIP = '';
+
+    fetch('https://api.ipify.org?format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(d) { userIP = d.ip; })
+        .catch(function() { userIP = 'unknown'; });
+
     function loadGiveaways() {
         var container = document.getElementById('giveawayGrid');
         container.innerHTML = '';
-
         giveawayGames.forEach(function(game) {
             var card = document.createElement('div');
             card.className = 'prize-card';
@@ -154,10 +163,7 @@
                 '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')">🎮 Играть!</button>' +
                 '<p class="participants-count" id="count-' + game.id + '">Участников: 0</p>' +
                 '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
-
             container.appendChild(card);
-
-            // Загружаем счётчик и победителя
             loadGameData(game.id);
         });
     }
@@ -195,9 +201,23 @@
     }
 
     function startGame(gameId) {
-        var hasPlayed = localStorage.getItem('played_' + gameId);
-        if (hasPlayed) { alert('Ты уже участвовал в этом розыгрыше!'); return; }
+        // Защита: localStorage
+        if (localStorage.getItem('played_' + gameId)) { 
+            alert('⚠️ Ты уже участвовал в этом розыгрыше с этого устройства!'); return; 
+        }
 
+        // Защита: IP (если загрузился)
+        if (userIP && userIP !== 'unknown') {
+            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+                if (!s.empty) { alert('⚠️ С этого IP уже участвовали в розыгрыше!'); return; }
+                launchGame(gameId);
+            });
+        } else {
+            launchGame(gameId);
+        }
+    }
+
+    function launchGame(gameId) {
         var score = 0;
         var canvas = document.createElement('canvas');
         canvas.width = 400; canvas.height = 500;
@@ -266,8 +286,12 @@
                 var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
                 if (username) {
                     db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
-                        if (!s.empty) { alert('Этот @username уже участвует!'); closeModal(); return; }
-                        db.collection('giveaway_' + gameId).add({ username: username, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+                        if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
+                        db.collection('giveaway_' + gameId).add({ 
+                            username: username, 
+                            ip: userIP,
+                            date: firebase.firestore.FieldValue.serverTimestamp() 
+                        }).then(function() {
                             localStorage.setItem('played_' + gameId, 'true');
                             loadGameData(gameId);
                             closeModal();
@@ -298,7 +322,6 @@
         }
     }
 
-    // Админ-панель (3 клика по заголовку страницы)
     var cc = 0;
     document.querySelector('h1').addEventListener('click', function() { cc++; if (cc >= 3) { cc = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; } setTimeout(function() { cc = 0; }, 1000); });
 
