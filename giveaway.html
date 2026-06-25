@@ -164,7 +164,7 @@
                 '<p class="participants-count" id="count-' + game.id + '">Участников: 0</p>' +
                 '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
             container.appendChild(card);
-            loadGameData(game.id);
+setTimeout(function() { loadGameData(game.id); }, 100);
         });
     }
 
