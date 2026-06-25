@@ -110,7 +110,9 @@ var games = [
     { id: 20, title: 'TBH: Task Bar Hero', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/3678970', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '💻', desc: { ru: 'Уникальная инди-игра.', es: 'Juego indie único.', en: 'Unique indie game.' } },
     { id: 21, title: 'Grounded', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/grounded/',  emoji: '🐜', desc: { ru: 'Выживание в мире насекомых!', es: '¡Supervivencia en el mundo de los insectos!', en: 'Survival in the world of insects!' } },
     { id: 22, title: 'Nickelodeon All-Star Brawl 2', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', usualPrice: '49.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/',  emoji: '🥊', desc: { ru: 'Файтинг с героями Nickelodeon!', es: '¡Lucha con héroes de Nickelodeon!', en: 'Fight with Nickelodeon heroes!' } },
-    { id: 23, title: 'Warhammer 40K: Darktide', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/es-es/games/warhammer-40000-darktide/', emoji: '⚔️', desc: { ru: 'Эпический экшен Warhammer!', es: '¡Acción épica Warhammer!', en: 'Epic Warhammer action!' } }
+    { id: 23, title: 'Warhammer 40K: Darktide', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/es-es/games/warhammer-40000-darktide/', emoji: '⚔️', desc: { ru: 'Эпический экшен Warhammer!', es: '¡Acción épica Warhammer!', en: 'Epic Warhammer action!' } },
+        { id: 24, title: 'I Have No Mouth, and I Must Scream', image: 'https://cdn.flickeringmyth.com/wp-content/uploads/2025/03/I-Have-No-Mouth-and-I-Must-Scream.jpg', usualPrice: '5.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/i-have-no-mouth-and-i-must-scream', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '😱', desc: { ru: 'Культовый хоррор-квест.', es: 'Aventura de terror de culto.', en: 'Cult horror adventure.' } },
+    { id: 25, title: 'River City Girls 2', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202502/2500/4b05e131a3a025d4cb069740b0903e19afa0b0a528d2dbe1.jpg', usualPrice: '29.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/river-city-girls-2', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '👊', desc: { ru: 'Битэмап с аниме-девушками!', es: '¡Beat \'em up con chicas anime!', en: 'Beat \'em up with anime girls!' } }
 ];
 
 // ========== ЯЗЫК ==========
@@ -151,6 +153,12 @@ function getDesc(game) { return game.desc[currentLang] || game.desc.en; }
 
 function getStatusText(game) {
     var now = new Date();
+    if (game.status === 'new' && game.startDate) {
+        var start = new Date(game.startDate);
+        if (start <= now) {
+            game.status = 'active';
+        }
+    }
     if (game.status === 'active' && game.endDate) {
         var end = new Date(game.endDate);
         if (Math.floor((end - now) / (1000 * 60 * 60 * 24)) <= 1) return t('filter-expiring');
@@ -180,8 +188,23 @@ function getTime(game) {
     var now = new Date();
     if (game.status === 'new' && game.startDate) {
         var start = new Date(game.startDate);
+        if (start <= now) {
+            // Раздача уже началась — меняем статус
+            game.status = 'active';
+            // Считаем до конца
+            if (game.endDate) {
+                var end = new Date(game.endDate);
+                var diff = end - now;
+                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
+                if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
+                return '⏰ ' + mins + ' мин';
+            }
+            return '♾️ Навсегда';
+        }
         var diff = start - now;
-        if (diff <= 0) return '⏰ Старт сегодня!';
         var days = Math.floor(diff / (1000 * 60 * 60 * 24));
         var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
