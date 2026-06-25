@@ -197,7 +197,12 @@ if (s.size >= limit) checkWinner(gameId, s);
         if (!w.empty) return;
         var entries = [];
         snapshot.forEach(function(d) { entries.push(d.data().username); });
-        var winner = entries[Math.floor(Math.random() * entries.length)];
+        
+        // Криптографически безопасный выбор
+        var randomArray = new Uint32Array(1);
+        window.crypto.getRandomValues(randomArray);
+        var winner = entries[randomArray[0] % entries.length];
+        
         var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
         db.collection('winner_' + gameId).add({ username: winner, masked: masked });
         document.getElementById('winner-' + gameId).style.display = 'block';
