@@ -211,7 +211,7 @@
         if (localStorage.getItem('played_' + gameId)) { alert('⚠️ Ты уже участвовал!'); return; }
         if (userIP && userIP !== 'unknown') {
             db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ С этого IP уже участвовали!'); return; }
+                if (!s.empty) { alert('⚠️ Ты в игре!'); return; }
                 launchGame(gameId);
             });
         } else { launchGame(gameId); }
