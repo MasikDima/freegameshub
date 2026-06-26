@@ -239,15 +239,20 @@ function renderGames(filter) {
 
     // Обработчики клика для кнопок
     document.querySelectorAll('.btn-get').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            var gameId = this.getAttribute('data-id');
-            if (gameId) {
-                localStorage.setItem('claimed_' + gameId, 'true');
-                this.textContent = t('claimed');
-                this.style.background = '#444';
-            }
-        });
+    var gameId = btn.getAttribute('data-id');
+    // При загрузке проверяем localStorage
+    if (gameId && localStorage.getItem('claimed_' + gameId)) {
+        btn.textContent = t('claimed');
+        btn.style.background = '#444';
+    }
+    btn.addEventListener('click', function(e) {
+        if (gameId) {
+            localStorage.setItem('claimed_' + gameId, 'true');
+            this.textContent = t('claimed');
+            this.style.background = '#444';
+        }
     });
+});
 
     var freeEl = document.getElementById('freeGamesCount');
     var upcEl = document.getElementById('upcomingCount');
