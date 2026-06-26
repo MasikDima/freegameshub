@@ -192,12 +192,6 @@ function getTime(g) {
     return '';
 }
 
-function markClaimed(id, el) {
-    localStorage.setItem('claimed_' + id, 'true');
-    el.textContent = t('claimed');
-    el.style.background = '#444';
-}
-
 function renderGames(filter) {
     filter = filter || 'all';
     var c = document.getElementById('gamesContainer');
@@ -240,12 +234,25 @@ function renderGames(filter) {
             '<div class="game-price"><span class="original">' + g.usualPrice + '</span> → <span class="free">0€</span></div>' +
             '<div class="game-store">' + t('store') + ': ' + g.store + '</div>' +
             '<div class="game-timer">' + getTime(g) + '</div>' +
-            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" onclick="markClaimed(' + g.id + ', this)" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a></div></div>'
+            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + g.id + '" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a></div></div>';
     }).join('');
+
+    // Обработчики клика для кнопок
+    document.querySelectorAll('.btn-get').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            var gameId = this.getAttribute('data-id');
+            if (gameId) {
+                localStorage.setItem('claimed_' + gameId, 'true');
+                this.textContent = t('claimed');
+                this.style.background = '#444';
+            }
+        });
+    });
+
     var freeEl = document.getElementById('freeGamesCount');
-var upcEl = document.getElementById('upcomingCount');
-if (freeEl) freeEl.textContent = games.filter(function(g) { return g.status === 'active'; }).length;
-if (upcEl) upcEl.textContent = games.filter(function(g) { return g.status === 'new'; }).length;
+    var upcEl = document.getElementById('upcomingCount');
+    if (freeEl) freeEl.textContent = games.filter(function(g) { return g.status === 'active'; }).length;
+    if (upcEl) upcEl.textContent = games.filter(function(g) { return g.status === 'new'; }).length;
     clearTimeout(window.timerRefresh);
     window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
