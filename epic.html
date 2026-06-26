@@ -110,27 +110,50 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script src="script.js?v=75"></script>
+    <script src="script.js?v=70"></script>
     <script>
+        function t(key) { return (translations && translations[currentLang] ? translations[currentLang][key] : key) || key; }
+        function getCard(g) { return g.status === 'new' ? 'new' : 'active-game'; }
+        function getBadge(g) { return g.status === 'new' ? 'badge-new' : 'badge-active'; }
+        function getStatusText(g) { return g.status === 'new' ? '🟡 Новые' : '🟢 Бесплатно'; }
+        function getDesc(g) { return g.desc ? (g.desc[currentLang] || g.desc.en) : ''; }
+        function getTime(g) { return ''; }
+
         setTimeout(function() {
-            if (typeof renderGames === 'function' && typeof games !== 'undefined') {
+            if (typeof games !== 'undefined') {
                 var filtered = games.filter(function(g) { return g.store === 'Epic Games Store'; });
                 var container = document.getElementById('gamesContainer');
                 if (!container) return;
                 container.innerHTML = filtered.map(function(game) {
+                    var claimed = localStorage.getItem('claimed_' + game.id);
                     return '<div class="game-card ' + getCard(game) + '">' +
                         '<img src="' + game.image + '" alt="' + game.title + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
-                        '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
+                        '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + (game.emoji || '🎮') + '</div>' +
                         '<div class="game-info">' +
                         '<span class="game-badge ' + getBadge(game) + '">' + getStatusText(game) + '</span>' +
                         '<h3 class="game-title">' + game.title + '</h3>' +
                         '<p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
                         '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
-                        '<div class="game-store">' + t('store') + ': ' + game.store + '</div>' +
-                        '<div class="game-timer">' + getTime(game) + '</div>' +
-                        '<a href="' + game.storeUrl + '" class="btn-get" target="_blank">🎁 ЗАБРАТЬ БЕСПЛАТНО</a>' +
+                        '<div class="game-store">Магазин: ' + game.store + '</div>' +
+                        '<div class="game-timer"></div>' +
+                        '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + game.id + '" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? '✅ Забрал' : '🎁 ЗАБРАТЬ БЕСПЛАТНО') + '</a>' +
                         '</div></div>';
                 }).join('');
+
+                document.querySelectorAll('.btn-get').forEach(function(btn) {
+                    var gameId = btn.getAttribute('data-id');
+                    if (gameId && localStorage.getItem('claimed_' + gameId)) {
+                        btn.textContent = '✅ Забрал';
+                        btn.style.background = '#444';
+                    }
+                    btn.addEventListener('click', function() {
+                        if (gameId) {
+                            localStorage.setItem('claimed_' + gameId, 'true');
+                            this.textContent = '✅ Забрал';
+                            this.style.background = '#444';
+                        }
+                    });
+                });
             }
         }, 500);
 
