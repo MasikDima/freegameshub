@@ -242,8 +242,10 @@ function renderGames(filter) {
             '<div class="game-timer">' + getTime(g) + '</div>' +
             '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" onclick="markClaimed(' + g.id + ', this)" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a></div></div>';
     }).join('');
-    document.getElementById('freeGamesCount').textContent = games.filter(function(g) { return g.status === 'active'; }).length;
-    document.getElementById('upcomingCount').textContent = games.filter(function(g) { return g.status === 'new'; }).length;
+    var freeEl = document.getElementById('freeGamesCount');
+var upcEl = document.getElementById('upcomingCount');
+if (freeEl) freeEl.textContent = games.filter(function(g) { return g.status === 'active'; }).length;
+if (upcEl) upcEl.textContent = games.filter(function(g) { return g.status === 'new'; }).length;
     clearTimeout(window.timerRefresh);
     window.timerRefresh = setTimeout(function() { renderGames(currentFilter); }, 60000);
 }
