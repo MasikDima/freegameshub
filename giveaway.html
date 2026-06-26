@@ -208,15 +208,25 @@
         });
     }
 
-    function startGame(gameId) {
-        if (localStorage.getItem('played_' + gameId)) { alert('⚠️ Ты уже участвовал!'); return; }
-        if (userIP && userIP !== 'unknown') {
-            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ Ты в игре!'); return; }
-                launchGame(gameId);
-            });
-        } else { launchGame(gameId); }
+   function startGame(gameId) {
+    if (localStorage.getItem('played_' + gameId)) { 
+        alert('⚠️ Ты уже участвовал в этом розыгрыше!'); 
+        var btn = document.getElementById('btn-' + gameId);
+        if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; }
+        return; 
     }
+    if (userIP && userIP !== 'unknown') {
+        db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+            if (!s.empty) { 
+                alert('⚠️ Ты уже участвовал в этом розыгрыше!'); 
+                var btn = document.getElementById('btn-' + gameId);
+                if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; }
+                return; 
+            }
+            launchGame(gameId);
+        });
+    } else { launchGame(gameId); }
+}
 
     function launchGame(gameId) {
         var score = 0;
