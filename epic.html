@@ -115,7 +115,16 @@
         // Ждём загрузку script.js и рендерим игры
         setTimeout(function() {
             if (typeof renderGames === 'function') {
-                renderGames('all');
+                // Фильтруем только Epic Games Store
+var epicGames = games.filter(function(g) { return g.store === 'Epic Games Store'; });
+var container = document.getElementById('gamesContainer');
+if (container && typeof renderGames === 'function') {
+    // Временно заменяем games на отфильтрованные
+    var originalGames = games;
+    games = epicGames;
+    renderGames('all');
+    games = originalGames;
+}
             }
         }, 300);
 
