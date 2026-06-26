@@ -13,6 +13,7 @@ var translations = {
         'subscribe-text': 'Подпишись на Telegram и получай уведомления',
         'footer-text': 'Все ссылки ведут на официальные магазины.',
         'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
+        'claimed': '✅ Забрал',
         'days-left': 'дней',
         'store': 'Магазин',
         'history-btn': '📦 История',
@@ -41,6 +42,7 @@ var translations = {
         'subscribe-text': 'Suscríbete a Telegram para recibir notificaciones',
         'footer-text': 'Todos los enlaces llevan a tiendas oficiales.',
         'get-free': '🎁 CONSEGUIR GRATIS',
+        'claimed': '✅ Reclamado',
         'days-left': 'días',
         'store': 'Tienda',
         'history-btn': '📦 Historial',
@@ -69,6 +71,7 @@ var translations = {
         'subscribe-text': 'Subscribe to Telegram for notifications',
         'footer-text': 'All links lead to official stores.',
         'get-free': '🎁 GET IT FREE',
+        'claimed': '✅ Claimed',
         'days-left': 'days',
         'store': 'Store',
         'history-btn': '📦 History',
@@ -117,20 +120,17 @@ var games = [
 
 // ========== ЯЗЫК ==========
 var currentLang = 'ru';
-
 function t(key) { return translations[currentLang][key] || key; }
 
 function switchLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-key]').forEach(function(el) {
-        var translation = t(el.dataset.key);
-        if (translation && translation !== el.dataset.key) {
-            el.textContent = translation;
-        }
+        var tr = t(el.dataset.key);
+        if (tr && tr !== el.dataset.key) el.textContent = tr;
     });
-    var textEl = document.getElementById('currentLangText');
-    if (textEl) textEl.textContent = lang.toUpperCase();
-    document.querySelectorAll('.lang-option').forEach(function(opt) { opt.classList.toggle('active', opt.dataset.lang === lang); });
+    var te = document.getElementById('currentLangText');
+    if (te) te.textContent = lang.toUpperCase();
+    document.querySelectorAll('.lang-option').forEach(function(o) { o.classList.toggle('active', o.dataset.lang === lang); });
     renderGames(currentFilter);
     localStorage.setItem('lang', lang);
 }
@@ -138,126 +138,109 @@ function switchLanguage(lang) {
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
 document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
 document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-document.querySelectorAll('.lang-option').forEach(function(opt) {
-    opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); switchLanguage(l); document.getElementById('langDropdownContent').classList.remove('open'); };
+document.querySelectorAll('.lang-option').forEach(function(o) {
+    o.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); switchLanguage(l); document.getElementById('langDropdownContent').classList.remove('open'); };
 });
 
 // ========== ФУНКЦИИ ИГР ==========
-function getDesc(game) { return game.desc[currentLang] || game.desc.en; }
-
-function getStatusText(game) {
-    var now = new Date();
-    if (game.status === 'new' && game.startDate) {
-        if (new Date(game.startDate) <= now) game.status = 'active';
-    }
-    if (game.status === 'active' && game.endDate) {
-        if (Math.floor((new Date(game.endDate) - now) / (1000 * 60 * 60 * 24)) <= 1) return t('filter-expiring');
-    }
-    return game.status === 'new' ? t('filter-new') : t('filter-active');
+function getDesc(g) { return g.desc[currentLang] || g.desc.en; }
+function getStatusText(g) {
+    var n = new Date();
+    if (g.status === 'new' && g.startDate && new Date(g.startDate) <= n) g.status = 'active';
+    if (g.status === 'active' && g.endDate && Math.floor((new Date(g.endDate) - n) / 86400000) <= 1) return t('filter-expiring');
+    return g.status === 'new' ? t('filter-new') : t('filter-active');
 }
-
-function getBadge(game) {
-    if (game.status === 'active' && game.endDate) {
-        if (Math.floor((new Date(game.endDate) - new Date()) / (1000 * 60 * 60 * 24)) <= 1) return 'badge-expiring';
-    }
-    return game.status === 'new' ? 'badge-new' : 'badge-active';
+function getBadge(g) {
+    if (g.status === 'active' && g.endDate && Math.floor((new Date(g.endDate) - new Date()) / 86400000) <= 1) return 'badge-expiring';
+    return g.status === 'new' ? 'badge-new' : 'badge-active';
 }
-
-function getCard(game) {
-    if (game.status === 'active' && game.endDate) {
-        if (Math.floor((new Date(game.endDate) - new Date()) / (1000 * 60 * 60 * 24)) <= 1) return 'expiring';
-    }
-    return game.status === 'new' ? 'new' : 'active-game';
+function getCard(g) {
+    if (g.status === 'active' && g.endDate && Math.floor((new Date(g.endDate) - new Date()) / 86400000) <= 1) return 'expiring';
+    return g.status === 'new' ? 'new' : 'active-game';
 }
-
-function getTime(game) {
-    var now = new Date();
-    if (game.status === 'new' && game.startDate) {
-        var start = new Date(game.startDate);
-        if (start <= now) {
-            game.status = 'active';
-            if (game.endDate) {
-                var diff = new Date(game.endDate) - now;
-                var days = Math.floor(diff / 86400000);
-                var hours = Math.floor((diff % 86400000) / 3600000);
-                var mins = Math.floor((diff % 3600000) / 60000);
-                if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
-                if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
-                return '⏰ ' + mins + ' мин';
+function getTime(g) {
+    var n = new Date();
+    if (g.status === 'new' && g.startDate) {
+        var s = new Date(g.startDate);
+        if (s <= n) {
+            g.status = 'active';
+            if (g.endDate) {
+                var d = new Date(g.endDate) - n;
+                var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
+                if (dd > 0) return '⏰ ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
+                if (hh > 0) return '⏰ ' + hh + 'ч ' + mm + 'м';
+                return '⏰ ' + mm + ' мин';
             }
             return '♾️ Навсегда';
         }
-        var diff = start - now;
-        var days = Math.floor(diff / 86400000);
-        var hours = Math.floor((diff % 86400000) / 3600000);
-        var mins = Math.floor((diff % 3600000) / 60000);
-        if (days > 0) return '⏰ Старт через ' + days + 'д ' + hours + 'ч ' + mins + 'м';
-        if (hours > 0) return '⏰ Старт через ' + hours + 'ч ' + mins + 'м';
-        return '⏰ Старт через ' + mins + ' мин';
+        var d = s - n;
+        var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
+        if (dd > 0) return '⏰ Старт через ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
+        if (hh > 0) return '⏰ Старт через ' + hh + 'ч ' + mm + 'м';
+        return '⏰ Старт через ' + mm + ' мин';
     }
-    if (game.endDate) {
-        var diff = new Date(game.endDate) - now;
-        if (diff > 999 * 86400000) return '♾️ Навсегда';
-        if (diff <= 0) return '⏰ Закончилось';
-        var days = Math.floor(diff / 86400000);
-        var hours = Math.floor((diff % 86400000) / 3600000);
-        var mins = Math.floor((diff % 3600000) / 60000);
-        if (days > 0) return '⏰ ' + days + 'д ' + hours + 'ч ' + mins + 'м';
-        if (hours > 0) return '⏰ ' + hours + 'ч ' + mins + 'м';
-        if (mins > 0) return '⏰ ' + mins + ' мин';
+    if (g.endDate) {
+        var d = new Date(g.endDate) - n;
+        if (d > 999 * 86400000) return '♾️ Навсегда';
+        if (d <= 0) return '⏰ Закончилось';
+        var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
+        if (dd > 0) return '⏰ ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
+        if (hh > 0) return '⏰ ' + hh + 'ч ' + mm + 'м';
+        if (mm > 0) return '⏰ ' + mm + ' мин';
         return '⏰ Меньше минуты!';
     }
     return '';
 }
 
+function markClaimed(id, el) {
+    localStorage.setItem('claimed_' + id, 'true');
+    el.textContent = t('claimed');
+    el.style.background = '#444';
+}
+
 function renderGames(filter) {
     filter = filter || 'all';
-    var container = document.getElementById('gamesContainer');
-    if (!container) return;
-    var now = new Date();
-    var finished = [], stillActive = [];
-    games.forEach(function(game) {
-        if (game.status === 'active' && game.endDate) {
-            if (new Date(game.endDate) <= now && new Date(game.endDate).getFullYear() < 2099) finished.push(game);
-            else stillActive.push(game);
-        } else stillActive.push(game);
+    var c = document.getElementById('gamesContainer');
+    if (!c) return;
+    var n = new Date(), finished = [], still = [];
+    games.forEach(function(g) {
+        if (g.status === 'active' && g.endDate) {
+            if (new Date(g.endDate) <= n && new Date(g.endDate).getFullYear() < 2099) finished.push(g);
+            else still.push(g);
+        } else still.push(g);
     });
     if (finished.length > 0) {
-        var saved = localStorage.getItem('allHistory');
-        var archive = saved ? JSON.parse(saved) : [];
-        finished.forEach(function(game) {
-            if (!archive.some(function(a) { return a.id === game.id; })) {
-                archive.push({ id: game.id, title: game.title, image: game.image, store: game.store });
-            }
+        var saved = localStorage.getItem('allHistory'), arch = saved ? JSON.parse(saved) : [];
+        finished.forEach(function(g) {
+            if (!arch.some(function(a) { return a.id === g.id; })) arch.push({ id: g.id, title: g.title, image: g.image, store: g.store });
         });
-        localStorage.setItem('allHistory', JSON.stringify(archive));
-        games = stillActive;
+        localStorage.setItem('allHistory', JSON.stringify(arch));
+        games = still;
     }
     var list = games;
     if (filter === 'expiring') list = games.filter(function(g) { return getCard(g) === 'expiring'; });
     if (filter === 'new') list = games.filter(function(g) { return g.status === 'new'; });
     if (filter === 'active') list = games.filter(function(g) { return g.status === 'active' && getCard(g) !== 'expiring'; });
-
     if (filter === 'all' || filter === 'active') {
         list.sort(function(a, b) {
-            var aTimed = a.endDate && new Date(a.endDate).getFullYear() < 2099;
-            var bTimed = b.endDate && new Date(b.endDate).getFullYear() < 2099;
-            if (aTimed && !bTimed) return -1;
-            if (!aTimed && bTimed) return 1;
+            var at = a.endDate && new Date(a.endDate).getFullYear() < 2099;
+            var bt = b.endDate && new Date(b.endDate).getFullYear() < 2099;
+            if (at && !bt) return -1;
+            if (!at && bt) return 1;
             return 0;
         });
     }
-
-    container.innerHTML = list.map(function(game) {
-        return '<div class="game-card ' + getCard(game) + '">' +
-            '<img src="' + game.image + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
-            '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + game.emoji + '</div>' +
-            '<div class="game-info"><span class="game-badge ' + getBadge(game) + '">' + getStatusText(game) + '</span>' +
-            '<h3 class="game-title">' + game.title + '</h3><p style="color:#aaa;margin-bottom:10px;">' + getDesc(game) + '</p>' +
-            '<div class="game-price"><span class="original">' + game.usualPrice + '</span> → <span class="free">0€</span></div>' +
-            '<div class="game-store">' + t('store') + ': ' + game.store + '</div>' +
-            '<div class="game-timer">' + getTime(game) + '</div>' +
-            '<a href="' + game.storeUrl + '" class="btn-get" target="_blank" rel="nofollow">' + t('get-free') + '</a></div></div>';
+    c.innerHTML = list.map(function(g) {
+        var claimed = localStorage.getItem('claimed_' + g.id);
+        return '<div class="game-card ' + getCard(g) + '">' +
+            '<img src="' + g.image + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
+            '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + g.emoji + '</div>' +
+            '<div class="game-info"><span class="game-badge ' + getBadge(g) + '">' + getStatusText(g) + '</span>' +
+            '<h3 class="game-title">' + g.title + '</h3><p style="color:#aaa;margin-bottom:10px;">' + getDesc(g) + '</p>' +
+            '<div class="game-price"><span class="original">' + g.usualPrice + '</span> → <span class="free">0€</span></div>' +
+            '<div class="game-store">' + t('store') + ': ' + g.store + '</div>' +
+            '<div class="game-timer">' + getTime(g) + '</div>' +
+            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" onclick="markClaimed(' + g.id + ', this)" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a></div></div>';
     }).join('');
     document.getElementById('freeGamesCount').textContent = games.filter(function(g) { return g.status === 'active'; }).length;
     document.getElementById('upcomingCount').textContent = games.filter(function(g) { return g.status === 'new'; }).length;
@@ -267,9 +250,9 @@ function renderGames(filter) {
 
 // ========== ФИЛЬТРЫ ==========
 var currentFilter = 'all';
-document.querySelectorAll('.filter-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+document.querySelectorAll('.filter-btn').forEach(function(b) {
+    b.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
         this.classList.add('active');
         currentFilter = this.dataset.filter;
         renderGames(currentFilter);
@@ -278,8 +261,7 @@ document.querySelectorAll('.filter-btn').forEach(function(btn) {
 
 // ========== ЗАПУСК ==========
 function detectLanguage() {
-    var saved = localStorage.getItem('lang');
-    if (saved) return saved;
+    var s = localStorage.getItem('lang'); if (s) return s;
     var l = navigator.language || navigator.userLanguage;
     if (l.indexOf('ru') === 0) return 'ru';
     if (l.indexOf('es') === 0) return 'es';
