@@ -135,10 +135,11 @@
     var db = firebase.firestore();
 
     var giveawayGames = [
-        { id: 'easternexorcist', title: 'Eastern Exorcist', image: 'https://i.ytimg.com/vi/2ro-Wd5P5fE/maxresdefault.jpg', desc: 'Сыграй и выиграй!', maxPlayers: 100 },
-        { id: 'steelrats', title: 'Steel Rats', image: 'https://www.pcgamesn.com/wp-content/sites/pcgamesn/2018/11/steel-rats.jpg', desc: 'Набери 20 очков!', maxPlayers: 100 },
-        { id: 'mafia3', title: 'Mafia 3', image: 'https://images5.alphacoders.com/693/thumb-1920-693371.jpg', desc: 'Пройди мини-игру!', maxPlayers: 300 },
-        { id: 'mafia2', title: 'Mafia 2', image: 'https://th.bing.com/th/id/R.7fa568a2fb0ea968b7cb7e16a43dd35b?rik=Bn67lilUbhUeww&pid=ImgRaw&r=0', desc: 'Набери 20 очков!', maxPlayers: 200 }
+       { id: 'rust', title: 'Rust', image: 'https://img.opencritic.com/game/5452/o/vK9dyUS6.jpg', desc: 'Получи щанс!', maxPlayers: 1000, type: 'аккаунт' },
+        { id: 'easternexorcist', title: 'Eastern Exorcist', image: 'https://i.ytimg.com/vi/2ro-Wd5P5fE/maxresdefault.jpg', desc: 'Сыграй и выиграй!', maxPlayers: 100, type: 'ключ' },
+        { id: 'steelrats', title: 'Steel Rats', image: 'https://www.pcgamesn.com/wp-content/sites/pcgamesn/2018/11/steel-rats.jpg', desc: 'Набери 20 очков!', maxPlayers: 100, type: 'ключ' },
+        { id: 'mafia3', title: 'Mafia 3', image: 'https://images5.alphacoders.com/693/thumb-1920-693371.jpg', desc: 'Пройди мини-игру!', maxPlayers: 300, type: 'ключ' },
+        { id: 'mafia2', title: 'Mafia 2', image: 'https://th.bing.com/th/id/R.7fa568a2fb0ea968b7cb7e16a43dd35b?rik=Bn67lilUbhUeww&pid=ImgRaw&r=0', desc: 'Набери 20 очков!', maxPlayers: 200, type: 'ключ' }
     ];
 
     var userIP = '';
@@ -157,7 +158,7 @@
                 '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                 '<h3 class="prize-game">' + game.title + '</h3>' +
                 '<p class="prize-desc">' + game.desc + '</p>' +
-                '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 Розыгрыш при ' + (game.maxPlayers || 100) + ' участниках</p>' +
+                '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 Розыгрыш при ' + (game.maxPlayers || 100) + ' участниках • ' + (game.type || 'ключ') + '</p>' +
                 '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')">🎮 Играть!</button>' +
                 '<p class="participants-count" id="count-' + game.id + '">Участников: 0</p>' +
                 '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
