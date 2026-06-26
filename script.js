@@ -240,7 +240,7 @@ function renderGames(filter) {
             '<div class="game-price"><span class="original">' + g.usualPrice + '</span> → <span class="free">0€</span></div>' +
             '<div class="game-store">' + t('store') + ': ' + g.store + '</div>' +
             '<div class="game-timer">' + getTime(g) + '</div>' +
-            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" onclick="markClaimed(' + g.id + ', this)" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a></div></div>';
+            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" onclick="markClaimed(' + g.id + ', this)" style="' + (claimed ? 'background:#444;' : '') + '">' + (claimed ? t('claimed') : t('get-free')) + '</a>'
     }).join('');
     var freeEl = document.getElementById('freeGamesCount');
 var upcEl = document.getElementById('upcomingCount');
