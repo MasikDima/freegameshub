@@ -182,7 +182,11 @@
                     var winnerEl = document.getElementById('winner-' + gameId);
                     var btnEl = document.getElementById('btn-' + gameId);
                     if (winnerEl) { winnerEl.style.display = 'block'; winnerEl.textContent = '🏆 Победитель: ' + d.data().masked; }
-                    if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Розыгрыш завершён'; }
+                    if (btnEl) { 
+    btnEl.disabled = true; 
+    btnEl.textContent = 'Розыгрыш завершён'; 
+    btnEl.style.background = '#666'; 
+}
                 });
             }
         });
