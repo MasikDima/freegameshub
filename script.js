@@ -29,7 +29,16 @@ var translations = {
         'xbox-btn': 'Смотреть игры',
         'online-text': '🟢 Онлайн',
         'total-text': '👥 Всего',
-        'telegram-btn': '📱 Подписаться на Telegram'
+        'telegram-btn': '📱 Подписаться на Telegram',
+        'forever': 'Навсегда',
+'ended': 'Закончилось',
+'starts-in': 'Старт через',
+'less-minute': 'Меньше минуты!',
+'days-short': 'д',
+'hours-short': 'ч',
+'mins-short': 'м',
+'mins': 'мин',
+'back-home': 'На главную'
     },
     es: {
         'hero-title': '🎮 Juegos Gratis',
@@ -60,7 +69,16 @@ var translations = {
         'xbox-btn': 'Ver juegos',
         'online-text': '🟢 En línea',
         'total-text': '👥 Total',
-        'telegram-btn': '📱 Suscríbete en Telegram'
+        'telegram-btn': '📱 Suscríbete en Telegram',
+        'forever': 'Para siempre',
+'ended': 'Terminado',
+'starts-in': 'Empieza en',
+'less-minute': '¡Menos de un minuto!',
+'days-short': 'd',
+'hours-short': 'h',
+'mins-short': 'm',
+'mins': 'min',
+'back-home': '← Inicio'
     },
     en: {
         'hero-title': '🎮 Free Games',
@@ -91,7 +109,16 @@ var translations = {
         'xbox-btn': 'View games',
         'online-text': '🟢 Online',
         'total-text': '👥 Total',
-        'telegram-btn': '📱 Subscribe on Telegram'
+        'telegram-btn': '📱 Subscribe on Telegram',
+        'forever': 'Forever',
+'ended': 'Ended',
+'starts-in': 'Starts in',
+'less-minute': 'Less than a minute!',
+'days-short': 'd',
+'hours-short': 'h',
+'mins-short': 'm',
+'mins': 'min',
+'back-home': '← Home'
     }
 };
 
@@ -175,27 +202,27 @@ function getTime(g) {
             if (g.endDate) {
                 var d = new Date(g.endDate) - n;
                 var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
-                if (dd > 0) return '⏰ ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
-                if (hh > 0) return '⏰ ' + hh + 'ч ' + mm + 'м';
-                return '⏰ ' + mm + ' мин';
+                if (dd > 0) return '⏰ ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+                if (hh > 0) return '⏰ ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+                return '⏰ ' + mm + ' ' + t('mins');
             }
-            return '♾️ Навсегда';
+            return '♾️ ' + t('forever');
         }
         var d = s - n;
         var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
-        if (dd > 0) return '⏰ Старт через ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
-        if (hh > 0) return '⏰ Старт через ' + hh + 'ч ' + mm + 'м';
-        return '⏰ Старт через ' + mm + ' мин';
+        if (dd > 0) return '⏰ ' + t('starts-in') + ' ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+        if (hh > 0) return '⏰ ' + t('starts-in') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+        return '⏰ ' + t('starts-in') + ' ' + mm + ' ' + t('mins');
     }
     if (g.endDate) {
         var d = new Date(g.endDate) - n;
-        if (d > 999 * 86400000) return '♾️ Навсегда';
-        if (d <= 0) return '⏰ Закончилось';
+        if (d > 999 * 86400000) return '♾️ ' + t('forever');
+        if (d <= 0) return '⏰ ' + t('ended');
         var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
-        if (dd > 0) return '⏰ ' + dd + 'д ' + hh + 'ч ' + mm + 'м';
-        if (hh > 0) return '⏰ ' + hh + 'ч ' + mm + 'м';
-        if (mm > 0) return '⏰ ' + mm + ' мин';
-        return '⏰ Меньше минуты!';
+        if (dd > 0) return '⏰ ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+        if (hh > 0) return '⏰ ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+        if (mm > 0) return '⏰ ' + mm + ' ' + t('mins');
+        return '⏰ ' + t('less-minute');
     }
     return '';
 }
