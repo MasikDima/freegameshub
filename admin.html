@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Free Games Hub</title>
+    <link rel="stylesheet" href="style.css?v=55">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0a2e'/><text y='72' font-size='60' text-anchor='middle' fill='%23ff0080'>🔧</text></svg>">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #050510; color: white; min-height: 100vh; }
+        
+        .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .login-box { background: rgba(10,10,30,0.9); border: 1px solid #ff0080; border-radius: 20px; padding: 40px; text-align: center; backdrop-filter: blur(10px); }
+        .login-box h2 { margin-bottom: 20px; color: #ff0080; }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #0a0a1e; color: white; font-size: 16px; }
+        .login-box button { width: 100%; padding: 12px; background: linear-gradient(135deg, #ff0080, #e94560); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; }
+
+        .admin-panel { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #1a1a3e; margin-bottom: 30px; }
+        .admin-header h1 { color: #ff0080; }
+        .logout-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+        .tab-btn { padding: 12px 24px; background: #0a0a2e; color: #aaa; border: 1px solid #1a1a3e; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tab-btn.active { background: #ff0080; color: white; border-color: #ff0080; }
+
+        .games-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .admin-game-card { background: #0a0a2e; border: 1px solid #1a1a3e; border-radius: 12px; padding: 15px; position: relative; }
+        .admin-game-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .admin-game-card h3 { font-size: 16px; margin-bottom: 5px; }
+        .admin-game-card .store-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; margin: 5px 0; }
+        .badge-epic { background: #ff0080; }
+        .badge-steam { background: #0088cc; }
+        .badge-ps { background: #003087; }
+        .badge-xbox { background: #107c10; }
+        .card-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .edit-btn, .delete-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
+        .edit-btn { background: #f5c518; color: #000; }
+        .delete-btn { background: #e94560; color: white; }
+
+        .add-form { background: #0a0a2e; border: 1px solid #1a1a3e; border-radius: 16px; padding: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #aaa; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #050510; color: white; font-size: 14px; }
+        .form-group textarea { min-height: 60px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #f5c518, #ff8c00); color: #050510; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; margin-top: 20px; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { background: #0a0a2e; border: 1px solid #ff0080; border-radius: 16px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+
+        @media (max-width: 768px) {
+            .form-row, .form-row-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Экран входа -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h2>🔧 Админ-панель</h2>
+            <input type="password" id="passwordInput" placeholder="Введите пароль">
+            <button onclick="login()">Войти</button>
+            <p style="color:#e94560;margin-top:10px;display:none;" id="errorMsg">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- Админ-панель -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h1>🔧 Админ-панель Free Games Hub</h1>
+            <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('all')">📋 Все игры</button>
+            <button class="tab-btn" onclick="switchTab('add')">➕ Добавить игру</button>
+        </div>
+
+        <!-- Список игр -->
+        <div id="tabAll">
+            <div class="games-list" id="allGamesList"></div>
+        </div>
+
+        <!-- Форма добавления -->
+        <div id="tabAdd" style="display:none;">
+            <div class="add-form">
+                <h2 style="margin-bottom:20px;">➕ Добавить новую игру</h2>
+                <div class="form-group">
+                    <label>Название игры</label>
+                    <input type="text" id="gameTitle" placeholder="Например: Cyberpunk 2077">
+                </div>
+                <div class="form-group">
+                    <label>URL картинки</label>
+                    <input type="text" id="gameImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Магазин</label>
+                        <select id="gameStore">
+                            <option value="Epic Games Store">Epic Games Store</option>
+                            <option value="Steam">Steam</option>
+                            <option value="PlayStation">PlayStation</option>
+                            <option value="Xbox">Xbox</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Обычная цена</label>
+                        <input type="text" id="gamePrice" placeholder="19.99€">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>URL магазина</label>
+                    <input type="text" id="gameUrl" placeholder="https://store.steampowered.com/app/...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата начала (оставь пустым если уже активно)</label>
+                        <input type="datetime-local" id="gameStart">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата окончания</label>
+                        <input type="datetime-local" id="gameEnd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Эмодзи</label>
+                    <input type="text" id="gameEmoji" placeholder="🎮">
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>Описание (Русский)</label>
+                        <textarea id="descRu" placeholder="Описание на русском"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Описание (Español)</label>
+                        <textarea id="descEs" placeholder="Descripción en español"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Описание (English)</label>
+                        <textarea id="descEn" placeholder="Description in English"></textarea>
+                    </div>
+                </div>
+                <button class="submit-btn" onclick="addGame()">✅ Добавить игру</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования -->
+    <div class="modal" id="editModal">
+        <div class="modal-content" id="editModalContent"></div>
+    </div>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+            authDomain: "freegameshub-11215.firebaseapp.com",
+            projectId: "freegameshub-11215",
+            storageBucket: "freegameshub-11215.firebasestorage.app",
+            messagingSenderId: "881848736998",
+            appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+        var ADMIN_PASSWORD = "10031995";
+        var currentTab = 'all';
+
+        function login() {
+            var pass = document.getElementById('passwordInput').value;
+            if (pass === ADMIN_PASSWORD) {
+                localStorage.setItem('adminAuth', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadAllGames();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('adminAuth');
+            location.reload();
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            event.target.classList.add('active');
+            document.getElementById('tabAll').style.display = tab === 'all' ? 'block' : 'none';
+            document.getElementById('tabAdd').style.display = tab === 'add' ? 'block' : 'none';
+            if (tab === 'all') loadAllGames();
+        }
+
+        function loadAllGames() {
+            db.collection('admin_games').orderBy('createdAt', 'desc').get().then(function(snapshot) {
+                var container = document.getElementById('allGamesList');
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="color:#aaa;text-align:center;padding:40px;">Нет игр в базе. Добавь первую!</p>';
+                    return;
+                }
+                container.innerHTML = '';
+                snapshot.forEach(function(doc) {
+                    var g = doc.data();
+                    var storeClass = g.store === 'Epic Games Store' ? 'badge-epic' : 
+                                    g.store === 'Steam' ? 'badge-steam' : 
+                                    g.store === 'PlayStation' ? 'badge-ps' : 'badge-xbox';
+                    container.innerHTML += 
+                        '<div class="admin-game-card">' +
+                        '<img src="' + g.image + '" alt="' + g.title + '" onerror="this.style.display=\'none\'">' +
+                        '<h3>' + g.title + '</h3>' +
+                        '<span class="store-badge ' + storeClass + '">' + g.store + '</span>' +
+                        '<p style="color:#aaa;font-size:12px;margin-top:5px;">Цена: ' + g.usualPrice + '</p>' +
+                        '<div class="card-actions">' +
+                        '<button class="edit-btn" onclick="editGame(\'' + doc.id + '\')">✏️</button>' +
+                        '<button class="delete-btn" onclick="deleteGame(\'' + doc.id + '\')">🗑️</button>' +
+                        '</div></div>';
+                });
+            });
+        }
+
+        function addGame() {
+            var game = {
+                title: document.getElementById('gameTitle').value,
+                image: document.getElementById('gameImage').value,
+                store: document.getElementById('gameStore').value,
+                usualPrice: document.getElementById('gamePrice').value,
+                storeUrl: document.getElementById('gameUrl').value,
+                emoji: document.getElementById('gameEmoji').value || '🎮',
+                desc: {
+                    ru: document.getElementById('descRu').value,
+                    es: document.getElementById('descEs').value,
+                    en: document.getElementById('descEn').value
+                },
+                status: 'active',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            var startDate = document.getElementById('gameStart').value;
+            var endDate = document.getElementById('gameEnd').value;
+            if (startDate) game.startDate = new Date(startDate).toISOString();
+            if (endDate) game.endDate = new Date(endDate).toISOString();
+
+            if (!game.title || !game.image || !game.storeUrl) {
+                alert('Заполни все обязательные поля!');
+                return;
+            }
+
+            db.collection('admin_games').add(game).then(function() {
+                alert('✅ Игра добавлена!');
+                document.querySelectorAll('#tabAdd input, #tabAdd textarea, #tabAdd select').forEach(function(el) { el.value = ''; });
+                switchTab('all');
+            }).catch(function(e) {
+                alert('Ошибка: ' + e.message);
+            });
+        }
+
+        function editGame(id) {
+            db.collection('admin_games').doc(id).get().then(function(doc) {
+                var g = doc.data();
+                var modal = document.getElementById('editModalContent');
+                modal.innerHTML = 
+                    '<h2 style="margin-bottom:20px;">✏️ Редактировать игру</h2>' +
+                    '<div class="form-group"><label>Название</label><input type="text" id="editTitle" value="' + g.title + '"></div>' +
+                    '<div class="form-group"><label>URL картинки</label><input type="text" id="editImage" value="' + g.image + '"></div>' +
+                    '<div class="form-group"><label>Магазин</label><select id="editStore"><option ' + (g.store==='Epic Games Store'?'selected':'') + '>Epic Games Store</option><option ' + (g.store==='Steam'?'selected':'') + '>Steam</option><option ' + (g.store==='PlayStation'?'selected':'') + '>PlayStation</option><option ' + (g.store==='Xbox'?'selected':'') + '>Xbox</option></select></div>' +
+                    '<div class="form-group"><label>Цена</label><input type="text" id="editPrice" value="' + g.usualPrice + '"></div>' +
+                    '<div class="form-group"><label>URL магазина</label><input type="text" id="editUrl" value="' + g.storeUrl + '"></div>' +
+                    '<button class="submit-btn" onclick="saveEdit(\'' + id + '\')">💾 Сохранить</button>' +
+                    '<button style="width:100%;padding:10px;background:#333;color:white;border:none;border-radius:8px;margin-top:10px;cursor:pointer;" onclick="closeModal()">Отмена</button>';
+                document.getElementById('editModal').classList.add('show');
+            });
+        }
+
+        function saveEdit(id) {
+            var updated = {
+                title: document.getElementById('editTitle').value,
+                image: document.getElementById('editImage').value,
+                store: document.getElementById('editStore').value,
+                usualPrice: document.getElementById('editPrice').value,
+                storeUrl: document.getElementById('editUrl').value
+            };
+            db.collection('admin_games').doc(id).update(updated).then(function() {
+                alert('✅ Сохранено!');
+                closeModal();
+                loadAllGames();
+            });
+        }
+
+        function deleteGame(id) {
+            if (confirm('Точно удалить эту игру?')) {
+                db.collection('admin_games').doc(id).delete().then(function() {
+                    alert('🗑️ Удалено!');
+                    loadAllGames();
+                });
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+
+        // Проверка авторизации при загрузке
+        if (localStorage.getItem('adminAuth') === 'true') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAllGames();
+        }
+    </script>
+</body>
+</html>
