@@ -14,9 +14,11 @@ var translations = {
         'footer-text': 'Все ссылки ведут на официальные магазины.',
         'get-free': '🎁 ЗАБРАТЬ БЕСПЛАТНО',
         'claimed': '✅ Забрал',
+        'coming-soon': '⏳ Скоро',
         'days-left': 'дней',
         'store': 'Магазин',
         'history-btn': '📦 История',
+        'epic-title': '🎁 Epic Games Store',
         'epic-desc': 'Бесплатные раздачи каждую неделю',
         'epic-btn': 'Смотреть игры',
         'steam-desc': 'Лучшие free-to-play игры',
@@ -43,9 +45,11 @@ var translations = {
         'footer-text': 'Todos los enlaces llevan a tiendas oficiales.',
         'get-free': '🎁 CONSEGUIR GRATIS',
         'claimed': '✅ Reclamado',
+        'coming-soon': '⏳ Próximamente',
         'days-left': 'días',
         'store': 'Tienda',
         'history-btn': '📦 Historial',
+        'epic-title': '🎁 Epic Games Store',
         'epic-desc': 'Juegos gratis cada semana',
         'epic-btn': 'Ver juegos',
         'steam-desc': 'Mejores juegos free-to-play',
@@ -72,9 +76,11 @@ var translations = {
         'footer-text': 'All links lead to official stores.',
         'get-free': '🎁 GET IT FREE',
         'claimed': '✅ Claimed',
+        'coming-soon': '⏳ Coming Soon',
         'days-left': 'days',
         'store': 'Store',
         'history-btn': '📦 History',
+        'epic-title': '🎁 Epic Games Store',
         'epic-desc': 'Free games every week',
         'epic-btn': 'View games',
         'steam-desc': 'Best free-to-play games',
@@ -130,6 +136,8 @@ function switchLanguage(lang) {
     });
     var te = document.getElementById('currentLangText');
     if (te) te.textContent = lang.toUpperCase();
+    var te2 = document.getElementById('currentLangTextMob');
+    if (te2) te2.textContent = lang.toUpperCase();
     document.querySelectorAll('.lang-option').forEach(function(o) { o.classList.toggle('active', o.dataset.lang === lang); });
     renderGames(currentFilter);
     localStorage.setItem('lang', lang);
@@ -192,6 +200,12 @@ function getTime(g) {
     return '';
 }
 
+function markClaimed(id, el) {
+    localStorage.setItem('claimed_' + id, 'true');
+    el.textContent = t('claimed');
+    el.style.background = '#444';
+}
+
 function renderGames(filter) {
     filter = filter || 'all';
     var c = document.getElementById('gamesContainer');
@@ -226,6 +240,7 @@ function renderGames(filter) {
     }
     c.innerHTML = list.map(function(g) {
         var claimed = localStorage.getItem('claimed_' + g.id);
+        var isSoon = g.status === 'new' && new Date(g.startDate) > new Date();
         return '<div class="game-card ' + getCard(g) + '">' +
             '<img src="' + g.image + '" class="game-image" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" style="width:100%;height:200px;object-fit:cover;">' +
             '<div style="display:none;background:linear-gradient(135deg,#1a1a3e,#0f0f2a);height:200px;align-items:center;justify-content:center;font-size:80px;">' + g.emoji + '</div>' +
@@ -234,25 +249,23 @@ function renderGames(filter) {
             '<div class="game-price"><span class="original">' + g.usualPrice + '</span> → <span class="free">0€</span></div>' +
             '<div class="game-store">' + t('store') + ': ' + g.store + '</div>' +
             '<div class="game-timer">' + getTime(g) + '</div>' +
-            '<a href="' + (g.status === 'new' && new Date(g.startDate) > new Date() ? '#' : g.storeUrl) + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + g.id + '" style="' + (claimed ? 'background:#444;' : (g.status === 'new' && new Date(g.startDate) > new Date() ? 'background:#555;pointer-events:none;' : '')) + '"' + (g.status === 'new' && new Date(g.startDate) > new Date() ? '' : ' onclick="markClaimed(' + g.id + ', this)"') + '>' + (claimed ? t('claimed') : (g.status === 'new' && new Date(g.startDate) > new Date() ? '⏳ Скоро' : t('get-free'))) + '</a></div></div>';
+            '<a href="' + (isSoon ? '#' : g.storeUrl) + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + g.id + '" style="' + (claimed ? 'background:#444;' : (isSoon ? 'background:#555;pointer-events:none;' : '')) + '"' + (isSoon ? '' : ' onclick="markClaimed(' + g.id + ', this)"') + '>' + (claimed ? t('claimed') : (isSoon ? t('coming-soon') : t('get-free'))) + '</a></div></div>';
     }).join('');
 
-    // Обработчики клика для кнопок
     document.querySelectorAll('.btn-get').forEach(function(btn) {
-    var gameId = btn.getAttribute('data-id');
-    // При загрузке проверяем localStorage
-    if (gameId && localStorage.getItem('claimed_' + gameId)) {
-        btn.textContent = t('claimed');
-        btn.style.background = '#444';
-    }
-    btn.addEventListener('click', function(e) {
-        if (gameId) {
-            localStorage.setItem('claimed_' + gameId, 'true');
-            this.textContent = t('claimed');
-            this.style.background = '#444';
+        var gameId = btn.getAttribute('data-id');
+        if (gameId && localStorage.getItem('claimed_' + gameId)) {
+            btn.textContent = t('claimed');
+            btn.style.background = '#444';
         }
+        btn.addEventListener('click', function(e) {
+            if (gameId && !localStorage.getItem('claimed_' + gameId)) {
+                localStorage.setItem('claimed_' + gameId, 'true');
+                this.textContent = t('claimed');
+                this.style.background = '#444';
+            }
+        });
     });
-});
 
     var freeEl = document.getElementById('freeGamesCount');
     var upcEl = document.getElementById('upcomingCount');
