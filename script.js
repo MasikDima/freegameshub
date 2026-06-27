@@ -31,7 +31,47 @@ var translations = {
         'total-text': '👥 Всего',
         'telegram-btn': '📱 Подписаться на Telegram',
         'steam-play': '🎮 Играть бесплатно',
-        'forever': 'Навсегда'
+        'forever': 'Навсегда',
+        'ps-title': '🎮 PlayStation Plus',
+        'date-june': '📅 Июнь 2026',
+        'giveaway-title': '🏆 Розыгрыши ключей',
+        'giveaway-entered': 'Участвуешь',
+        'giveaway-count': 'Участников',
+        'giveaway-winner': 'Победитель',
+        'giveaway-empty': 'Пока нет завершённых розыгрышей.',
+        'giveaway-archive-title': '📦 Архив розыгрышей',
+        'giveaway-loading': 'Загрузка...',
+        'desc-rust': 'Получи шанс!',
+        'desc-easternexorcist': 'Сыграй и выиграй!',
+        'desc-steelrats': 'Набери 20 очков!',
+        'desc-mafia3': 'Пройди мини-игру!',
+        'desc-mafia2': 'Набери 20 очков!',
+        'giveaway-desc': 'Сыграй в мини-игру и получи шанс выиграть ключ!',
+        'giveaway-current': '🎮 Текущий',
+        'giveaway-archive': '📦 Архив',
+        'giveaway-limit': 'Розыгрыш при',
+        'giveaway-players': 'участниках',
+        'ps-desc': 'Бесплатные игры каждый месяц',
+        'ps-play': '🎮 Подробнее',
+        'ps-subscribe': 'Нужна подписка PS Plus',
+        'ps-subscribe-text': 'Для получения игр оформи подписку PlayStation Plus',
+        'ps-plus-btn': '🎮 Узнать про PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Бесплатные игры июня 2026',
+        'xbox-play': '🟢 Подробнее',
+        'xbox-subscribe': 'Нужна подписка Game Pass',
+        'xbox-subscribe-text': 'Для получения игр оформи подписку Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Узнать про Game Pass',
+        'ended': 'Закончилось',
+        'starts-in': 'Старт через',
+        'less-minute': 'Меньше минуты!',
+        'days-short': 'д',
+        'hours-short': 'ч',
+        'mins-short': 'м',
+        'mins': 'мин',
+        'back-home': 'На главную',
+        'steam-title': '🔵 Steam',
+        'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
         'hero-title': '🎮 Juegos Gratis',
@@ -64,7 +104,47 @@ var translations = {
         'online-text': '🟢 En línea',
         'total-text': '👥 Total',
         'telegram-btn': '📱 Suscríbete en Telegram',
-        'forever': 'Para siempre'
+        'forever': 'Para siempre',
+        'ps-title': '🎮 PlayStation Plus',
+        'date-june': '📅 Junio 2026',
+        'giveaway-title': '🏆 Sorteo de claves',
+        'giveaway-entered': 'Participando',
+        'giveaway-count': 'Participantes',
+        'giveaway-winner': 'Ganador',
+        'giveaway-empty': 'No hay sorteos completados aún.',
+        'giveaway-archive-title': '📦 Archivo de sorteos',
+        'giveaway-loading': 'Cargando...',
+        'desc-rust': '¡Obtén una oportunidad!',
+        'desc-easternexorcist': '¡Juega y gana!',
+        'desc-steelrats': '¡Consigue 20 puntos!',
+        'desc-mafia3': '¡Completa el minijuego!',
+        'desc-mafia2': '¡Consigue 20 puntos!',
+        'giveaway-desc': '¡Juega y gana una clave!',
+        'giveaway-current': '🎮 Actual',
+        'giveaway-archive': '📦 Archivo',
+        'giveaway-limit': 'Sorteo con',
+        'giveaway-players': 'participantes',
+        'ps-desc': 'Juegos gratis cada mes',
+        'ps-play': '🎮 Detalles',
+        'ps-subscribe': 'Se necesita PS Plus',
+        'ps-subscribe-text': 'Suscríbete a PlayStation Plus para obtener juegos',
+        'ps-plus-btn': '🎮 Más sobre PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Juegos gratis junio 2026',
+        'xbox-play': '🟢 Detalles',
+        'xbox-subscribe': 'Se necesita Game Pass',
+        'xbox-subscribe-text': 'Suscríbete a Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Más sobre Game Pass',
+        'ended': 'Terminado',
+        'starts-in': 'Empieza en',
+        'less-minute': '¡Menos de un minuto!',
+        'days-short': 'd',
+        'hours-short': 'h',
+        'mins-short': 'm',
+        'mins': 'min',
+        'back-home': '← Inicio',
+        'steam-title': '🔵 Steam',
+        'steam-desc': 'Los mejores juegos gratis para siempre'
     },
     en: {
         'hero-title': '🎮 Free Games',
@@ -97,9 +177,50 @@ var translations = {
         'online-text': '🟢 Online',
         'total-text': '👥 Total',
         'telegram-btn': '📱 Subscribe on Telegram',
-        'forever': 'Forever'
+        'forever': 'Forever',
+        'ps-title': '🎮 PlayStation Plus',
+        'date-june': '📅 June 2026',
+        'giveaway-title': '🏆 Key Giveaways',
+        'giveaway-entered': 'Entered',
+        'giveaway-count': 'Participants',
+        'desc-rust': 'Get a chance!',
+        'desc-easternexorcist': 'Play and win!',
+        'desc-steelrats': 'Score 20 points!',
+        'desc-mafia3': 'Complete the minigame!',
+        'desc-mafia2': 'Score 20 points!',
+        'giveaway-desc': 'Play and win a key!',
+        'giveaway-current': '🎮 Current',
+        'giveaway-archive': '📦 Archive',
+        'giveaway-limit': 'Giveaway at',
+        'giveaway-players': 'players',
+        'ps-desc': 'Free games every month',
+        'ps-play': '🎮 Details',
+        'ps-subscribe': 'PS Plus Required',
+        'ps-subscribe-text': 'Subscribe to PlayStation Plus to get games',
+        'ps-plus-btn': '🎮 Learn about PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Free games June 2026',
+        'xbox-play': '🟢 Details',
+        'xbox-subscribe': 'Game Pass Required',
+        'xbox-subscribe-text': 'Subscribe to Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Learn about Game Pass',
+        'ended': 'Ended',
+        'starts-in': 'Starts in',
+        'less-minute': 'Less than a minute!',
+        'days-short': 'd',
+        'hours-short': 'h',
+        'mins-short': 'm',
+        'mins': 'min',
+        'back-home': '← Home',
+        'steam-title': '🔵 Steam',
+        'giveaway-winner': 'Winner',
+        'giveaway-empty': 'No completed giveaways yet.',
+        'giveaway-archive-title': '📦 Giveaway Archive', 
+        'giveaway-loading': 'Loading...',
+        'steam-desc': 'Best free games forever'
     }
 };
+
 // ========== БАЗА ИГР ==========
 var games = [
     { id: 1, title: 'Citizen Sleeper', image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲', desc: { ru: 'Ролевая игра в киберпанк-мире.', es: 'Juego de rol cyberpunk.', en: 'Cyberpunk RPG.' } },
@@ -147,6 +268,7 @@ function switchLanguage(lang) {
     renderGames(currentFilter);
     localStorage.setItem('lang', lang);
 }
+
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
 document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
 document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
@@ -195,7 +317,8 @@ function getTime(g) {
         var d = new Date(g.endDate) - n;
         if (d > 999 * 86400000) return '♾️ ' + t('forever');
         if (d <= 0) return '⏰ ' + t('ended');
-        var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
+        var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d
+        % 3600000) / 60000);
         if (dd > 0) return '⏰ ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
         if (hh > 0) return '⏰ ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
         if (mm > 0) return '⏰ ' + mm + ' ' + t('mins');
@@ -300,4 +423,4 @@ function detectLanguage() {
     return 'en';
 }
 switchLanguage(detectLanguage());
-renderGames();
+renderGames();                                                                                               
