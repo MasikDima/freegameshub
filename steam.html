@@ -118,7 +118,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script>
+        <script>
         var steamGames = [
             { title: 'Counter-Strike 2', date: '21 Aug, 2012', url: 'https://store.steampowered.com/app/730', image: 'https://wallpapercave.com/wp/wp12803829.jpg' },
             { title: 'PUBG: BATTLEGROUNDS', date: '21 Dec, 2017', url: 'https://store.steampowered.com/app/578080', image: 'https://wallpaperaccess.com/full/810309.jpg' },
@@ -135,6 +135,7 @@
             { title: 'Destiny 2', date: '1 Oct, 2019', url: 'https://store.steampowered.com/app/1085660', image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c' },
             { title: 'TBH: Task Bar Hero', date: '27 May, 2026', url: 'https://store.steampowered.com/app/3678970', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
+        
         document.getElementById('steamGames').innerHTML = steamGames.map(function(g) {
             return '<div class="steam-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
             '<div style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>'+
@@ -149,17 +150,23 @@
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var l = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = l.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
+                if (typeof switchLanguage === 'function') switchLanguage(l);
+                document.getElementById('langDropdownContent').classList.remove('open');
+                document.getElementById('langDropdownContentMob').classList.remove('open');
+            };
         });
+
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
-    </script>
-    <script src="script.js?v=95"></script>
-    <script>
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        if (typeof switchLanguage === 'function') switchLanguage(savedLang);
+        if (typeof switchLanguage === 'function') switchLanguage(sl);
     </script>
 </body>
 </html>
