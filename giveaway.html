@@ -369,8 +369,18 @@ snapshot.forEach(function(doc) {
     document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
     document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
     document.querySelectorAll('.lang-option').forEach(function(opt) {
-        opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
-    });
+    opt.onclick = function(e) { 
+        e.preventDefault(); 
+        var l = this.dataset.lang; 
+        document.getElementById('currentLangText').textContent = l.toUpperCase(); 
+        document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); 
+        localStorage.setItem('lang', l); 
+        // Сохраняем текущую вкладку
+        var currentTab = document.getElementById('archiveGiveaway').style.display === 'block' ? 'archive' : 'current';
+        localStorage.setItem('giveawayTab', currentTab);
+        location.reload(); 
+    };
+});
     var sl = localStorage.getItem('lang') || 'ru';
     document.getElementById('currentLangText').textContent = sl.toUpperCase();
     document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
