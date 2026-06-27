@@ -113,22 +113,20 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script src="script.js?v=90"></script>
+        <script src="script.js?v=90"></script>
     <script>
         setTimeout(function() {
-    if (typeof renderGames === 'function' && typeof games !== 'undefined') {
-        // Сохраняем оригинальный renderGames
-        var originalRender = renderGames;
-        // Переопределяем renderGames с фильтром Epic Games
-        renderGames = function(filter) {
-            var allGames = games;
-            games = games.filter(function(g) { return g.store === 'Epic Games Store'; });
-            originalRender(filter);
-            games = allGames;
-        };
-        renderGames('all');
-    }
-}, 300);
+            if (typeof renderGames === 'function' && typeof games !== 'undefined') {
+                var originalRender = renderGames;
+                renderGames = function(filter) {
+                    var allGames = games;
+                    games = games.filter(function(g) { return g.store === 'Epic Games Store'; });
+                    originalRender(filter);
+                    games = allGames;
+                };
+                renderGames('all');
+            }
+        }, 300);
 
         document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
@@ -138,15 +136,19 @@
         document.querySelectorAll('.lang-option').forEach(function(opt) {
             opt.onclick = function(e) {
                 e.preventDefault();
-                var lang = this.dataset.lang;
-                document.getElementById('currentLangText').textContent = lang.toUpperCase();
-                document.getElementById('currentLangTextMob').textContent = lang.toUpperCase();
-                localStorage.setItem('lang', lang); location.reload();
+                var l = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = l.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
+                if (typeof switchLanguage === 'function') switchLanguage(l);
+                document.getElementById('langDropdownContent').classList.remove('open');
+                document.getElementById('langDropdownContentMob').classList.remove('open');
             };
         });
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-        document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
+
+        var sl = localStorage.getItem('lang') || 'ru';
+        document.getElementById('currentLangText').textContent = sl.toUpperCase();
+        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+        if (typeof switchLanguage === 'function') switchLanguage(sl);
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
