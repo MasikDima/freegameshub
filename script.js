@@ -316,4 +316,5 @@ function getTime(g) {
     if (g.endDate) {
         var d = new Date(g.endDate) - n;
         if (d > 999 * 86400000) return '♾️ ' + t('forever');
-        if (d <= 0) return '⏰ ' + t('
+        if (d <= 0) return '⏰ ' + t('ended');
+        var dd = Math.floor
