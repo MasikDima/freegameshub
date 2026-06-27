@@ -106,63 +106,6 @@
             es: { 'history-heading':'📦 Historial','history-desc':'Juegos terminados','loading':'Cargando...','empty':'No hay juegos aún.','ended':'📦 Oferta terminada','store':'Tienda' },
             en: { 'history-heading':'📦 History','history-desc':'Ended giveaways','loading':'Loading...','empty':'No games yet.','ended':'📦 Giveaway Ended','store':'Store' }
         };
-        var lang = localStorage.getItem('lang') || 'ru';
-        function t(k) { return t2[lang][k] || k; }
-        function updateTexts() { document.querySelectorAll('[data-key]').forEach(function(el) { el.textContent = t(el.dataset.key); }); }
-
-        function renderHistory(l) {
-    var container = document.getElementById('historyContainer');
-    var saved = localStorage.getItem('allHistory');
-    var historyGames = saved ? JSON.parse(saved) : [];
-    var alwaysFreeIds = [5, 6];
-
-    // Определяем язык надёжно
-    if (!l) l = localStorage.getItem('lang') || 'ru';
-    if (!t2[l]) l = 'ru'; // fallback если перевода нет
-
-    historyGames = historyGames.filter(function(game) {
-        return alwaysFreeIds.indexOf(game.id) === -1;
-    });
-
-    if (historyGames.length === 0) {
-        container.innerHTML = '<p class="empty-history">' + (t2[l] && t2[l]['empty'] || 'История пуста') + '</p>';
-    } else {
-        container.innerHTML = historyGames.reverse().map(function(game) {
-            return '<div class="history-card">' +
-                '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
-                '<div class="history-info">' +
-                '<span class="badge-ended">' + (t2[l] && t2[l]['ended'] || 'Завершена') + '</span>' +
-                '<h3 class="game-title">' + game.title + '</h3>' +
-                '<p style="color:#aaa;">' + (t2[l] && t2[l]['store'] || 'Магазин') + ': ' + game.store + '</p>' +
-                '</div></div>';
-        }).join('');
-    }
-}
-
-        function switchLang(l) { lang = l; localStorage.setItem('lang', l); updateTexts(); renderHistory(); }
-
-        function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
-        function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
-
-        document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
-        document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-        document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
-        document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
-        document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); switchLang(l); };
-        });
-        var sl = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = sl.toUpperCase();
-        document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
-        updateTexts(); renderHistory();
-    </script>
-    <script src="script.js?v=100"></script>
-    <script>
-        var t2 = {
-            ru: { 'history-heading':'📦 История всех раздач','history-desc':'Игры, которые уже закончились','loading':'Загрузка...','empty':'Пока здесь нет игр.','ended':'📦 Раздача завершена','store':'Магазин' },
-            es: { 'history-heading':'📦 Historial','history-desc':'Juegos terminados','loading':'Cargando...','empty':'No hay juegos aún.','ended':'📦 Oferta terminada','store':'Tienda' },
-            en: { 'history-heading':'📦 History','history-desc':'Ended giveaways','loading':'Loading...','empty':'No games yet.','ended':'📦 Giveaway Ended','store':'Store' }
-        };
 
         var lang = localStorage.getItem('lang') || 'ru';
 
@@ -198,20 +141,16 @@
             lang = l;
             localStorage.setItem('lang', l);
             
-            // Обновляем текст на кнопках
             document.getElementById('currentLangText').textContent = l.toUpperCase();
             document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
             
-            // Обновляем data-key элементы
             document.querySelectorAll('[data-key]').forEach(function(el) {
                 var key = el.dataset.key;
                 if (t2[l] && t2[l][key]) el.textContent = t2[l][key];
             });
             
-            // Перерисовываем историю
             renderHistory(l);
             
-            // Обновляем активный язык в выпадающем списке
             document.querySelectorAll('.lang-option').forEach(function(opt) {
                 opt.classList.toggle('active', opt.dataset.lang === l);
             });
@@ -220,13 +159,11 @@
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
-        // Выпадающие списки
         document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
 
-        // Кнопки языков — БЕЗ перезагрузки!
         document.querySelectorAll('.lang-option').forEach(function(opt) {
             opt.onclick = function(e) {
                 e.preventDefault();
@@ -237,7 +174,6 @@
             };
         });
 
-        // Запуск
         var savedLang = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
@@ -246,6 +182,5 @@
         });
         renderHistory(savedLang);
     </script>
-    <script src="script.js?v=100"></script>
 </body>
 </html>
