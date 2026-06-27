@@ -24,9 +24,6 @@
         .ps-btn { display: block; text-align: center; background: linear-gradient(135deg, #003087, #0070cc); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
         .ps-btn:hover { box-shadow: 0 0 25px rgba(0, 112, 204, 0.5); }
 
-        body { display: flex; flex-direction: column; min-height: 100vh; }
-        footer { margin-top: auto; }
-
         @media (max-width: 1024px) {
             .store-nav { display: none; }
             .header-desktop .header-right { display: none !important; }
@@ -88,8 +85,8 @@
 
     <section class="hero" style="padding:50px 0 30px;">
         <div class="container">
-            <h1><i class="fab fa-playstation"></i> PlayStation Plus</h1>
-            <p>Бесплатные игры каждый месяц</p>
+            <h1 data-key="ps-title"><i class="fab fa-playstation"></i> PlayStation Plus</h1>
+            <p data-key="ps-desc">Бесплатные игры каждый месяц</p>
         </div>
     </section>
 
@@ -102,13 +99,20 @@
         </div>
     </section>
 
+    <section class="subscribe">
+        <div class="container">
+            <h2 data-key="ps-subscribe">Нужна подписка PS Plus</h2>
+            <p data-key="ps-subscribe-text">Для получения игр оформи подписку PlayStation Plus</p>
+            <a href="https://www.playstation.com/ps-plus/" class="btn-telegram" target="_blank" data-key="ps-plus-btn">🎮 Узнать про PS Plus</a>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
-            <p style="color:#666;font-size:13px;margin-top:5px;">
-</p>
         </div>
     </footer>
+
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
         <div class="close-btn" onclick="closeMenu()">✕</div>
@@ -131,7 +135,7 @@
             return '<div class="ps-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
             '<div style="display:none;background:linear-gradient(135deg,#001a33,#003366);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>'+
             '<span class="ps-badge-free">PS Plus • '+g.platform+'</span><h3 class="ps-game-title">'+g.title+'</h3>'+
-            '<a href="'+g.url+'" class="ps-btn" target="_blank">🎮 Подробнее</a></div>';
+            '<a href="'+g.url+'" class="ps-btn" target="_blank" data-key="ps-play">🎮 Подробнее</a></div>';
         }).join('');
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
@@ -147,6 +151,11 @@
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+    </script>
+    <script src="script.js?v=95"></script>
+    <script>
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        if (typeof switchLanguage === 'function') switchLanguage(savedLang);
     </script>
 </body>
 </html>
