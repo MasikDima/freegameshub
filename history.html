@@ -110,16 +110,26 @@
         function t(k) { return t2[lang][k] || k; }
         function updateTexts() { document.querySelectorAll('[data-key]').forEach(function(el) { el.textContent = t(el.dataset.key); }); }
 
-        function renderHistory() {
-            var c = document.getElementById('historyContainer');
-            var saved = localStorage.getItem('allHistory');
-            var games = saved ? JSON.parse(saved) : [];
-            games = games.filter(function(g) { return [5,6].indexOf(g.id) === -1; });
-            if (!games.length) c.innerHTML = '<p class="empty-history">'+t('empty')+'</p>';
-            else c.innerHTML = games.reverse().map(function(g) {
-                return '<div class="history-card"><img src="'+g.image+'" onerror="this.style.display=\'none\'"><div><span class="badge-ended">'+t('ended')+'</span><h3>'+g.title+'</h3><p style="color:#aaa;">'+t('store')+': '+g.store+'</p></div></div>';
-            }).join('');
-        }
+        function renderHistory(l) {
+    var container = document.getElementById('historyContainer');
+    var saved = localStorage.getItem('allHistory');
+    var historyGames = saved ? JSON.parse(saved) : [];
+    var alwaysFreeIds = [5, 6];
+    historyGames = historyGames.filter(function(game) { return alwaysFreeIds.indexOf(game.id) === -1; });
+    if (historyGames.length === 0) {
+        container.innerHTML = '<p class="empty-history">' + t2[l]['empty'] + '</p>';
+    } else {
+        container.innerHTML = historyGames.reverse().map(function(game) {
+            return '<div class="history-card">' +
+                '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
+                '<div class="history-info">' +
+                '<span class="badge-ended">' + t2[l]['ended'] + '</span>' +
+                '<h3 class="game-title">' + game.title + '</h3>' +
+                '<p style="color:#aaa;">' + t2[l]['store'] + ': ' + game.store + '</p>' +
+                '</div></div>';
+        }).join('');
+    }
+}
 
         function switchLang(l) { lang = l; localStorage.setItem('lang', l); updateTexts(); renderHistory(); }
 
