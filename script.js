@@ -234,7 +234,7 @@ function renderGames(filter) {
             '<div class="game-price"><span class="original">' + g.usualPrice + '</span> → <span class="free">0€</span></div>' +
             '<div class="game-store">' + t('store') + ': ' + g.store + '</div>' +
             '<div class="game-timer">' + getTime(g) + '</div>' +
-            '<a href="' + g.storeUrl + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + g.id + '" style="' + (claimed ? 'background:#444;' : (g.status === 'new' && new Date(g.startDate) > new Date() ? 'background:#555;' : '')) + '">' + (claimed ? t('claimed') : (g.status === 'new' && new Date(g.startDate) > new Date() ? '⏳ Скоро' : t('get-free'))) + '</a></div></div>';
+            '<a href="' + (g.status === 'new' && new Date(g.startDate) > new Date() ? '#' : g.storeUrl) + '" class="btn-get" target="_blank" rel="nofollow" data-id="' + g.id + '" style="' + (claimed ? 'background:#444;' : (g.status === 'new' && new Date(g.startDate) > new Date() ? 'background:#555;pointer-events:none;' : '')) + '"' + (g.status === 'new' && new Date(g.startDate) > new Date() ? '' : ' onclick="markClaimed(' + g.id + ', this)"') + '>' + (claimed ? t('claimed') : (g.status === 'new' && new Date(g.startDate) > new Date() ? '⏳ Скоро' : t('get-free'))) + '</a></div></div>';
     }).join('');
 
     // Обработчики клика для кнопок
