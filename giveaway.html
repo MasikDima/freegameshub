@@ -214,7 +214,7 @@
         var btnEl = document.getElementById('btn-' + gameId);
         if (btnEl && localStorage.getItem('played_' + gameId)) {
             btnEl.style.background = '#444';
-            btnEl.textContent = '✅ Участвуешь';
+            btnEl.textContent = '✅ ' + t('giveaway-entered');
         }
         db.collection('giveaway_' + gameId).get().then(function(s) {
             countEl.textContent = 'Участников: ' + s.size;
