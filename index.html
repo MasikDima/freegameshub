@@ -143,7 +143,7 @@
     </div>
 
     <script src="script.js?v=55"></script>
-    <script>
+        <script>
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
@@ -151,12 +151,58 @@
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+        
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var l = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = l.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
+                if (typeof switchLanguage === 'function') switchLanguage(l);
+                document.getElementById('langDropdownContent').classList.remove('open');
+                document.getElementById('langDropdownContentMob').classList.remove('open');
+            };
         });
+
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+        if (typeof switchLanguage === 'function') switchLanguage(sl);
+    </script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+            authDomain: "freegameshub-11215.firebaseapp.com",
+            projectId: "freegameshub-11215",
+            storageBucket: "freegameshub-11215.firebasestorage.app",
+            messagingSenderId: "881848736998",
+            appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+        var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
+        localStorage.setItem('sessionId', sessionId);
+        var onlineRef = db.collection('online').doc(sessionId);
+        onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+        window.addEventListener('beforeunload', function() { onlineRef.delete(); });
+        setInterval(function() { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 30000);
+        setInterval(function() {
+            var oneMinuteAgo = new Date(Date.now() - 60000);
+            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
+        }, 60000);
+        function updateCounters() {
+            db.collection('online').get().then(function(s) { document.getElementById('onlineCount').textContent = s.size; });
+            db.collection('stats').doc('visitors').get().then(function(d) { document.getElementById('totalVisitors').textContent = d.data().count || 0; });
+        }
+        var visited = sessionStorage.getItem('visited');
+        if (!visited) {
+            sessionStorage.setItem('visited', 'true');
+            var totalRef = db.collection('stats').doc('visitors');
+            db.runTransaction(function(t) { return t.get(totalRef).then(function(d) { var c = (d.data() && d.data().count) || 0; t.set(totalRef, { count: c + 1 }, { merge: true }); return c + 1; }); });
+        }
+        setInterval(updateCounters, 5000);
+        updateCounters();
     </script>
 
     <script>
