@@ -110,7 +110,7 @@ var translations = {
 'desc-easternexorcist': '¡Juega y gana!',
 'desc-steelrats': '¡Consigue 20 puntos!',
 'desc-mafia3': '¡Completa el minijuego!',
-'desc-mafia2': '¡Consigue 20 puntos!'
+'desc-mafia2': '¡Consigue 20 puntos!',
 'giveaway-desc': '¡Juega y gana una clave!',
 'giveaway-current': '🎮 Actual',
 'giveaway-archive': '📦 Archivo',
