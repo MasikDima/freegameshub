@@ -133,7 +133,7 @@
             return '<div class="steam-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
             '<div style="display:none;background:linear-gradient(135deg,#0a1a2e,#0f2a4e);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🎮</div>'+
             '<span class="steam-badge-free">Free to Play</span><h3 class="steam-game-title">'+g.title+'</h3><p class="steam-game-date">📅 '+g.date+'</p>'+
-            '<a href="' + game.url + '" class="steam-btn" target="_blank" data-key="steam-play">🎮 Играть бесплатно</a>'
+            '<a href="' + g.url + '" class="steam-btn" target="_blank" data-key="steam-play">🎮 Играть бесплатно</a>'
         }).join('');
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
