@@ -138,5 +138,10 @@
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
         updateTexts(); renderHistory();
     </script>
+    <script src="script.js?v=100"></script>
+<script>
+    var savedLang = localStorage.getItem('lang') || 'ru';
+    if (typeof switchLanguage === 'function') switchLanguage(savedLang);
+</script>
 </body>
 </html>
