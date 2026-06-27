@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://freegameshub.es/</loc><priority>1.0</priority></url>
+  <url><loc>https://freegameshub.es/epic.html</loc><priority>0.8</priority></url>
+  <url><loc>https://freegameshub.es/steam.html</loc><priority>0.8</priority></url>
+  <url><loc>https://freegameshub.es/ps.html</loc><priority>0.7</priority></url>
+  <url><loc>https://freegameshub.es/xbox.html</loc><priority>0.7</priority></url>
+  <url><loc>https://freegameshub.es/giveaway.html</loc><priority>0.6</priority></url>
+  <url><loc>https://freegameshub.es/history.html</loc><priority>0.5</priority></url>
+</urlset>
