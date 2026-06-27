@@ -84,7 +84,10 @@
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
-        <div class="container"><h1><i class="fab fa-xbox"></i> Xbox Game Pass</h1><p>Бесплатные игры июня 2026</p></div>
+        <div class="container">
+            <h1 data-key="xbox-title"><i class="fab fa-xbox"></i> Xbox Game Pass</h1>
+            <p data-key="xbox-desc">Бесплатные игры июня 2026</p>
+        </div>
     </section>
 
     <section class="games">
@@ -96,13 +99,20 @@
         </div>
     </section>
 
+    <section class="subscribe">
+        <div class="container">
+            <h2 data-key="xbox-subscribe">Нужна подписка Game Pass</h2>
+            <p data-key="xbox-subscribe-text">Для получения игр оформи подписку Xbox Game Pass Ultimate</p>
+            <a href="https://www.xbox.com/ru-RU/xbox-game-pass" class="btn-telegram" target="_blank" data-key="xbox-pass-btn">🟢 Узнать про Game Pass</a>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
-            <p style="color:#666;font-size:13px;margin-top:5px;">
-</p>
         </div>
     </footer>
+
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
         <div class="close-btn" onclick="closeMenu()">✕</div>
@@ -120,14 +130,14 @@
             { title: 'Junkster', image: 'https://th.bing.com/th?id=OIF.lckp6Jj3qhJ%2fPYhltMqlvA&rs=1&pid=ImgDetMain&o=7&rm=3', url: 'https://www.xbox.com/ru-RU/games/store/junkster/9NZPKBFF0CV9' },
             { title: 'Call of Duty: Vanguard', image: 'https://wallpaperaccess.com/full/6824905.jpg', url: 'https://www.xbox.com/ru-ru/games/store/call-of-duty-vanguard-standard-edition/9nqq8b4pjr25' },
             { title: 'EA Sports FC 26', image: 'https://www.insidexbox.de/wp-content/uploads/2025/07/easports-fc-26-cover.webp', url: 'https://www.xbox.com/en-US/games/store/ea-sports-fc-26-xbox-series-xs/9P9FTXPKQ35P' },
-            { title: 'Abyssus', image: 'https://static.deltiasgaming.com/2025/08/Abyssus-How-To-Get-Brine-Revolver.jpg', url: 'https://www.xbox.com/ru-RU/games/store/abyssus/9P8NKVVB0XQJ/0010' },
+            { title: 'Abyssus', image: 'https://gamefabrique.com/i/pc/abyssus.jpg', url: 'https://www.xbox.com/ru-RU/games/store/abyssus/9P8NKVVB0XQJ/0010' },
             { title: 'RV There Yet?', image: 'https://www.gamereactor.se/media/27/rvthereyet_4722783b.jpg', url: 'https://www.xbox.com/ru-ru/games/store/rv-there-yet/9mw79bjvf3qx' }
         ];
         document.getElementById('xboxGames').innerHTML = xboxGames.map(function(g) {
             return '<div class="xbox-game-card"><img src="'+g.image+'" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'+
             '<div style="display:none;background:linear-gradient(135deg,#0a2a0a,#1a4a1a);height:180px;align-items:center;justify-content:center;font-size:60px;border-radius:8px;margin-bottom:12px;">🟢</div>'+
             '<span class="xbox-badge-free">Game Pass</span><h3 class="xbox-game-title">'+g.title+'</h3>'+
-            '<a href="'+g.url+'" class="xbox-btn" target="_blank">🟢 Подробнее</a></div>';
+            '<a href="'+g.url+'" class="xbox-btn" target="_blank" data-key="xbox-play">🟢 Подробнее</a></div>';
         }).join('');
 
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
@@ -143,6 +153,11 @@
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+    </script>
+    <script src="script.js?v=95"></script>
+    <script>
+        var savedLang = localStorage.getItem('lang') || 'ru';
+        if (typeof switchLanguage === 'function') switchLanguage(savedLang);
     </script>
 </body>
 </html>
