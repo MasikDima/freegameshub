@@ -387,6 +387,15 @@ snapshot.forEach(function(doc) {
 
     if (typeof switchLanguage === 'function') switchLanguage(sl);
     loadGiveaways();
+
+var savedTab = localStorage.getItem('giveawayTab') || 'current';
+if (savedTab === 'archive') {
+    document.getElementById('currentGiveaway').style.display = 'none';
+    document.getElementById('archiveGiveaway').style.display = 'block';
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.filter-btn')[1].classList.add('active');
+    loadArchive();
+}
 </script>
 </body>
 </html>
