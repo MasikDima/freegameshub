@@ -115,17 +115,25 @@
     var saved = localStorage.getItem('allHistory');
     var historyGames = saved ? JSON.parse(saved) : [];
     var alwaysFreeIds = [5, 6];
-    historyGames = historyGames.filter(function(game) { return alwaysFreeIds.indexOf(game.id) === -1; });
+
+    // Определяем язык надёжно
+    if (!l) l = localStorage.getItem('lang') || 'ru';
+    if (!t2[l]) l = 'ru'; // fallback если перевода нет
+
+    historyGames = historyGames.filter(function(game) {
+        return alwaysFreeIds.indexOf(game.id) === -1;
+    });
+
     if (historyGames.length === 0) {
-        container.innerHTML = '<p class="empty-history">' + t2[l]['empty'] + '</p>';
+        container.innerHTML = '<p class="empty-history">' + (t2[l] && t2[l]['empty'] || 'История пуста') + '</p>';
     } else {
         container.innerHTML = historyGames.reverse().map(function(game) {
             return '<div class="history-card">' +
                 '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                 '<div class="history-info">' +
-                '<span class="badge-ended">' + t2[l]['ended'] + '</span>' +
+                '<span class="badge-ended">' + (t2[l] && t2[l]['ended'] || 'Завершена') + '</span>' +
                 '<h3 class="game-title">' + game.title + '</h3>' +
-                '<p style="color:#aaa;">' + t2[l]['store'] + ': ' + game.store + '</p>' +
+                '<p style="color:#aaa;">' + (t2[l] && t2[l]['store'] || 'Магазин') + ': ' + game.store + '</p>' +
                 '</div></div>';
         }).join('');
     }
