@@ -623,4 +623,47 @@ footer a:hover {
         flex-direction: column;
         align-items: center;
     }
+    /* ========== КНОПКА TELEGRAM ========== */
+.btn-telegram-fancy {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #0088cc;
+    color: white;
+    padding: 18px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(0, 136, 204, 0.6);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-telegram-fancy:hover {
+    background: #00aaff;
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0, 170, 255, 0.8);
+}
+
+.btn-telegram-fancy i {
+    font-size: 28px;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.telegram-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    .telegram-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
 }
