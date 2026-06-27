@@ -197,7 +197,7 @@
     function loadArchive() {
         db.collection('giveaway_archive').orderBy('date', 'desc').get().then(function(snapshot) {
             var c = document.getElementById('archiveList');
-            if (snapshot.empty) c.innerHTML = '<p style="color:#aaa;">Пока нет завершённых розыгрышей.</p>';
+            if (snapshot.empty) c.innerHTML = '<p style="color:#aaa;">' + t('giveaway-empty') + '</p>';
             else {
                 c.innerHTML = '';
 snapshot.forEach(function(doc) {
