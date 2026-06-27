@@ -299,12 +299,15 @@ function getTime(g) {
         if (s <= n) {
             g.status = 'active';
             if (g.endDate) {
-                var d = new Date(g.endDate) - n;
-                var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
-                if (dd > 0) return '⏰ ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
-                if (hh > 0) return '⏰ ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
-                return '⏰ ' + mm + ' ' + t('mins');
-            }
+    var d = new Date(g.endDate) - n;
+    if (d > 999 * 86400000) return '♾️ ' + t('forever');
+    if (d <= 0) return '⏰ ' + t('ended');
+    var dd = Math.floor(d / 86400000), hh = Math.floor((d % 86400000) / 3600000), mm = Math.floor((d % 3600000) / 60000);
+    if (dd > 0) return '⏰ ' + dd + t('days-short') + ' ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+    if (hh > 0) return '⏰ ' + hh + t('hours-short') + ' ' + mm + t('mins-short');
+    if (mm > 0) return '⏰ ' + mm + ' ' + t('mins');
+    return '⏰ ' + t('less-minute');
+}
             return '♾️ ' + t('forever');
         }
         var d = s - n;
