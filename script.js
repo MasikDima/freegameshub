@@ -38,7 +38,9 @@ var translations = {
 'hours-short': 'ч',
 'mins-short': 'м',
 'mins': 'мин',
-'back-home': 'На главную'
+'back-home': 'На главную',
+        'steam-title': '🔵 Steam',
+'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
         'hero-title': '🎮 Juegos Gratis',
@@ -78,7 +80,9 @@ var translations = {
 'hours-short': 'h',
 'mins-short': 'm',
 'mins': 'min',
-'back-home': '← Inicio'
+'back-home': '← Inicio',
+        'steam-title': '🔵 Steam',
+'steam-desc': 'Los mejores juegos gratis para siempre'
     },
     en: {
         'hero-title': '🎮 Free Games',
@@ -118,7 +122,8 @@ var translations = {
 'hours-short': 'h',
 'mins-short': 'm',
 'mins': 'min',
-'back-home': '← Home'
+'back-home': '← Home','steam-title': '🔵 Steam',
+'steam-desc': 'Best free games forever'
     }
 };
 
