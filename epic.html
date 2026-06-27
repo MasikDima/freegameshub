@@ -83,8 +83,8 @@
 
     <section class="hero" style="padding:50px 0;">
         <div class="container">
-            <h1><i class="fas fa-gift"></i> Epic Games Store</h1>
-<p data-key="epic-desc">Бесплатные раздачи каждую неделю</p>
+            <h1 data-key="epic-title"><i class="fas fa-gift"></i> Epic Games Store</h1>
+            <p data-key="epic-desc">Бесплатные раздачи каждую неделю</p>
         </div>
     </section>
 
@@ -110,21 +110,14 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script src="script.js?v=85"></script>
+    <script src="script.js?v=90"></script>
     <script>
-        // Ждём загрузку script.js и рендерим игры
         setTimeout(function() {
-            if (typeof renderGames === 'function') {
-                // Фильтруем только Epic Games Store
-var epicGames = games.filter(function(g) { return g.store === 'Epic Games Store'; });
-var container = document.getElementById('gamesContainer');
-if (container && typeof renderGames === 'function') {
-    // Временно заменяем games на отфильтрованные
-    var originalGames = games;
-    games = epicGames;
-    renderGames('all');
-    games = originalGames;
-}
+            if (typeof renderGames === 'function' && typeof games !== 'undefined') {
+                var allGames = games;
+                games = games.filter(function(g) { return g.store === 'Epic Games Store'; });
+                renderGames('all');
+                games = allGames;
             }
         }, 300);
 
