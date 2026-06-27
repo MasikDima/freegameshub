@@ -16,7 +16,6 @@
         .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
         .overlay.show { display: block; }
-
         .ps-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 20px 0; }
         .ps-game-card { background: rgba(10, 10, 30, 0.7); border: 1px solid rgba(0, 123, 255, 0.2); border-radius: 12px; padding: 20px; transition: all 0.3s; backdrop-filter: blur(10px); }
         .ps-game-card:hover { border-color: rgba(0, 123, 255, 0.6); box-shadow: 0 0 25px rgba(0, 123, 255, 0.2); transform: translateY(-3px); }
@@ -24,7 +23,6 @@
         .ps-badge-free { display: inline-block; background: linear-gradient(135deg, #003087, #0070cc); color: white; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 112, 204, 0.3); margin-bottom: 12px; }
         .ps-btn { display: block; text-align: center; background: linear-gradient(135deg, #003087, #0070cc); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 12px; transition: all 0.3s; }
         .ps-btn:hover { box-shadow: 0 0 25px rgba(0, 112, 204, 0.5); }
-
         @media (max-width: 1024px) {
             .store-nav { display: none; }
             .header-desktop .header-right { display: none !important; }
@@ -36,13 +34,12 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="container header-desktop" style="display:flex;align-items:center;justify-content:space-between;">
             <a href="index.html" class="logo" style="text-decoration:none;">
-    <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
-    <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
-</a>
+                <span class="logo-icon"><i class="fas fa-gamepad"></i></span>
+                <span class="logo-text">Free <span style="color:#ff0080;">Games</span> Hub</span>
+            </a>
             <div class="header-right" style="display:flex;align-items:center;gap:15px;">
                 <a href="history.html" style="color:#f5c518;text-decoration:none;font-weight:bold;font-size:14px;" data-key="history-btn">📦 История</a>
                 <div class="lang-dropdown">
@@ -94,7 +91,7 @@
     <section class="games">
         <div class="container">
             <div style="text-align:center;padding:20px 0 10px 0;">
-                <span style="background:linear-gradient(135deg,#107c10,#52d452);color:white;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:700;" data-key="date-june">📅 Июнь 2026</span>
+                <span style="background:linear-gradient(135deg,#003087,#0070cc);color:white;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:700;" data-key="date-june">📅 Июнь 2026</span>
             </div>
             <div class="ps-games-grid" id="psGames"></div>
         </div>
@@ -126,7 +123,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-        <script>
+    <script>
         var psGames = [
             { title: 'Grounded', platform: 'PS4 & PS5', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', url: 'https://www.playstation.com/games/grounded/' },
             { title: 'Nickelodeon All-Star Brawl 2', platform: 'PS4 & PS5', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', url: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/' },
@@ -163,36 +160,7 @@
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
         if (typeof switchLanguage === 'function') switchLanguage(sl);
-    <script>
-// Обновление кнопок при смене языка
-function updateSteamButtons() {
-    var lang = localStorage.getItem('lang') || 'ru';
-    var translations = {
-        ru: { 'steam-play': '🎮 Играть бесплатно', 'ps-play': '🎮 Подробнее', 'xbox-play': '🟢 Подробнее' },
-        es: { 'steam-play': '🎮 Jugar gratis', 'ps-play': '🎮 Detalles', 'xbox-play': '🟢 Detalles' },
-        en: { 'steam-play': '🎮 Play for free', 'ps-play': '🎮 Details', 'xbox-play': '🟢 Details' }
-    };
-    
-    document.querySelectorAll('[data-key]').forEach(function(el) {
-        var key = el.dataset.key;
-        if (translations[lang] && translations[lang][key]) {
-            el.textContent = translations[lang][key];
-        }
-    });
-}
-
-// Запуск при загрузке
-updateSteamButtons();
-
-// Обновление при переключении языка
-var originalSwitch = switchLanguage;
-if (typeof switchLanguage === 'function') {
-    switchLanguage = function(l) {
-        originalSwitch(l);
-        updateSteamButtons();
-    };
-}
-</script>
-<script src="script.js"></script>
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>
