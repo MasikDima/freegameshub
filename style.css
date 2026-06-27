@@ -607,3 +607,20 @@ footer a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #ff1070, #ff5570);
 }
+.telegram-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.telegram-buttons .btn-telegram {
+    min-width: 200px;
+}
+
+@media (max-width: 600px) {
+    .telegram-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
