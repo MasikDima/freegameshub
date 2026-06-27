@@ -39,6 +39,8 @@ var translations = {
         'giveaway-count': 'Участников',
         'giveaway-winner': 'Победитель',
         'giveaway-empty': 'Пока нет завершённых розыгрышей.',
+        'giveaway-archive-title': '📦 Архив розыгрышей',
+        'giveaway-loading': 'Загрузка...',
 'desc-rust': 'Получи шанс!',
 'desc-easternexorcist': 'Сыграй и выиграй!',
 'desc-steelrats': 'Набери 20 очков!',
@@ -110,6 +112,8 @@ var translations = {
         'giveaway-count': 'Participantes',
         'giveaway-winner': 'Ganador',
         'giveaway-empty': 'No hay sorteos completados aún.',
+        'giveaway-archive-title': '📦 Archivo de sorteos',
+        'giveaway-loading': 'Cargando...',
 'desc-rust': '¡Obtén una oportunidad!',
 'desc-easternexorcist': '¡Juega y gana!',
 'desc-steelrats': '¡Consigue 20 puntos!',
@@ -211,6 +215,8 @@ var translations = {
     'steam-title': '🔵 Steam',
         'giveaway-winner': 'Winner',
         'giveaway-empty': 'No completed giveaways yet.',
+        'giveaway-archive-title': '📦 Giveaway Archive', 
+        'giveaway-loading': 'Cargando...',
     'steam-desc': 'Best free games forever'
 }
 };
