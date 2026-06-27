@@ -126,7 +126,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script>
+        <script>
         var xboxGames = [
             { title: 'Junkster', image: 'https://th.bing.com/th?id=OIF.lckp6Jj3qhJ%2fPYhltMqlvA&rs=1&pid=ImgDetMain&o=7&rm=3', url: 'https://www.xbox.com/ru-RU/games/store/junkster/9NZPKBFF0CV9' },
             { title: 'Call of Duty: Vanguard', image: 'https://wallpaperaccess.com/full/6824905.jpg', url: 'https://www.xbox.com/ru-ru/games/store/call-of-duty-vanguard-standard-edition/9nqq8b4pjr25' },
@@ -148,17 +148,23 @@
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var l = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = l.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
+                if (typeof switchLanguage === 'function') switchLanguage(l);
+                document.getElementById('langDropdownContent').classList.remove('open');
+                document.getElementById('langDropdownContentMob').classList.remove('open');
+            };
         });
+
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
-    </script>
-    <script src="script.js?v=95"></script>
-    <script>
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        if (typeof switchLanguage === 'function') switchLanguage(savedLang);
+        if (typeof switchLanguage === 'function') switchLanguage(sl);
     </script>
 </body>
 </html>
