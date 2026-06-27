@@ -113,13 +113,19 @@
     <script src="script.js?v=90"></script>
     <script>
         setTimeout(function() {
-            if (typeof renderGames === 'function' && typeof games !== 'undefined') {
-                var allGames = games;
-                games = games.filter(function(g) { return g.store === 'Epic Games Store'; });
-                renderGames('all');
-                games = allGames;
-            }
-        }, 300);
+    if (typeof renderGames === 'function' && typeof games !== 'undefined') {
+        // Сохраняем оригинальный renderGames
+        var originalRender = renderGames;
+        // Переопределяем renderGames с фильтром Epic Games
+        renderGames = function(filter) {
+            var allGames = games;
+            games = games.filter(function(g) { return g.store === 'Epic Games Store'; });
+            originalRender(filter);
+            games = allGames;
+        };
+        renderGames('all');
+    }
+}, 300);
 
         document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
