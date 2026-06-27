@@ -116,12 +116,29 @@
     <div class="container">
         <h2 data-key="subscribe-title">Узнай первым!</h2>
         <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления</p>
-        <div class="telegram-buttons">
-            <a href="https://t.me/freegameshub_ru" class="btn-telegram" target="_blank">🇷🇺 Русский канал</a>
-            <a href="https://t.me/freegameshub_es" class="btn-telegram" target="_blank">🇪🇸 Canal Español</a>
-        </div>
+        <a href="https://t.me/freegameshub_ru" class="btn-telegram-fancy" target="_blank" id="smartTelegramBtn">
+            <i class="fab fa-telegram-plane"></i>
+            <span>Подписаться на Telegram</span>
+        </a>
     </div>
 </section>
+
+<script>
+(function() {
+    var lang = localStorage.getItem('lang') || navigator.language || 'ru';
+    var btn = document.getElementById('smartTelegramBtn');
+    var span = btn.querySelector('span');
+    if (!btn) return;
+    
+    if (lang === 'es' || lang.indexOf('es') === 0) {
+        btn.href = 'https://t.me/freegameshub_es';
+        span.textContent = 'Suscríbete en Telegram';
+    } else {
+        btn.href = 'https://t.me/freegameshub_ru';
+        span.textContent = 'Подписаться на Telegram';
+    }
+})();
+</script>
 
     <footer>
         <div class="container">
