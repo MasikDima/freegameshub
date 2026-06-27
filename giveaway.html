@@ -96,11 +96,23 @@
     </nav>
 
     <section class="hero" style="padding:50px 0 30px;">
-        <div class="container"><h1><i class="fas fa-trophy"></i> Розыгрыши ключей</h1><p>Сыграй в мини-игру и получи шанс выиграть ключ!</p></div>
+        <div class="container">
+            <h1 data-key="giveaway-title"><i class="fas fa-trophy"></i> Розыгрыши ключей</h1>
+            <p data-key="giveaway-desc">Сыграй в мини-игру и получи шанс выиграть ключ!</p>
+        </div>
     </section>
 
     <div class="giveaway-container">
-        <div class="giveaway-grid" id="giveawayGrid"></div>
+        <div style="text-align:center;padding:20px 0 10px 0;">
+            <button class="filter-btn active" onclick="switchGiveawayTab('current', this)" data-key="giveaway-current">🎮 Текущий</button>
+            <button class="filter-btn" onclick="switchGiveawayTab('archive', this)" data-key="giveaway-archive">📦 Архив</button>
+        </div>
+        <div id="currentGiveaway">
+            <div class="giveaway-grid" id="giveawayGrid"></div>
+        </div>
+        <div id="archiveGiveaway" style="display:none;">
+            <div class="prize-card"><h2 class="prize-title">📦 Архив розыгрышей</h2><div id="archiveList"><p style="color:#aaa;">Загрузка...</p></div></div>
+        </div>
         <div style="text-align:center;margin-top:20px;">
             <div class="admin-panel" id="adminPanel">
                 <button class="btn-reset" onclick="resetAllGiveaways()">🔄 Сбросить ВСЕ розыгрыши</button>
@@ -108,13 +120,12 @@
         </div>
     </div>
 
-   <footer>
+    <footer>
         <div class="container">
             <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
-            <p style="color:#666;font-size:13px;margin-top:5px;">
-</p>
         </div>
     </footer>
+
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
     <div class="side-menu" id="sideMenu">
         <div class="close-btn" onclick="closeMenu()">✕</div>
@@ -127,6 +138,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
+    <script src="script.js?v=95"></script>
     <script>
     var firebaseConfig = {
         apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
@@ -140,7 +152,7 @@
     var db = firebase.firestore();
 
     var giveawayGames = [
-       { id: 'rust', title: 'Rust', image: 'https://img.opencritic.com/game/5452/o/vK9dyUS6.jpg', desc: 'Получи щанс!', maxPlayers: 1000, type: 'аккаунт' },
+        { id: 'rust', title: 'Rust', image: 'https://img.opencritic.com/game/5452/o/vK9dyUS6.jpg', desc: 'Получи шанс!', maxPlayers: 1000, type: 'аккаунт' },
         { id: 'easternexorcist', title: 'Eastern Exorcist', image: 'https://i.ytimg.com/vi/2ro-Wd5P5fE/maxresdefault.jpg', desc: 'Сыграй и выиграй!', maxPlayers: 100, type: 'ключ' },
         { id: 'steelrats', title: 'Steel Rats', image: 'https://www.pcgamesn.com/wp-content/sites/pcgamesn/2018/11/steel-rats.jpg', desc: 'Набери 20 очков!', maxPlayers: 100, type: 'ключ' },
         { id: 'mafia3', title: 'Mafia 3', image: 'https://images5.alphacoders.com/693/thumb-1920-693371.jpg', desc: 'Пройди мини-игру!', maxPlayers: 300, type: 'ключ' },
@@ -153,56 +165,74 @@
         .then(function(d) { userIP = d.ip; })
         .catch(function() { userIP = 'unknown'; });
 
-    function loadGiveaways() {
-    var container = document.getElementById('giveawayGrid');
-    container.innerHTML = '';
-    giveawayGames.forEach(function(game) {
-        var card = document.createElement('div');
-        card.className = 'prize-card';
-        card.innerHTML = 
-            '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
-            '<h3 class="prize-game">' + game.title + '</h3>' +
-            '<p class="prize-desc">' + game.desc + '</p>' +
-            '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 Розыгрыш при ' + (game.maxPlayers || 100) + ' участниках • ' + (game.type || 'ключ') + '</p>' +
-            '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')">🎮 Играть!</button>' +
-            '<p class="participants-count" id="count-' + game.id + '">Участников: 0</p>' +
-            '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
-        container.appendChild(card);
-        setTimeout(function() { loadGameData(game.id); }, 100);
-    });
-}
+    function t(key) { return (typeof translations !== 'undefined' && translations[currentLang] ? translations[currentLang][key] : key) || key; }
 
-function loadGameData(gameId) {
-    var countEl = document.getElementById('count-' + gameId);
-    if (!countEl) return;
-    
-    var btnEl = document.getElementById('btn-' + gameId);
-    if (btnEl && localStorage.getItem('played_' + gameId)) {
-        btnEl.style.background = '#444';
-        btnEl.textContent = '✅ Участвуешь';
+    function loadGiveaways() {
+        var container = document.getElementById('giveawayGrid');
+        container.innerHTML = '';
+        giveawayGames.forEach(function(game) {
+            var card = document.createElement('div');
+            card.className = 'prize-card';
+            card.innerHTML = 
+                '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
+                '<h3 class="prize-game">' + game.title + '</h3>' +
+                '<p class="prize-desc">' + game.desc + '</p>' +
+                '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 <span data-key="giveaway-limit">Розыгрыш при</span> ' + (game.maxPlayers || 100) + ' <span data-key="giveaway-players">участниках</span> • ' + (game.type || 'ключ') + '</p>' +
+                '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')" data-key="giveaway-play">🎮 Играть!</button>' +
+                '<p class="participants-count" id="count-' + game.id + '"><span data-key="giveaway-count">Участников</span>: 0</p>' +
+                '<p class="winner-text" id="winner-' + game.id + '" style="display:none;"></p>';
+            container.appendChild(card);
+            setTimeout(function() { loadGameData(game.id); }, 100);
+        });
     }
-    
-    db.collection('giveaway_' + gameId).get().then(function(s) {
-        countEl.textContent = 'Участников: ' + s.size;
-        var game = giveawayGames.find(function(g) { return g.id === gameId; });
-        var limit = game.maxPlayers || 100;
-        if (s.size >= limit) checkWinner(gameId, s);
-    });
-    db.collection('winner_' + gameId).get().then(function(s) {
-        if (!s.empty) {
-            s.forEach(function(d) {
-                var winnerEl = document.getElementById('winner-' + gameId);
-                var btnWinner = document.getElementById('btn-' + gameId);
-                if (winnerEl) { winnerEl.style.display = 'block'; winnerEl.textContent = '🏆 Победитель: ' + d.data().masked; }
-                if (btnWinner) { 
-                    btnWinner.disabled = true; 
-                    btnWinner.textContent = 'Розыгрыш завершён'; 
-                    btnWinner.style.background = '#666'; 
-                }
-            });
+
+    function switchGiveawayTab(tab, btn) {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById('currentGiveaway').style.display = tab === 'current' ? 'block' : 'none';
+        document.getElementById('archiveGiveaway').style.display = tab === 'archive' ? 'block' : 'none';
+        if (tab === 'archive') loadArchive();
+    }
+
+    function loadArchive() {
+        db.collection('giveaway_archive').orderBy('date', 'desc').get().then(function(snapshot) {
+            var c = document.getElementById('archiveList');
+            if (snapshot.empty) c.innerHTML = '<p style="color:#aaa;">Пока нет завершённых розыгрышей.</p>';
+            else {
+                c.innerHTML = '';
+                snapshot.forEach(function(doc) {
+                    var d = doc.data();
+                    c.innerHTML += '<div class="archive-item"><p style="font-weight:700;">🎮 ' + d.game + '</p><p style="color:#aaa;">Победитель: <b>' + d.winner + '</b></p><p style="color:#666;font-size:12px;">📅 ' + new Date(d.date.toDate()).toLocaleDateString('ru-RU') + '</p></div>';
+                });
+            }
+        });
+    }
+
+    function loadGameData(gameId) {
+        var countEl = document.getElementById('count-' + gameId);
+        if (!countEl) return;
+        var btnEl = document.getElementById('btn-' + gameId);
+        if (btnEl && localStorage.getItem('played_' + gameId)) {
+            btnEl.style.background = '#444';
+            btnEl.textContent = '✅ Участвуешь';
         }
-    });
-}
+        db.collection('giveaway_' + gameId).get().then(function(s) {
+            countEl.textContent = 'Участников: ' + s.size;
+            var game = giveawayGames.find(function(g) { return g.id === gameId; });
+            var limit = game.maxPlayers || 100;
+            if (s.size >= limit) checkWinner(gameId, s);
+        });
+        db.collection('winner_' + gameId).get().then(function(s) {
+            if (!s.empty) {
+                s.forEach(function(d) {
+                    var winnerEl = document.getElementById('winner-' + gameId);
+                    var btnWinner = document.getElementById('btn-' + gameId);
+                    if (winnerEl) { winnerEl.style.display = 'block'; winnerEl.textContent = '🏆 Победитель: ' + d.data().masked; }
+                    if (btnWinner) { btnWinner.disabled = true; btnWinner.textContent = 'Розыгрыш завершён'; btnWinner.style.background = '#666'; }
+                });
+            }
+        });
+    }
 
     function checkWinner(gameId, snapshot) {
         var game = giveawayGames.find(function(g) { return g.id === gameId; });
@@ -224,25 +254,15 @@ function loadGameData(gameId) {
         });
     }
 
-   function startGame(gameId) {
-    if (localStorage.getItem('played_' + gameId)) { 
-        alert('⚠️ Ты уже участвовал в этом розыгрыше!'); 
-        var btn = document.getElementById('btn-' + gameId);
-        if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; }
-        return; 
+    function startGame(gameId) {
+        if (localStorage.getItem('played_' + gameId)) { alert('⚠️ Ты уже участвовал!'); var btn = document.getElementById('btn-' + gameId); if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } return; }
+        if (userIP && userIP !== 'unknown') {
+            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+                if (!s.empty) { alert('⚠️ Ты уже участвовал!'); var btn = document.getElementById('btn-' + gameId); if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } return; }
+                launchGame(gameId);
+            });
+        } else { launchGame(gameId); }
     }
-    if (userIP && userIP !== 'unknown') {
-        db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-            if (!s.empty) { 
-                alert('⚠️ Ты уже участвовал в этом розыгрыше!'); 
-                var btn = document.getElementById('btn-' + gameId);
-                if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; }
-                return; 
-            }
-            launchGame(gameId);
-        });
-    } else { launchGame(gameId); }
-}
 
     function launchGame(gameId) {
         var score = 0;
@@ -291,37 +311,32 @@ function loadGameData(gameId) {
                 var bY = p.topHeight + GAP;
                 ctx.fillStyle = pG; ctx.fillRect(p.x, bY, 50, 500 - bY);
                 ctx.fillStyle = '#1e8449'; ctx.fillRect(p.x - 3, bY, 56, 20);
-                if (!p.scored && p.x + 50 < bird.x) { 
-    p.scored = true; 
-    score++; 
-    scoreDiv.textContent = 'Счёт: ' + score; 
-    if (score >= 20) { end(); return; }
-}
-var bl = bird.x - s, br = bird.x + s, bt = bird.y - s, bb = bird.y + s;
-if (br > p.x && bl < p.x + 50) { if (bt < p.topHeight || bb > bY) { end(); return; } }
-if (p.x < -50) pipes.splice(i, 1);
+                if (!p.scored && p.x + 50 < bird.x) { p.scored = true; score++; scoreDiv.textContent = 'Счёт: ' + score; if (score >= 20) { end(); return; } }
+                var bl = bird.x - s, br = bird.x + s, bt = bird.y - s, bb = bird.y + s;
+                if (br > p.x && bl < p.x + 50) { if (bt < p.topHeight || bb > bY) { end(); return; } }
+                if (p.x < -50) pipes.splice(i, 1);
             }
             if (bird.y - s < 0 || bird.y + s > 500) { end(); return; }
             requestAnimationFrame(loop);
         }
-       function end() {
-    gameRunning = false;
-    if (score >= 20) {
-        scoreDiv.textContent = '🎉 Вы участвуете!';
-        var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
-        if (username) {
-            db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
-                db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
-                    localStorage.setItem('played_' + gameId, 'true');
-                    scoreDiv.textContent = '✅ Ты участвуешь!';
-                    loadGameData(gameId);
-                    setTimeout(closeModal, 1500);
-                });
-            });
-        } else { closeModal(); }
-    } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
-}
+        function end() {
+            gameRunning = false;
+            if (score >= 20) {
+                scoreDiv.textContent = '🎉 Вы участвуете!';
+                var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
+                if (username) {
+                    db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
+                        if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
+                        db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+                            localStorage.setItem('played_' + gameId, 'true');
+                            scoreDiv.textContent = '✅ Ты участвуешь!';
+                            loadGameData(gameId);
+                            setTimeout(closeModal, 1500);
+                        });
+                    });
+                } else { closeModal(); }
+            } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
+        }
         function closeModal() { document.body.removeChild(modal); }
         closeBtn.onclick = function() { gameRunning = false; closeModal(); };
         document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
@@ -360,6 +375,7 @@ if (p.x < -50) pipes.splice(i, 1);
     document.getElementById('currentLangText').textContent = sl.toUpperCase();
     document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
 
+    if (typeof switchLanguage === 'function') switchLanguage(sl);
     loadGiveaways();
 </script>
 </body>
