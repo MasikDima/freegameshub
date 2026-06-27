@@ -126,7 +126,7 @@
         <a href="history.html"><i class="fas fa-history"></i> История</a>
     </div>
 
-    <script>
+        <script>
         var psGames = [
             { title: 'Grounded', platform: 'PS4 & PS5', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', url: 'https://www.playstation.com/games/grounded/' },
             { title: 'Nickelodeon All-Star Brawl 2', platform: 'PS4 & PS5', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', url: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/' },
@@ -146,17 +146,23 @@
         document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
         document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
         document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+
         document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); localStorage.setItem('lang', l); location.reload(); };
+            opt.onclick = function(e) {
+                e.preventDefault();
+                var l = this.dataset.lang;
+                document.getElementById('currentLangText').textContent = l.toUpperCase();
+                document.getElementById('currentLangTextMob').textContent = l.toUpperCase();
+                if (typeof switchLanguage === 'function') switchLanguage(l);
+                document.getElementById('langDropdownContent').classList.remove('open');
+                document.getElementById('langDropdownContentMob').classList.remove('open');
+            };
         });
+
         var sl = localStorage.getItem('lang') || 'ru';
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
-    </script>
-    <script src="script.js?v=95"></script>
-    <script>
-        var savedLang = localStorage.getItem('lang') || 'ru';
-        if (typeof switchLanguage === 'function') switchLanguage(savedLang);
+        if (typeof switchLanguage === 'function') switchLanguage(sl);
     </script>
 </body>
 </html>
