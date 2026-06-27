@@ -150,5 +150,10 @@
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
     </script>
+    <script src="script.js?v=90"></script>
+<script>
+    var savedLang = localStorage.getItem('lang') || 'ru';
+    if (typeof switchLanguage === 'function') switchLanguage(savedLang);
+</script>
 </body>
 </html>
