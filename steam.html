@@ -167,6 +167,35 @@
         document.getElementById('currentLangText').textContent = sl.toUpperCase();
         document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
         if (typeof switchLanguage === 'function') switchLanguage(sl);
-    </script>
-</body>
+    <script>
+// Обновление кнопок при смене языка
+function updateSteamButtons() {
+    var lang = localStorage.getItem('lang') || 'ru';
+    var translations = {
+        ru: { 'steam-play': '🎮 Играть бесплатно', 'ps-play': '🎮 Подробнее', 'xbox-play': '🟢 Подробнее' },
+        es: { 'steam-play': '🎮 Jugar gratis', 'ps-play': '🎮 Detalles', 'xbox-play': '🟢 Detalles' },
+        en: { 'steam-play': '🎮 Play for free', 'ps-play': '🎮 Details', 'xbox-play': '🟢 Details' }
+    };
+    
+    document.querySelectorAll('[data-key]').forEach(function(el) {
+        var key = el.dataset.key;
+        if (translations[lang] && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+}
+
+// Запуск при загрузке
+updateSteamButtons();
+
+// Обновление при переключении языка
+var originalSwitch = switchLanguage;
+if (typeof switchLanguage === 'function') {
+    switchLanguage = function(l) {
+        originalSwitch(l);
+        updateSteamButtons();
+    };
+}
+</script>
+    </body>
 </html>
