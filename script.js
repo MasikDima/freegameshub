@@ -41,37 +41,37 @@ var translations = {
         'giveaway-empty': 'Пока нет завершённых розыгрышей.',
         'giveaway-archive-title': '📦 Архив розыгрышей',
         'giveaway-loading': 'Загрузка...',
-'desc-rust': 'Получи шанс!',
-'desc-easternexorcist': 'Сыграй и выиграй!',
-'desc-steelrats': 'Набери 20 очков!',
-'desc-mafia3': 'Пройди мини-игру!',
-'desc-mafia2': 'Набери 20 очков!',
-'giveaway-desc': 'Сыграй в мини-игру и получи шанс выиграть ключ!',
-'giveaway-current': '🎮 Текущий',
-'giveaway-archive': '📦 Архив',
-'giveaway-limit': 'Розыгрыш при',
-'giveaway-players': 'участниках',
-'ps-desc': 'Бесплатные игры каждый месяц',
-'ps-play': '🎮 Подробнее',
-'ps-subscribe': 'Нужна подписка PS Plus',
-'ps-subscribe-text': 'Для получения игр оформи подписку PlayStation Plus',
-'ps-plus-btn': '🎮 Узнать про PS Plus',
-'xbox-title': '🟢 Xbox Game Pass',
-'xbox-desc': 'Бесплатные игры июня 2026',
-'xbox-play': '🟢 Подробнее',
-'xbox-subscribe': 'Нужна подписка Game Pass',
-'xbox-subscribe-text': 'Для получения игр оформи подписку Xbox Game Pass Ultimate',
-'xbox-pass-btn': '🟢 Узнать про Game Pass',
-'ended': 'Закончилось',
-'starts-in': 'Старт через',
-'less-minute': 'Меньше минуты!',
-'days-short': 'д',
-'hours-short': 'ч',
-'mins-short': 'м',
-'mins': 'мин',
-'back-home': 'На главную',
+        'desc-rust': 'Получи шанс!',
+        'desc-easternexorcist': 'Сыграй и выиграй!',
+        'desc-steelrats': 'Набери 20 очков!',
+        'desc-mafia3': 'Пройди мини-игру!',
+        'desc-mafia2': 'Набери 20 очков!',
+        'giveaway-desc': 'Сыграй в мини-игру и получи шанс выиграть ключ!',
+        'giveaway-current': '🎮 Текущий',
+        'giveaway-archive': '📦 Архив',
+        'giveaway-limit': 'Розыгрыш при',
+        'giveaway-players': 'участниках',
+        'ps-desc': 'Бесплатные игры каждый месяц',
+        'ps-play': '🎮 Подробнее',
+        'ps-subscribe': 'Нужна подписка PS Plus',
+        'ps-subscribe-text': 'Для получения игр оформи подписку PlayStation Plus',
+        'ps-plus-btn': '🎮 Узнать про PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Бесплатные игры июня 2026',
+        'xbox-play': '🟢 Подробнее',
+        'xbox-subscribe': 'Нужна подписка Game Pass',
+        'xbox-subscribe-text': 'Для получения игр оформи подписку Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Узнать про Game Pass',
+        'ended': 'Закончилось',
+        'starts-in': 'Старт через',
+        'less-minute': 'Меньше минуты!',
+        'days-short': 'д',
+        'hours-short': 'ч',
+        'mins-short': 'м',
+        'mins': 'мин',
+        'back-home': 'На главную',
         'steam-title': '🔵 Steam',
-'steam-desc': 'Лучшие бесплатные игры навсегда'
+        'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
         'hero-title': '🎮 Juegos Gratis',
@@ -114,141 +114,180 @@ var translations = {
         'giveaway-empty': 'No hay sorteos completados aún.',
         'giveaway-archive-title': '📦 Archivo de sorteos',
         'giveaway-loading': 'Cargando...',
-'desc-rust': '¡Obtén una oportunidad!',
-'desc-easternexorcist': '¡Juega y gana!',
-'desc-steelrats': '¡Consigue 20 puntos!',
-'desc-mafia3': '¡Completa el minijuego!',
-'desc-mafia2': '¡Consigue 20 puntos!',
-'giveaway-desc': '¡Juega y gana una clave!',
-'giveaway-current': '🎮 Actual',
-'giveaway-archive': '📦 Archivo',
-'giveaway-limit': 'Sorteo con',
-'giveaway-players': 'participantes',
-'ps-desc': 'Juegos gratis cada mes',
-'ps-play': '🎮 Detalles',
-'ps-subscribe': 'Se necesita PS Plus',
-'ps-subscribe-text': 'Suscríbete a PlayStation Plus para obtener juegos',
-'ps-plus-btn': '🎮 Más sobre PS Plus',
-'xbox-title': '🟢 Xbox Game Pass',
-'xbox-desc': 'Juegos gratis junio 2026',
-'xbox-play': '🟢 Detalles',
-'xbox-subscribe': 'Se necesita Game Pass',
-'xbox-subscribe-text': 'Suscríbete a Xbox Game Pass Ultimate',
-'xbox-pass-btn': '🟢 Más sobre Game Pass',
-'ended': 'Terminado',
-'starts-in': 'Empieza en',
-'less-minute': '¡Menos de un minuto!',
-'days-short': 'd',
-'hours-short': 'h',
-'mins-short': 'm',
-'mins': 'min',
-'back-home': '← Inicio',
+        'desc-rust': '¡Obtén una oportunidad!',
+        'desc-easternexorcist': '¡Juega y gana!',
+        'desc-steelrats': '¡Consigue 20 puntos!',
+        'desc-mafia3': '¡Completa el minijuego!',
+        'desc-mafia2': '¡Consigue 20 puntos!',
+        'giveaway-desc': '¡Juega y gana una clave!',
+        'giveaway-current': '🎮 Actual',
+        'giveaway-archive': '📦 Archivo',
+        'giveaway-limit': 'Sorteo con',
+        'giveaway-players': 'participantes',
+        'ps-desc': 'Juegos gratis cada mes',
+        'ps-play': '🎮 Detalles',
+        'ps-subscribe': 'Se necesita PS Plus',
+        'ps-subscribe-text': 'Suscríbete a PlayStation Plus para obtener juegos',
+        'ps-plus-btn': '🎮 Más sobre PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Juegos gratis junio 2026',
+        'xbox-play': '🟢 Detalles',
+        'xbox-subscribe': 'Se necesita Game Pass',
+        'xbox-subscribe-text': 'Suscríbete a Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Más sobre Game Pass',
+        'ended': 'Terminado',
+        'starts-in': 'Empieza en',
+        'less-minute': '¡Menos de un minuto!',
+        'days-short': 'd',
+        'hours-short': 'h',
+        'mins-short': 'm',
+        'mins': 'min',
+        'back-home': '← Inicio',
         'steam-title': '🔵 Steam',
-'steam-desc': 'Los mejores juegos gratis para siempre'
+        'steam-desc': 'Los mejores juegos gratis para siempre'
     },
     en: {
-    'hero-title': '🎮 Free Games',
-    'hero-subtitle': 'Choose a platform and get free games!',
-    'free-now': 'Free Now',
-    'upcoming': 'Coming Soon',
-    'filter-all': 'All',
-    'filter-expiring': '🔴 Expiring',
-    'filter-new': '🟡 Upcoming',
-    'filter-active': '🟢 Free',
-    'subscribe-title': 'Don\'t Miss Out!',
-    'subscribe-text': 'Subscribe to Telegram for notifications',
-    'footer-text': 'All links lead to official stores.',
-    'get-free': '🎁 GET IT FREE',
-    'claimed': '✅ Claimed',
-    'coming-soon': '⏳ Coming Soon',
-    'days-left': 'days',
-    'store': 'Store',
-    'history-btn': '📦 History',
-    'epic-title': '🎁 Epic Games Store',
-    'epic-desc': 'Free games every week',
-    'steam-play': '🎮 Play for free',
-    'epic-btn': 'View games',
-    'steam-desc': 'Best free-to-play games',
-    'steam-btn': 'View games',
-    'ps-desc': 'PS Plus — 3 games monthly',
-    'ps-btn': 'View games',
-    'xbox-desc': 'Game Pass & Games with Gold',
-    'xbox-btn': 'View games',
-    'online-text': '🟢 Online',
-    'total-text': '👥 Total',
-    'telegram-btn': '📱 Subscribe on Telegram',
-    'forever': 'Forever',
-    'ps-title': '🎮 PlayStation Plus',
-    'date-june': '📅 June 2026',
-    'giveaway-title': '🏆 Key Giveaways',
-    'giveaway-entered': 'Entered',
-    'giveaway-count': 'Participants',
-    'desc-rust': 'Get a chance!',
-    'desc-easternexorcist': 'Play and win!',
-    'desc-steelrats': 'Score 20 points!',
-    'desc-mafia3': 'Complete the minigame!',
-    'desc-mafia2': 'Score 20 points!',
-    'giveaway-desc': 'Play and win a key!',
-    'giveaway-current': '🎮 Current',
-    'giveaway-archive': '📦 Archive',
-    'giveaway-limit': 'Giveaway at',
-    'giveaway-players': 'players',
-    'ps-desc': 'Free games every month',
-    'ps-play': '🎮 Details',
-    'ps-subscribe': 'PS Plus Required',
-    'ps-subscribe-text': 'Subscribe to PlayStation Plus to get games',
-    'ps-plus-btn': '🎮 Learn about PS Plus',
-    'xbox-title': '🟢 Xbox Game Pass',
-    'xbox-desc': 'Free games June 2026',
-    'xbox-play': '🟢 Details',
-    'xbox-subscribe': 'Game Pass Required',
-    'xbox-subscribe-text': 'Subscribe to Xbox Game Pass Ultimate',
-    'xbox-pass-btn': '🟢 Learn about Game Pass',
-    'ended': 'Ended',
-    'starts-in': 'Starts in',
-    'less-minute': 'Less than a minute!',
-    'days-short': 'd',
-    'hours-short': 'h',
-    'mins-short': 'm',
-    'mins': 'min',
-    'back-home': '← Home',
-    'steam-title': '🔵 Steam',
+        'hero-title': '🎮 Free Games',
+        'hero-subtitle': 'Choose a platform and get free games!',
+        'free-now': 'Free Now',
+        'upcoming': 'Coming Soon',
+        'filter-all': 'All',
+        'filter-expiring': '🔴 Expiring',
+        'filter-new': '🟡 Upcoming',
+        'filter-active': '🟢 Free',
+        'subscribe-title': 'Don\'t Miss Out!',
+        'subscribe-text': 'Subscribe to Telegram for notifications',
+        'footer-text': 'All links lead to official stores.',
+        'get-free': '🎁 GET IT FREE',
+        'claimed': '✅ Claimed',
+        'coming-soon': '⏳ Coming Soon',
+        'days-left': 'days',
+        'store': 'Store',
+        'history-btn': '📦 History',
+        'epic-title': '🎁 Epic Games Store',
+        'epic-desc': 'Free games every week',
+        'steam-play': '🎮 Play for free',
+        'epic-btn': 'View games',
+        'steam-desc': 'Best free-to-play games',
+        'steam-btn': 'View games',
+        'ps-desc': 'PS Plus — 3 games monthly',
+        'ps-btn': 'View games',
+        'xbox-desc': 'Game Pass & Games with Gold',
+        'xbox-btn': 'View games',
+        'online-text': '🟢 Online',
+        'total-text': '👥 Total',
+        'telegram-btn': '📱 Subscribe on Telegram',
+        'forever': 'Forever',
+        'ps-title': '🎮 PlayStation Plus',
+        'date-june': '📅 June 2026',
+        'giveaway-title': '🏆 Key Giveaways',
+        'giveaway-entered': 'Entered',
+        'giveaway-count': 'Participants',
+        'desc-rust': 'Get a chance!',
+        'desc-easternexorcist': 'Play and win!',
+        'desc-steelrats': 'Score 20 points!',
+        'desc-mafia3': 'Complete the minigame!',
+        'desc-mafia2': 'Score 20 points!',
+        'giveaway-desc': 'Play and win a key!',
+        'giveaway-current': '🎮 Current',
+        'giveaway-archive': '📦 Archive',
+        'giveaway-limit': 'Giveaway at',
+        'giveaway-players': 'players',
+        'ps-desc': 'Free games every month',
+        'ps-play': '🎮 Details',
+        'ps-subscribe': 'PS Plus Required',
+        'ps-subscribe-text': 'Subscribe to PlayStation Plus to get games',
+        'ps-plus-btn': '🎮 Learn about PS Plus',
+        'xbox-title': '🟢 Xbox Game Pass',
+        'xbox-desc': 'Free games June 2026',
+        'xbox-play': '🟢 Details',
+        'xbox-subscribe': 'Game Pass Required',
+        'xbox-subscribe-text': 'Subscribe to Xbox Game Pass Ultimate',
+        'xbox-pass-btn': '🟢 Learn about Game Pass',
+        'ended': 'Ended',
+        'starts-in': 'Starts in',
+        'less-minute': 'Less than a minute!',
+        'days-short': 'd',
+        'hours-short': 'h',
+        'mins-short': 'm',
+        'mins': 'min',
+        'back-home': '← Home',
+        'steam-title': '🔵 Steam',
         'giveaway-winner': 'Winner',
         'giveaway-empty': 'No completed giveaways yet.',
         'giveaway-archive-title': '📦 Giveaway Archive', 
-        'giveaway-loading': 'Cargando...',
-    'steam-desc': 'Best free games forever'
-}
+        'giveaway-loading': 'Loading...',
+        'steam-desc': 'Best free games forever'
+    }
 };
 
+// ========== Firebase ==========
+var firebaseConfig = {
+    apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
+    authDomain: "freegameshub-11215.firebaseapp.com",
+    projectId: "freegameshub-11215",
+    storageBucket: "freegameshub-11215.firebasestorage.app",
+    messagingSenderId: "881848736998",
+    appId: "1:881848736998:web:a377c4b757e8c026f9af27"
+};
+
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+var db = typeof firebase !== 'undefined' ? firebase.firestore() : null;
+
 // ========== БАЗА ИГР ==========
-var games = [
-    { id: 1, title: 'Citizen Sleeper', image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲', desc: { ru: 'Ролевая игра в киберпанк-мире.', es: 'Juego de rol cyberpunk.', en: 'Cyberpunk RPG.' } },
-    { id: 2, title: 'ROBOBEAT', image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e', usualPrice: '19.49€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🤖', desc: { ru: 'Ритм-шутер с роботами!', es: '¡Shooter rítmico con robots!', en: 'Rhythm shooter with robots!' } },
-    { id: 3, title: 'RollerCoaster Tycoon 3', image: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2700/header.jpg', usualPrice: '19.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/rollercoaster-tycoon-3-complete-edition', status: 'active', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🎢', desc: { ru: 'Строй парк аттракционов!', es: '¡Construye tu parque!', en: 'Build your theme park!' } },
-    { id: 4, title: 'Voidwrought', image: 'https://cdn1.epicgames.com/spt-assets/ae3f962fab4d42eba2dbefa4a1e76ff6/voidwrought-bio8j.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/voidwrought-ce8f4b', status: 'active', startDate: '2026-06-25T17:00:00', endDate: '2026-07-02T17:00:00', emoji: '🕳️', desc: { ru: 'Мрачная метроидвания.', es: 'Metroidvania oscura.', en: 'Dark metroidvania.' } },
-    { id: 24, title: 'I Have No Mouth, and I Must Scream', image: 'https://cdn.flickeringmyth.com/wp-content/uploads/2025/03/I-Have-No-Mouth-and-I-Must-Scream.jpg', usualPrice: '5.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/i-have-no-mouth-and-i-must-scream-95c5c2', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '😱', desc: { ru: 'Культовый хоррор-квест.', es: 'Aventura de terror de culto.', en: 'Cult horror adventure.' } },
-    { id: 25, title: 'River City Girls 2', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202502/2500/4b05e131a3a025d4cb069740b0903e19afa0b0a528d2dbe1.jpg', usualPrice: '35.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/river-city-girls-2-77af3a', status: 'new', startDate: '2026-07-02T17:00:00', endDate: '2026-07-09T17:00:00', emoji: '👊', desc: { ru: 'Битэмап с аниме-девушками!', es: '¡Beat \'em up con chicas anime!', en: 'Beat \'em up with anime girls!' } },
-    { id: 5, title: 'Valorant', image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/valorant', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯', desc: { ru: 'Тактический шутер от Riot Games.', es: 'Shooter táctico de Riot Games.', en: 'Tactical shooter from Riot Games.' } },
-    { id: 6, title: 'Fall Guys', image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/fall-guys', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '👑', desc: { ru: 'Королевская битва с человечками.', es: 'Battle royale con muñecos.', en: 'Battle royale with cute beans.' } },
-    { id: 7, title: 'Counter-Strike 2', image: 'https://wallpapercave.com/wp/wp12803829.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/730', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫', desc: { ru: 'Легендарный тактический шутер.', es: 'Legendario shooter táctico.', en: 'Legendary tactical shooter.' } },
-    { id: 8, title: 'PUBG: BATTLEGROUNDS', image: 'https://wallpaperaccess.com/full/810309.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/578080', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '💥', desc: { ru: 'Королевская битва.', es: 'El battle royale original.', en: 'The original battle royale.' } },
-    { id: 9, title: 'Warframe', image: 'https://www-static.warframe.com/images/landing/warframe-metacard.png', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/230410', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '⚔️', desc: { ru: 'Космические ниндзя!', es: '¡Ninjas espaciales!', en: 'Space ninjas!' } },
-    { id: 10, title: 'Marvel Rivals', image: 'https://www.charlieintel.com/cdn-image/wp-content/uploads/2024/03/29/Marvel-Rivals-Game-Modes-Explained.jpg?width=1080&quality=75&format=auto', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/2767030', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🦸', desc: { ru: 'Герои Marvel!', es: '¡Héroes de Marvel!', en: 'Marvel heroes!' } },
-    { id: 11, title: 'Wuthering Waves', image: 'https://tiermaker.com/images/media/hero_images/2024/16913411/wuthering-waves-tier-list-16913411/169134111719697675.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/3513350', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🌊', desc: { ru: 'RPG с открытым миром.', es: 'RPG de mundo abierto.', en: 'Open-world RPG.' } },
-    { id: 12, title: 'Apex Legends', image: 'https://images.wallpapersden.com/image/download/apex-legends-season-18_bmZmZmuUmZqaraWkpJRmbmdlrWZlbWU.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/1172470', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🚀', desc: { ru: 'Королевская битва с героями.', es: 'Battle royale con héroes.', en: 'Hero battle royale.' } },
-    { id: 13, title: 'The Sims 4', image: 'https://drop-assets.ea.com/images/3TVfXhrTgzhtM51RMVsywI/bd83de7daaccdd70c31d981ba52818ae/ts4-basegame-packart-16x9-en.png?im=AspectCrop=(4,3),xPosition=0.5,yPosition=0.5', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/1222670', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🏠', desc: { ru: 'Симулятор жизни.', es: 'Simulador de vida.', en: 'Life simulator.' } },
-    { id: 14, title: 'Rainbow Six Siege', image: 'https://gamingbolt.com/wp-content/uploads/2025/03/rainbow-six-siege-x.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/359550', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🛡️', desc: { ru: 'Тактический шутер Ubisoft.', es: 'Shooter táctico Ubisoft.', en: 'Tactical shooter by Ubisoft.' } },
-    { id: 15, title: 'Dota 2', image: 'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/06/dota-2-heroes.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/570', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🐉', desc: { ru: 'Популярная MOBA.', es: 'MOBA popular.', en: 'Popular MOBA.' } },
-    { id: 16, title: 'War Thunder', image: 'https://th.bing.com/th/id/R.92b827130b8d8db18711d49c2ebf0ec2?rik=ciPigECl%2bpzFvg&riu=http%3a%2f%2fwarthunder.com%2fupload%2fimage%2fwallpapers%2f1-55_2560x1440_logo_eng.jpg&ehk=EbJugdARTtVxnTyKUVesRCRkQDIy9AQXpQXE9cfA5cU%3d&risl=&pid=ImgRaw&r=0', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/236390', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '✈️', desc: { ru: 'Авиация, танки, флот.', es: 'Aviación, tanques.', en: 'Aviation, tanks, fleet.' } },
-    { id: 17, title: 'NARAKA: BLADEPOINT', image: 'https://cdn.alza.cz/Foto/ImgGalery/Image/naraka-bladepoint-recenze-key-art.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/1203220', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🗡️', desc: { ru: 'Битва с мечами.', es: 'Batalla con espadas.', en: 'Battle with swords.' } },
-    { id: 18, title: 'Overwatch 2', image: 'https://cdn.wccftech.com/wp-content/uploads/2024/07/Overwatch2-HD-scaled.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/2357570', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '⚡', desc: { ru: 'Геройский шутер Blizzard.', es: 'Shooter de héroes Blizzard.', en: 'Hero shooter by Blizzard.' } },
-    { id: 19, title: 'Destiny 2', image: 'https://cdn1.epicgames.com/offer/428115def4ca4deea9d69c99c5a5a99e/EGS_Destiny2_Bungie_S1_2560x1440-d91ec3c799ec514732341a13ba0c030c', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/1085660', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🌌', desc: { ru: 'Космический шутер Bungie.', es: 'Shooter espacial Bungie.', en: 'Space shooter by Bungie.' } },
-    { id: 20, title: 'TBH: Task Bar Hero', image: 'https://tse4.mm.bing.net/th/id/OIF.aINjX7looWhcmfWNwwDQRg?rs=1&pid=ImgDetMain&o=7&rm=3', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/3678970', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '💻', desc: { ru: 'Уникальная инди-игра.', es: 'Juego indie único.', en: 'Unique indie game.' } },
-    { id: 21, title: 'Grounded', image: 'https://image.api.playstation.com/vulcan/ap/rnd/202404/1120/64a12b89992b8e34ecace3e5c7d1d39b954c2ab1d73de70a.png', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/grounded/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '🐜', desc: { ru: 'Выживание в мире насекомых!', es: '¡Supervivencia en el mundo de los insectos!', en: 'Survival in the world of insects!' } },
-    { id: 22, title: 'Nickelodeon All-Star Brawl 2', image: 'https://gaming-cdn.com/images/products/14679/orig-fallback-v1/nickelodeon-all-star-brawl-2-pc-game-steam-cover.jpg?v=1701184748', usualPrice: '49.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/games/nickelodeon-all-star-brawl-2/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '🥊', desc: { ru: 'Файтинг с героями Nickelodeon!', es: '¡Lucha con héroes de Nickelodeon!', en: 'Fight with Nickelodeon heroes!' } },
-    { id: 23, title: 'Warhammer 40K: Darktide', image: 'https://www.wallpaperbetter.com/wallpaper/594/966/371/warhammer-40k-space-marines-hd-1080P-wallpaper.jpg', usualPrice: '39.99€', store: 'PlayStation', storeUrl: 'https://www.playstation.com/es-es/games/warhammer-40000-darktide/', status: 'active', endDate: '2026-07-01T17:00:00', emoji: '⚔️', desc: { ru: 'Эпический экшен Warhammer!', es: '¡Acción épica Warhammer!', en: 'Epic Warhammer action!' } }
-];
+var games = [];
+
+// Загружаем игры из Firebase
+function loadGamesFromFirebase(callback) {
+    if (!db) {
+        console.log('Firebase не доступен, используем локальные игры');
+        loadLocalGames();
+        if (callback) callback();
+        return;
+    }
+    
+    db.collection('admin_games').get().then(function(snapshot) {
+        if (snapshot.empty) {
+            console.log('В Firebase нет игр, используем локальные');
+            loadLocalGames();
+        } else {
+            games = [];
+            snapshot.forEach(function(doc) {
+                var g = doc.data();
+                games.push({
+                    id: g.id || doc.id,
+                    title: g.title,
+                    image: g.image,
+                    usualPrice: g.usualPrice,
+                    store: g.store,
+                    storeUrl: g.storeUrl,
+                    status: g.status || 'active',
+                    startDate: g.startDate || null,
+                    endDate: g.endDate || null,
+                    emoji: g.emoji || '🎮',
+                    desc: g.desc || { ru: '', es: '', en: '' }
+                });
+            });
+        }
+        if (callback) callback();
+    }).catch(function(e) {
+        console.error('Ошибка загрузки из Firebase:', e);
+        loadLocalGames();
+        if (callback) callback();
+    });
+}
+
+function loadLocalGames() {
+    games = [
+        { id: 1, title: 'Citizen Sleeper', image: 'https://gamingbolt.com/wp-content/uploads/2022/04/citizen-sleeper.jpg', usualPrice: '17.99€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/citizen-sleeper-944858', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🎲', desc: { ru: 'Ролевая игра в киберпанк-мире.', es: 'Juego de rol cyberpunk.', en: 'Cyberpunk RPG.' } },
+        { id: 2, title: 'ROBOBEAT', image: 'https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/ncom/software/switch/70010000082961/cb20eaa0fbddb5a363ae5b58cbf6b046eead8980c28edccb1d5c7d908eb9ed8e', usualPrice: '19.49€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/robobeat-5f084b', status: 'active', endDate: '2026-06-25T17:00:00', emoji: '🤖', desc: { ru: 'Ритм-шутер с роботами!', es: '¡Shooter rítmico con robots!', en: 'Rhythm shooter with robots!' } },
+        { id: 5, title: 'Valorant', image: 'https://valorworld.ru/wp-content/uploads/valorant_bg.jpg', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/valorant', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🎯', desc: { ru: 'Тактический шутер от Riot Games.', es: 'Shooter táctico de Riot Games.', en: 'Tactical shooter from Riot Games.' } },
+        { id: 6, title: 'Fall Guys', image: 'https://cdn2.unrealengine.com/fg-10-3-evg-keyart-withlogo-1920x1080-11-1920x1080-198587253bf0.png', usualPrice: '0€', store: 'Epic Games Store', storeUrl: 'https://store.epicgames.com/p/fall-guys', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '👑', desc: { ru: 'Королевская битва с человечками.', es: 'Battle royale con muñecos.', en: 'Battle royale with cute beans.' } },
+        { id: 7, title: 'Counter-Strike 2', image: 'https://wallpapercave.com/wp/wp12803829.jpg', usualPrice: '0€', store: 'Steam', storeUrl: 'https://store.steampowered.com/app/730', status: 'active', endDate: '2099-12-31T23:59:59', emoji: '🔫', desc: { ru: 'Легендарный тактический шутер.', es: 'Legendario shooter táctico.', en: 'Legendary tactical shooter.' } }
+    ];
+}
 
 // ========== ЯЗЫК ==========
 var currentLang = 'ru';
@@ -265,19 +304,12 @@ function switchLanguage(lang) {
     var te2 = document.getElementById('currentLangTextMob');
     if (te2) te2.textContent = lang.toUpperCase();
     document.querySelectorAll('.lang-option').forEach(function(o) { o.classList.toggle('active', o.dataset.lang === lang); });
-    renderGames(currentFilter);
+    if (typeof renderGames === 'function') renderGames(currentFilter);
     localStorage.setItem('lang', lang);
 }
 
-// ========== ВЫПАДАЮЩИЙ СПИСОК ==========
-document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
-document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
-document.querySelectorAll('.lang-option').forEach(function(o) {
-    o.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; document.getElementById('currentLangText').textContent = l.toUpperCase(); switchLanguage(l); document.getElementById('langDropdownContent').classList.remove('open'); };
-});
-
 // ========== ФУНКЦИИ ИГР ==========
-function getDesc(g) { return g.desc[currentLang] || g.desc.en; }
+function getDesc(g) { return g.desc && g.desc[currentLang] ? g.desc[currentLang] : (g.desc && g.desc.en ? g.desc.en : ''); }
 function getStatusText(g) {
     var n = new Date();
     if (g.status === 'new' && g.startDate && new Date(g.startDate) <= n) g.status = 'active';
@@ -403,12 +435,29 @@ function renderGames(filter) {
 
 // ========== ФИЛЬТРЫ ==========
 var currentFilter = 'all';
-document.querySelectorAll('.filter-btn').forEach(function(b) {
-    b.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
-        this.classList.add('active');
-        currentFilter = this.dataset.filter;
-        renderGames(currentFilter);
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(b) {
+        b.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(function(x) { x.classList.remove('active'); });
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            renderGames(currentFilter);
+        });
+    });
+});
+
+// ========== ВЫПАДАЮЩИЙ СПИСОК ==========
+document.addEventListener('DOMContentLoaded', function() {
+    var langBtn = document.getElementById('langDropdownBtn');
+    if (langBtn) {
+        langBtn.onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+    }
+    document.addEventListener('click', function() {
+        var content = document.getElementById('langDropdownContent');
+        if (content) content.classList.remove('open');
+    });
+    document.querySelectorAll('.lang-option').forEach(function(o) {
+        o.onclick = function(e) { e.preventDefault(); var l = this.dataset.lang; var te = document.getElementById('currentLangText'); if (te) te.textContent = l.toUpperCase(); switchLanguage(l); var content = document.getElementById('langDropdownContent'); if (content) content.classList.remove('open'); };
     });
 });
 
@@ -421,5 +470,10 @@ function detectLanguage() {
     if (l.indexOf('en') === 0) return 'en';
     return 'en';
 }
-switchLanguage(detectLanguage());
-renderGames();
+
+document.addEventListener('DOMContentLoaded', function() {
+    switchLanguage(detectLanguage());
+    loadGamesFromFirebase(function() {
+        if (typeof renderGames === 'function') renderGames();
+    });
+});
