@@ -176,7 +176,7 @@
             card.innerHTML = 
                 '<img src="' + game.image + '" alt="' + game.title + '" onerror="this.style.display=\'none\'">' +
                 '<h3 class="prize-game">' + game.title + '</h3>' +
-'<p class="prize-desc" data-key="desc-' + game.id + '">' + game.desc + '</p>' +
+'<p class="prize-desc">' + t('desc-' + game.id) + '</p>' +
 '<p class="prize-desc" style="color:#ff8c00;font-size:12px;">🎯 <span data-key="giveaway-limit">Розыгрыш при</span> ' + (game.maxPlayers || 100) + ' <span data-key="giveaway-players">участниках</span> • ' + (game.type || 'ключ') + '</p>' +
 '<button class="btn-play" id="btn-' + game.id + '" onclick="startGame(\'' + game.id + '\')" data-key="giveaway-play">🎮 Играть!</button>' +
 '<p class="participants-count" id="count-' + game.id + '"><span data-key="giveaway-count">Участников</span>: 0</p>' +
@@ -217,7 +217,7 @@
             btnEl.textContent = '✅ ' + t('giveaway-entered');
         }
         db.collection('giveaway_' + gameId).get().then(function(s) {
-            countEl.textContent = 'Участников: ' + s.size;
+            countEl.textContent = t('giveaway-count') + ': ' + s.size;
             var game = giveawayGames.find(function(g) { return g.id === gameId; });
             var limit = game.maxPlayers || 100;
             if (s.size >= limit) checkWinner(gameId, s);
