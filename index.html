@@ -25,7 +25,6 @@
         .hero-small { padding: 60px 0 20px; text-align: center; }
         .hero-small h1 { font-size: 42px; background: linear-gradient(135deg, #ff0080, #f5c518); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-small p { color: #aaa; font-size: 18px; }
-
         .burger-menu { display: none; font-size: 44px; color: white; cursor: pointer; }
         .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: rgba(5,5,16,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 30px 20px; transition: left 0.3s; border-right: 1px solid rgba(233,69,96,0.3); }
         .side-menu.open { left: 0; }
@@ -34,7 +33,6 @@
         .side-menu .close-btn { text-align: right; font-size: 28px; cursor: pointer; color: #aaa; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; }
         .overlay.show { display: block; }
-
         @media (max-width: 1024px) {
             .store-nav { display: none; }
             .header-desktop .header-right { display: none !important; }
@@ -113,40 +111,23 @@
     </section>
 
     <section class="subscribe">
-    <div class="container">
-        <h2 data-key="subscribe-title">Узнай первым!</h2>
-        <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления</p>
-        <a href="https://t.me/freegameshub_ru" class="btn-telegram-fancy" target="_blank" id="smartTelegramBtn">
-    <i class="fab fa-telegram-plane"></i>
-    <span style="font-size:20px;">Подписаться на Telegram</span>
-</a>
-    </div>
-</section>
-
-<script>
-(function() {
-    var lang = localStorage.getItem('lang') || navigator.language || 'ru';
-    var btn = document.getElementById('smartTelegramBtn');
-    var span = btn.querySelector('span');
-    if (!btn) return;
-    
-    if (lang === 'es' || lang.indexOf('es') === 0) {
-        btn.href = 'https://t.me/freegameshub_es';
-        span.textContent = 'Suscríbete en Telegram';
-    } else {
-        btn.href = 'https://t.me/freegameshub_ru';
-        span.textContent = 'Подписаться на Telegram';
-    }
-})();
-</script>
+        <div class="container">
+            <h2 data-key="subscribe-title">Узнай первым!</h2>
+            <p data-key="subscribe-text">Подпишись на Telegram и получай уведомления</p>
+            <a href="https://t.me/freegameshub_ru" class="btn-telegram-fancy" target="_blank" id="smartTelegramBtn">
+                <i class="fab fa-telegram-plane"></i>
+                <span id="telegramBtnText">Подписаться на Telegram</span>
+            </a>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
             <p>© 2026 Free Games Hub. <span data-key="footer-text">Все ссылки ведут на официальные магазины.</span></p>
             <p style="color:#666;font-size:13px;margin-top:5px;">
-    <span data-key="online-text">🟢 Онлайн</span>: <span id="onlineCount">0</span> | 
-<span data-key="total-text">👥 Всего</span>: <span id="totalVisitors">0</span>
-</p>
+                <span data-key="online-text">🟢 Онлайн</span>: <span id="onlineCount">0</span> | 
+                <span data-key="total-text">👥 Всего</span>: <span id="totalVisitors">0</span>
+            </p>
         </div>
     </footer>
 
@@ -163,7 +144,7 @@
     </div>
 
     <script src="script.js?v=55"></script>
-        <script>
+    <script>
         function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
         function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 
@@ -226,38 +207,35 @@
     </script>
 
     <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyD2_Ed9MOMFq-egaSx0xnDjbNmzTAKk3TQ",
-            authDomain: "freegameshub-11215.firebaseapp.com",
-            projectId: "freegameshub-11215",
-            storageBucket: "freegameshub-11215.firebasestorage.app",
-            messagingSenderId: "881848736998",
-            appId: "1:881848736998:web:a377c4b757e8c026f9af27"
-        };
-        firebase.initializeApp(firebaseConfig);
-        var db = firebase.firestore();
-        var sessionId = localStorage.getItem('sessionId') || Date.now().toString();
-        localStorage.setItem('sessionId', sessionId);
-        var onlineRef = db.collection('online').doc(sessionId);
-        onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-        window.addEventListener('beforeunload', function() { onlineRef.delete(); });
-        setInterval(function() { onlineRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }); }, 30000);
-        setInterval(function() {
-            var oneMinuteAgo = new Date(Date.now() - 60000);
-            db.collection('online').where('timestamp', '<', oneMinuteAgo).get().then(function(s) { s.forEach(function(d) { d.ref.delete(); }); });
-        }, 60000);
-        function updateCounters() {
-            db.collection('online').get().then(function(s) { document.getElementById('onlineCount').textContent = s.size; });
-            db.collection('stats').doc('visitors').get().then(function(d) { document.getElementById('totalVisitors').textContent = d.data().count || 0; });
-        }
-        var visited = sessionStorage.getItem('visited');
-        if (!visited) {
-            sessionStorage.setItem('visited', 'true');
-            var totalRef = db.collection('stats').doc('visitors');
-            db.runTransaction(function(t) { return t.get(totalRef).then(function(d) { var c = (d.data() && d.data().count) || 0; t.set(totalRef, { count: c + 1 }, { merge: true }); return c + 1; }); });
-        }
-        setInterval(updateCounters, 5000);
-        updateCounters();
+        (function() {
+            function updateTelegramBtn(lang) {
+                var btn = document.getElementById('smartTelegramBtn');
+                var text = document.getElementById('telegramBtnText');
+                if (!btn || !text) return;
+                
+                if (lang === 'es' || lang.indexOf('es') === 0) {
+                    btn.href = 'https://t.me/freegameshub_es';
+                    text.textContent = 'Suscríbete en Telegram';
+                } else if (lang === 'en' || lang.indexOf('en') === 0) {
+                    btn.href = 'https://t.me/freegameshub_es';
+                    text.textContent = 'Subscribe on Telegram';
+                } else {
+                    btn.href = 'https://t.me/freegameshub_ru';
+                    text.textContent = 'Подписаться на Telegram';
+                }
+            }
+            
+            var currentLang = localStorage.getItem('lang') || 'ru';
+            updateTelegramBtn(currentLang);
+            
+            var originalSwitch = switchLanguage;
+            if (typeof switchLanguage === 'function') {
+                switchLanguage = function(l) {
+                    originalSwitch(l);
+                    updateTelegramBtn(l);
+                };
+            }
+        })();
     </script>
 </body>
 </html>
