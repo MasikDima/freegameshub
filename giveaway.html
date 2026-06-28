@@ -268,24 +268,24 @@
     }
 
     function startGame(gameId) {
-        if (localStorage.getItem('played_' + gameId)) { 
-            alert('⚠️ Ты уже участвовал!'); 
-            var btn = document.getElementById('btn-' + gameId); 
-            if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
-            return; 
-        }
-        if (userIP && userIP !== 'unknown') {
-            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-                if (!s.empty) { 
-                    alert('⚠️ Ты уже участвовал!'); 
-                    var btn = document.getElementById('btn-' + gameId); 
-                    if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
-                    return; 
-                }
-                chooseRandomGame(gameId);
-            });
-        } else { chooseRandomGame(gameId); }
+    if (localStorage.getItem('played_' + gameId)) { 
+        alert('⚠️ Ты уже участвовал!'); 
+        var btn = document.getElementById('btn-' + gameId); 
+        if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+        return; 
     }
+    if (userIP && userIP !== 'unknown') {
+        db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+            if (!s.empty) { 
+                alert('⚠️ Ты уже участвовал!'); 
+                var btn = document.getElementById('btn-' + gameId); 
+                if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+                return; 
+            }
+            launchGame(gameId);
+        });
+    } else { launchGame(gameId); }
+}
 
     // Flappy Bird
     function launchGame(gameId) {
@@ -510,4 +510,41 @@
     }
 
     var cc = 0;
-    document.querySelector('h1').addEventListener('click', function() { cc++; if (cc >= 3) { cc = 0; var p = document.getElementById('adminPanel'); p.style.display = p.style.display === '
+document.querySelector('h1').addEventListener('click', function() { 
+    cc++; 
+    if (cc >= 3) { 
+        cc = 0; 
+        var p = document.getElementById('adminPanel'); 
+        p.style.display = p.style.display === 'block' ? 'none' : 'block'; 
+    } 
+    setTimeout(function() { cc = 0; }, 1000); 
+});
+
+function openMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+
+document.getElementById('langDropdownBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContent').classList.toggle('open'); };
+document.addEventListener('click', function() { document.getElementById('langDropdownContent').classList.remove('open'); });
+document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
+document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
+
+document.querySelectorAll('.lang-option').forEach(function(opt) {
+    opt.onclick = function(e) { 
+        e.preventDefault(); 
+        var l = this.dataset.lang; 
+        document.getElementById('currentLangText').textContent = l.toUpperCase(); 
+        document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); 
+        localStorage.setItem('lang', l); 
+        location.reload(); 
+    };
+});
+
+var sl = localStorage.getItem('lang') || 'ru';
+document.getElementById('currentLangText').textContent = sl.toUpperCase();
+document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+
+if (typeof switchLanguage === 'function') switchLanguage(sl);
+loadGiveaways();
+
+document.getElementById('currentGiveaway').style.display = 'block';
+document.getElementById('archiveGiveaway').style.display = 'none';
