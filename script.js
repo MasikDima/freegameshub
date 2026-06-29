@@ -71,6 +71,7 @@ var translations = {
         'mins': 'мин',
         'back-home': 'На главную',
         'steam-title': '🔵 Steam',
+        'desc-alanwake': 'Тьма ждёт тебя...',
         'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
@@ -144,6 +145,7 @@ var translations = {
         'mins': 'min',
         'back-home': '← Inicio',
         'steam-title': '🔵 Steam',
+        'desc-alanwake': 'La oscuridad te espera...',
         'steam-desc': 'Los mejores juegos gratis para siempre'
     },
     en: {
@@ -217,6 +219,7 @@ var translations = {
         'giveaway-empty': 'No completed giveaways yet.',
         'giveaway-archive-title': '📦 Giveaway Archive', 
         'giveaway-loading': 'Loading...',
+        'desc-alanwake': 'The darkness awaits you...',
         'steam-desc': 'Best free games forever'
     }
 };
