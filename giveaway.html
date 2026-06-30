@@ -761,21 +761,24 @@ function launchMinesGame(gameId) {
     document.getElementById('langDropdownBtnMob').onclick = function(e) { e.stopPropagation(); document.getElementById('langDropdownContentMob').classList.toggle('open'); };
     document.addEventListener('click', function() { document.getElementById('langDropdownContentMob').classList.remove('open'); });
     document.querySelectorAll('.lang-option').forEach(function(opt) {
-        opt.onclick = function(e) { 
-            e.preventDefault(); 
-            var l = this.dataset.lang; 
-            document.getElementById('currentLangText').textContent = l.toUpperCase(); 
-            document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); 
-            localStorage.setItem('lang', l); 
-            location.reload(); 
-        };
-    });
-    var sl = localStorage.getItem('lang') || 'ru';
-    document.getElementById('currentLangText').textContent = sl.toUpperCase();
-    document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+    opt.onclick = function(e) { 
+        e.preventDefault(); 
+        var l = this.dataset.lang; 
+        document.getElementById('currentLangText').textContent = l.toUpperCase(); 
+        document.getElementById('currentLangTextMob').textContent = l.toUpperCase(); 
+        localStorage.setItem('lang', l); 
+        if (typeof switchLanguage === 'function') switchLanguage(l);
+        document.getElementById('langDropdownContent').classList.remove('open');
+        document.getElementById('langDropdownContentMob').classList.remove('open');
+    };
+});
 
-    if (typeof switchLanguage === 'function') switchLanguage(sl);
-    loadGiveaways();
+var sl = localStorage.getItem('lang') || 'ru';
+document.getElementById('currentLangText').textContent = sl.toUpperCase();
+document.getElementById('currentLangTextMob').textContent = sl.toUpperCase();
+
+if (typeof switchLanguage === 'function') switchLanguage(sl);
+loadGiveaways();
 
     // Всегда открываем "Текущий" при загрузке, архив не восстанавливаем
     document.getElementById('currentGiveaway').style.display = 'block';
