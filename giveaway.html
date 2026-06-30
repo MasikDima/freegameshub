@@ -421,7 +421,7 @@ function launchMinesGame(gameId) {
             cell.onclick = function() { clickCell(parseInt(this.dataset.row), parseInt(this.dataset.col)); };
             
             column.appendChild(cell);
-            allCells[c].push(cell);
+            allCells[c].unshift(cell); // добавляем в начало чтобы индексы совпадали
         }
         columns.push(column);
         gridDiv.appendChild(column);
