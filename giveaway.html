@@ -373,93 +373,108 @@ function launchMinesGame(gameId) {
     
     var scoreDiv = document.createElement('div');
     scoreDiv.style.cssText = 'color:#f5c518;font-size:24px;font-weight:900;margin-bottom:20px;';
-    scoreDiv.textContent = 'Пройди 3 поля без мин!';
+    scoreDiv.textContent = 'Ряд: 1 из 8';
     
     var gridDiv = document.createElement('div');
-    gridDiv.style.cssText = 'display:grid;grid-template-columns:repeat(3,60px);gap:4px;margin-bottom:20px;';
+    gridDiv.style.cssText = 'display:flex;gap:30px;margin-bottom:20px;';
     
     var messageDiv = document.createElement('div');
     messageDiv.style.cssText = 'color:white;font-size:18px;margin-bottom:20px;min-height:30px;';
-    messageDiv.textContent = 'Выбери ячейку в каждом столбике 🚩';
+    messageDiv.textContent = 'Выбери безопасную ячейку 🚩';
     
     var rows = 8;
     var cols = 3;
-    var mines = []; // позиции мин: [{row, col}, {row, col}, {row, col}]
-    var revealed = []; // какие ячейки открыты
-    var clearedCols = 0;
+    var currentRow = 0;
     var gameActive = true;
+    var allMines = []; // массив позиций мин для каждого ряда
+    var allCells = []; // все ячейки [ряд][колонка]
     
-    // Расставляем мины (по одной в каждом столбике)
-    for (var c = 0; c < cols; c++) {
-        mines.push({ row: Math.floor(Math.random() * rows), col: c });
+    // Генерируем мины для каждого ряда
+    for (var r = 0; r < rows; r++) {
+        allMines.push(Math.floor(Math.random() * cols));
     }
     
-    // Создаём сетку
-    var cells = [];
-    for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
+    // Создаём 3 столбика
+    var columns = [];
+    for (var c = 0; c < cols; c++) {
+        var column = document.createElement('div');
+        column.style.cssText = 'display:flex;flex-direction:column;gap:4px;';
+        allCells[c] = [];
+        
+        for (var r = 0; r < rows; r++) {
             var cell = document.createElement('div');
-            cell.style.cssText = 'width:60px;height:40px;background:#1a1a3e;border:1px solid #333;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:4px;transition:all 0.2s;';
+            cell.style.cssText = 'width:70px;height:45px;background:#1a1a3e;border:2px solid #333;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:6px;transition:all 0.2s;';
             cell.textContent = '?';
             cell.dataset.row = r;
             cell.dataset.col = c;
-            cell.onmouseenter = function() { if (gameActive && !revealed[this.dataset.row+'-'+this.dataset.col]) this.style.background = '#2a2a5e'; };
-            cell.onmouseleave = function() { if (gameActive && !revealed[this.dataset.row+'-'+this.dataset.col]) this.style.background = '#1a1a3e'; };
-            cell.onclick = function() { clickCell(parseInt(this.dataset.row), parseInt(this.dataset.col), this); };
-            gridDiv.appendChild(cell);
-            cells.push(cell);
+            
+            cell.onmouseenter = function() {
+                if (!gameActive) return;
+                var row = parseInt(this.dataset.row);
+                if (row === currentRow) this.style.background = '#2a2a5e';
+            };
+            cell.onmouseleave = function() {
+                if (!gameActive) return;
+                var row = parseInt(this.dataset.row);
+                if (row === currentRow && this.textContent === '?') this.style.background = '#1a1a3e';
+            };
+            cell.onclick = function() { clickCell(parseInt(this.dataset.row), parseInt(this.dataset.col)); };
+            
+            column.appendChild(cell);
+            allCells[c].push(cell);
         }
+        columns.push(column);
+        gridDiv.appendChild(column);
     }
     
-    function clickCell(row, col, el) {
-        if (!gameActive || revealed[row+'-'+col]) return;
-        revealed[row+'-'+col] = true;
+    function clickCell(row, col) {
+        if (!gameActive) return;
+        if (row !== currentRow) {
+            messageDiv.textContent = 'Начни с ряда ' + (currentRow + 1) + '! ⬆️';
+            return;
+        }
         
-        // Проверяем мина ли
-        var isMine = mines.some(function(m) { return m.row === row && m.col === col; });
+        var mineCol = allMines[row];
         
-        if (isMine) {
-            el.style.background = '#e94560';
-            el.textContent = '💣';
+        if (col === mineCol) {
+            // Нажал на мину — проиграл
+            allCells[col][row].style.background = '#e94560';
+            allCells[col][row].textContent = '💣';
             messageDiv.style.color = '#e94560';
             messageDiv.textContent = '💥 Мина! Ты проиграл!';
             
             // Показываем все мины
-            mines.forEach(function(m) {
-                cells[m.row * cols + m.col].style.background = '#e94560';
-                cells[m.row * cols + m.col].textContent = '💣';
-            });
-            
+            showAllMines();
             endGame(false);
         } else {
-            el.style.background = '#4ecca3';
-            el.textContent = '✅';
+            // Правильный выбор
+            allCells[col][row].style.background = '#4ecca3';
+            allCells[col][row].textContent = '✅';
             
-            // Считаем открытые столбики
-            var colsCleared = 0;
-            for (var c = 0; c < cols; c++) {
-                var hasMineFound = false;
-                for (var r = 0; r < rows; r++) {
-                    if (revealed[r+'-'+c] && mines.some(function(m) { return m.row === r && m.col === c; })) {
-                        hasMineFound = true;
-                        break;
-                    }
-                }
-                if (!hasMineFound) {
-                    var colHasOpen = false;
-                    for (var r = 0; r < rows; r++) {
-                        if (revealed[r+'-'+c]) { colHasOpen = true; break; }
-                    }
-                    if (colHasOpen) colsCleared++;
-                }
-            }
+            // Показываем где была мина в этом ряду
+            allCells[mineCol][row].style.background = '#e94560';
+            allCells[mineCol][row].textContent = '💣';
             
-            if (colsCleared >= cols) {
+            currentRow++;
+            
+            if (currentRow >= rows) {
                 messageDiv.style.color = '#4ecca3';
-                messageDiv.textContent = '🎉 Все поля пройдены!';
+                messageDiv.textContent = '🎉 Все 8 рядов пройдены!';
                 endGame(true);
             } else {
-                messageDiv.textContent = 'Открыто столбиков: ' + colsCleared + ' из ' + cols;
+                scoreDiv.textContent = 'Ряд: ' + (currentRow + 1) + ' из 8';
+                messageDiv.style.color = '#4ecca3';
+                messageDiv.textContent = '✅ Правильно! Мина была в столбике ' + (mineCol + 1) + '. Идём дальше!';
+            }
+        }
+    }
+    
+    function showAllMines() {
+        for (var r = 0; r < rows; r++) {
+            var mineCol = allMines[r];
+            if (allCells[mineCol][r].textContent === '?') {
+                allCells[mineCol][r].style.background = '#e94560';
+                allCells[mineCol][r].textContent = '💣';
             }
         }
     }
@@ -488,7 +503,7 @@ function launchMinesGame(gameId) {
     
     var closeBtn = document.createElement('button');
     closeBtn.textContent = '✕ Закрыть';
-    closeBtn.style.cssText = 'margin-top:10px;padding:10px 20px;background:#e94560;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;';
+    closeBtn.style.cssText = 'margin-top:15px;padding:10px 20px;background:#e94560;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;';
     closeBtn.onclick = function() { gameActive = false; closeModal(); };
     
     function closeModal() { document.body.removeChild(modal); }
@@ -498,7 +513,7 @@ function launchMinesGame(gameId) {
     modal.appendChild(gridDiv);
     modal.appendChild(closeBtn);
     document.body.appendChild(modal);
-}
+}}
     function resetAllGiveaways() {
         var p = prompt('Введите пароль:'); if (p !== '10031995') return;
         if (confirm('Точно сбросить ВСЕ розыгрыши?')) {
