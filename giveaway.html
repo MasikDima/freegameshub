@@ -368,7 +368,7 @@ function chooseGame(gameId) {
         canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
         requestAnimationFrame(loop);
     }
-        // Игра "Напёрстки"
+        // Игра "Напёрстки" с анимацией
 function launchCupGame(gameId) {
     var modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
@@ -378,20 +378,24 @@ function launchCupGame(gameId) {
     scoreDiv.textContent = 'Угадано: 0 из 3';
     
     var cupsDiv = document.createElement('div');
-    cupsDiv.style.cssText = 'display:flex;gap:40px;margin-bottom:20px;';
+    cupsDiv.style.cssText = 'display:flex;gap:50px;margin-bottom:20px;position:relative;';
     
     var messageDiv = document.createElement('div');
-    messageDiv.style.cssText = 'color:white;font-size:18px;margin-bottom:20px;min-height:30px;';
-    messageDiv.textContent = 'Где шарик? 🎱';
+    messageDiv.style.cssText = 'color:white;font-size:18px;margin-bottom:20px;min-height:30px;text-align:center;';
+    messageDiv.textContent = 'Внимание! Шарик кладётся под стаканчик...';
     
     var cups = [];
+    var ballPosition = 0;
+    var roundsNeeded = 3;
+    var correctGuesses = 0;
+    var gameActive = true;
+    
+    // Создаём 3 стаканчика
     for (var i = 0; i < 3; i++) {
         var cup = document.createElement('div');
-        cup.style.cssText = 'width:100px;height:120px;background:linear-gradient(135deg,#e94560,#ff0080);border-radius:15px 15px 10px 10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:white;font-weight:700;transition:all 0.3s;border:3px solid rgba(255,255,255,0.3);';
-        cup.textContent = '🎲';
+        cup.style.cssText = 'width:110px;height:130px;background:linear-gradient(180deg,#e94560 0%,#b01330 100%);border-radius:20px 20px 15px 15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:50px;color:white;font-weight:700;transition:transform 0.5s;border:3px solid rgba(255,255,255,0.3);position:relative;';
+        cup.textContent = '🥤';
         cup.dataset.index = i;
-        cup.onmouseenter = function() { this.style.transform = 'translateY(-15px)'; this.style.boxShadow = '0 10px 30px rgba(255,0,128,0.5)'; };
-        cup.onmouseleave = function() { this.style.transform = 'translateY(0)'; this.style.boxShadow = 'none'; };
         cup.onclick = function() { checkCup(parseInt(this.dataset.index)); };
         cupsDiv.appendChild(cup);
         cups.push(cup);
@@ -407,57 +411,92 @@ function launchCupGame(gameId) {
     modal.appendChild(closeBtn);
     document.body.appendChild(modal);
     
-    var ballPosition = Math.floor(Math.random() * 3);
-    var roundsNeeded = 3;
-    var correctGuesses = 0;
-    var gameActive = true;
-    
-    function shuffleCups() {
-        if (!gameActive) return;
-        cups.forEach(function(c) { c.style.transform = 'translateY(0)'; c.style.boxShadow = 'none'; });
+    function showBall() {
+        // Показываем шарик под стаканчиком
+        cups[ballPosition].textContent = '🥤';
+        cups[ballPosition].style.transform = 'translateY(-30px)';
         
-        var shuffleCount = 8;
-        var count = 0;
+        setTimeout(function() {
+            // Показываем шарик
+            cups[ballPosition].textContent = '🎱';
+            messageDiv.textContent = 'Шарик здесь! Запоминай... 👀';
+            
+            setTimeout(function() {
+                // Опускаем стаканчик
+                cups[ballPosition].style.transform = 'translateY(0)';
+                cups[ballPosition].textContent = '🥤';
+                setTimeout(startShuffle, 500);
+            }, 1200);
+        }, 500);
+    }
+    
+    function startShuffle() {
         messageDiv.textContent = 'Перемешиваю... 🔄';
+        
+        var shuffleCount = 12;
+        var count = 0;
+        var speed = 200;
         
         var shuffleInterval = setInterval(function() {
             if (count >= shuffleCount || !gameActive) {
                 clearInterval(shuffleInterval);
-                messageDiv.textContent = 'Где шарик? 🎱';
+                // Выравниваем все стаканы
+                cups.forEach(function(c, idx) { 
+                    c.style.transform = 'translateY(0) translateX(0px)'; 
+                });
+                messageDiv.textContent = 'Где шарик? Выбирай! 🤔';
                 return;
             }
             
+            // Меняем два случайных стакана
             var i1 = Math.floor(Math.random() * 3);
             var i2 = Math.floor(Math.random() * 3);
+            while (i1 === i2) i2 = Math.floor(Math.random() * 3);
             
-            var tempX = cups[i1].style.transform || '';
-            cups[i1].style.transform = cups[i2].style.transform || 'translateX(30px)';
-            cups[i2].style.transform = tempX || 'translateX(-30px)';
+            var offset1 = (i1 - i2) * 60;
+            var offset2 = (i2 - i1) * 60;
             
+            cups[i1].style.transition = 'transform 0.3s ease-in-out';
+            cups[i2].style.transition = 'transform 0.3s ease-in-out';
+            cups[i1].style.transform = 'translateY(-10px) translateX(' + offset1 + 'px)';
+            cups[i2].style.transform = 'translateY(-10px) translateX(' + offset2 + 'px)';
+            
+            // Обновляем позицию шарика
             if (i1 === ballPosition) ballPosition = i2;
             else if (i2 === ballPosition) ballPosition = i1;
             
+            // Меняем местами в DOM
             setTimeout(function() {
-                cups[i1].style.transform = 'translateY(0)';
-                cups[i2].style.transform = 'translateY(0)';
-            }, 100);
+                cups[i1].style.transform = 'translateY(0) translateX(0px)';
+                cups[i2].style.transform = 'translateY(0) translateX(0px)';
+            }, 250);
             
             count++;
-        }, 250);
+            if (count > 8) speed = 150;
+        }, speed);
     }
     
     function checkCup(index) {
         if (!gameActive) return;
+        gameActive = false;
+        
+        // Поднимаем все стаканчики
+        cups.forEach(function(c, i) {
+            c.style.transform = 'translateY(-40px)';
+            if (i === ballPosition) {
+                c.textContent = '🎱';
+                c.style.borderColor = '#4ecca3';
+                c.style.boxShadow = '0 0 30px rgba(78,204,163,0.6)';
+            } else {
+                c.textContent = '❌';
+                c.style.borderColor = '#e94560';
+            }
+        });
         
         if (index === ballPosition) {
             correctGuesses++;
-            cups[index].style.borderColor = '#4ecca3';
-            cups[index].style.boxShadow = '0 0 20px rgba(78,204,163,0.5)';
             messageDiv.style.color = '#4ecca3';
             messageDiv.textContent = '✅ Правильно! Шарик здесь!';
-            
-            // Показываем шарик
-            cups[index].textContent = '🎱';
             
             if (correctGuesses >= roundsNeeded) {
                 endGame(true);
@@ -465,18 +504,11 @@ function launchCupGame(gameId) {
             }
             
             scoreDiv.textContent = 'Угадано: ' + correctGuesses + ' из ' + roundsNeeded;
-            setTimeout(newRound, 1200);
+            
+            setTimeout(newRound, 2000);
         } else {
-            cups[index].style.borderColor = '#e94560';
-            cups[index].style.boxShadow = '0 0 20px rgba(233,69,96,0.5)';
             messageDiv.style.color = '#e94560';
-            messageDiv.textContent = '❌ Мимо! Шарик был здесь 👇';
-            
-            // Показываем где шарик
-            cups[ballPosition].textContent = '🎱';
-            cups[ballPosition].style.borderColor = '#4ecca3';
-            cups[ballPosition].style.boxShadow = '0 0 20px rgba(78,204,163,0.5)';
-            
+            messageDiv.textContent = '❌ Мимо! Вот где был шарик!';
             endGame(false);
         }
     }
@@ -484,18 +516,19 @@ function launchCupGame(gameId) {
     function newRound() {
         ballPosition = Math.floor(Math.random() * 3);
         cups.forEach(function(c) { 
+            c.style.transform = 'translateY(0)'; 
             c.style.borderColor = 'rgba(255,255,255,0.3)'; 
-            c.style.boxShadow = 'none'; 
-            c.textContent = '🎲';
-            c.style.transform = 'translateY(0)';
+            c.style.boxShadow = 'none';
+            c.textContent = '🥤';
         });
+        gameActive = true;
         messageDiv.style.color = 'white';
-        messageDiv.textContent = 'Где шарик? 🎱';
-        shuffleCups();
+        messageDiv.textContent = 'Внимание! Новый раунд...';
+        
+        setTimeout(showBall, 800);
     }
     
     function endGame(won) {
-        gameActive = false;
         if (won) {
             scoreDiv.textContent = '🎉 Вы участвуете!';
             var username = prompt('✅ Угадал все 3 раза! Введи Telegram @username:');
@@ -511,16 +544,18 @@ function launchCupGame(gameId) {
                 });
             } else { closeModal(); }
         } else {
-            alert('Не угадал! Попробуй ещё раз.');
-            closeModal();
+            setTimeout(function() {
+                alert('Не угадал! Попробуй ещё раз.');
+                closeModal();
+            }, 1500);
         }
     }
     
     function closeModal() { document.body.removeChild(modal); }
     closeBtn.onclick = function() { gameActive = false; closeModal(); };
     
-    // Запускаем
-    shuffleCups();
+    // Запускаем первый раунд
+    setTimeout(showBall, 500);
 }
     // Игра "Минное поле"
 function launchMinesGame(gameId) {
