@@ -277,12 +277,14 @@ snapshot.forEach(function(doc) {
 }
 
 function chooseGame(gameId) {
-    var games = ['flappy', 'mines'];
+    var games = ['flappy', 'mines', 'cups'];
     var randomGame = games[Math.floor(Math.random() * games.length)];
     if (randomGame === 'flappy') {
         launchGame(gameId);
-    } else {
+    } else if (randomGame === 'mines') {
         launchMinesGame(gameId);
+    } else if (randomGame === 'cups') {
+        launchCupGame(gameId);
     }
 }
 
