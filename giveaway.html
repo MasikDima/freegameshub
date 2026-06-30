@@ -257,14 +257,34 @@ snapshot.forEach(function(doc) {
     }
 
     function startGame(gameId) {
-        if (localStorage.getItem('played_' + gameId)) { alert('⚠️ Ты уже участвовал!'); var btn = document.getElementById('btn-' + gameId); if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } return; }
-        if (userIP && userIP !== 'unknown') {
-            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ Ты уже участвовал!'); var btn = document.getElementById('btn-' + gameId); if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } return; }
-                launchGame(gameId);
-            });
-        } else { launchGame(gameId); }
+    if (localStorage.getItem('played_' + gameId)) { 
+        alert('⚠️ Ты уже участвовал!'); 
+        var btn = document.getElementById('btn-' + gameId); 
+        if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+        return; 
     }
+    if (userIP && userIP !== 'unknown') {
+        db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+            if (!s.empty) { 
+                alert('⚠️ Ты уже участвовал!'); 
+                var btn = document.getElementById('btn-' + gameId); 
+                if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+                return; 
+            }
+            chooseGame(gameId);
+        });
+    } else { chooseGame(gameId); }
+}
+
+function chooseGame(gameId) {
+    var games = ['flappy', 'mines'];
+    var randomGame = games[Math.floor(Math.random() * games.length)];
+    if (randomGame === 'flappy') {
+        launchGame(gameId);
+    } else {
+        launchMinesGame(gameId);
+    }
+}
 
     function launchGame(gameId) {
         var score = 0;
