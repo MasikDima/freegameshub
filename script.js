@@ -72,6 +72,9 @@ var translations = {
         'back-home': 'На главную',
         'steam-title': '🔵 Steam',
         'desc-alanwake': 'Тьма ждёт тебя...',
+        'flappy-desc': 'Набери 20 очков!',
+'mines-desc': 'Пройди 8 рядов без мин!',
+'cups-desc': 'Угадай где шарик 3 раза!',
         'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
@@ -146,6 +149,9 @@ var translations = {
         'back-home': '← Inicio',
         'steam-title': '🔵 Steam',
         'desc-alanwake': 'La oscuridad te espera...',
+        'flappy-desc': 'Score 20 points!',
+'mines-desc': 'Clear 8 rows without mines!',
+'cups-desc': 'Guess where the ball is 3 times!',
         'steam-desc': 'Los mejores juegos gratis para siempre'
     },
     en: {
@@ -220,6 +226,9 @@ var translations = {
         'giveaway-archive-title': '📦 Giveaway Archive', 
         'giveaway-loading': 'Loading...',
         'desc-alanwake': 'The darkness awaits you...',
+        'flappy-desc': 'Score 20 points!',
+'mines-desc': 'Clear 8 rows without mines!',
+'cups-desc': 'Guess where the ball is 3 times!',
         'steam-desc': 'Best free games forever'
     }
 };
