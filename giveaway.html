@@ -431,50 +431,82 @@ function launchCupGame(gameId) {
     }
     
     function startShuffle() {
-        messageDiv.textContent = 'Перемешиваю... 🔄';
+    messageDiv.textContent = 'Перемешиваю... 🔄';
+    
+    var shuffleCount = 8;
+    var count = 0;
+    
+    function doShuffle() {
+        if (count >= shuffleCount || !gameActive) {
+            // Выравниваем все стаканы
+            cups.forEach(function(c) { 
+                c.style.transition = 'all 0.3s ease';
+                c.style.transform = 'translateY(0)'; 
+                c.style.order = '0';
+            });
+            messageDiv.textContent = 'Где шарик? Выбирай! 🤔';
+            return;
+        }
         
-        var shuffleCount = 12;
-        var count = 0;
-        var speed = 200;
+        // Выбираем два случайных стакана для обмена
+        var i1 = Math.floor(Math.random() * 3);
+        var i2 = Math.floor(Math.random() * 3);
+        while (i1 === i2) i2 = Math.floor(Math.random() * 3);
         
-        var shuffleInterval = setInterval(function() {
-            if (count >= shuffleCount || !gameActive) {
-                clearInterval(shuffleInterval);
-                // Выравниваем все стаканы
-                cups.forEach(function(c, idx) { 
-                    c.style.transform = 'translateY(0) translateX(0px)'; 
-                });
-                messageDiv.textContent = 'Где шарик? Выбирай! 🤔';
-                return;
+        // Плавно поднимаем оба стакана
+        cups[i1].style.transition = 'all 0.3s ease';
+        cups[i2].style.transition = 'all 0.3s ease';
+        cups[i1].style.transform = 'translateY(-30px)';
+        cups[i2].style.transform = 'translateY(-30px)';
+        
+        setTimeout(function() {
+            // Меняем местами в DOM
+            var parent = cupsDiv;
+            var cup1 = cups[i1];
+            var cup2 = cups[i2];
+            
+            // Сохраняем ссылки
+            var next1 = cup1.nextSibling;
+            var next2 = cup2.nextSibling;
+            
+            // Меняем местами
+            if (next1 === cup2) {
+                parent.insertBefore(cup2, cup1);
+            } else if (next2 === cup1) {
+                parent.insertBefore(cup1, cup2);
+            } else {
+                parent.insertBefore(cup1, next2);
+                parent.insertBefore(cup2, next1);
             }
             
-            // Меняем два случайных стакана
-            var i1 = Math.floor(Math.random() * 3);
-            var i2 = Math.floor(Math.random() * 3);
-            while (i1 === i2) i2 = Math.floor(Math.random() * 3);
-            
-            var offset1 = (i1 - i2) * 60;
-            var offset2 = (i2 - i1) * 60;
-            
-            cups[i1].style.transition = 'transform 0.3s ease-in-out';
-            cups[i2].style.transition = 'transform 0.3s ease-in-out';
-            cups[i1].style.transform = 'translateY(-10px) translateX(' + offset1 + 'px)';
-            cups[i2].style.transform = 'translateY(-10px) translateX(' + offset2 + 'px)';
-            
             // Обновляем позицию шарика
+            var tempBall = ballPosition;
             if (i1 === ballPosition) ballPosition = i2;
             else if (i2 === ballPosition) ballPosition = i1;
             
-            // Меняем местами в DOM
-            setTimeout(function() {
-                cups[i1].style.transform = 'translateY(0) translateX(0px)';
-                cups[i2].style.transform = 'translateY(0) translateX(0px)';
-            }, 250);
+            // Меняем индексы
+            var tempIdx = cups[i1].dataset.index;
+            cups[i1].dataset.index = cups[i2].dataset.index;
+            cups[i2].dataset.index = tempIdx;
             
-            count++;
-            if (count > 8) speed = 150;
-        }, speed);
+            // Обновляем массив cups
+            var tempCup = cups[i1];
+            cups[i1] = cups[i2];
+            cups[i2] = tempCup;
+            
+            // Опускаем стаканы на место
+            setTimeout(function() {
+                cups[i1].style.transform = 'translateY(0)';
+                cups[i2].style.transform = 'translateY(0)';
+                
+                count++;
+                setTimeout(doShuffle, 400);
+            }, 150);
+        }, 300);
     }
+    
+    doShuffle();
+}
     
     function checkCup(index) {
         if (!gameActive) return;
