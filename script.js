@@ -475,7 +475,7 @@ function renderGames(filter) {
     var n = new Date(), finished = [], still = [];
     games.forEach(function(g) {
         if (g.status === 'active' && g.endDate) {
-            if (new Date(g.endDate) <= n && new Date(g.endDate).getFullYear() < 2099) finished.push(g);
+            if (new Date(g.endDate) <= n && new Date(g.endDate).getFullYear() < 2099 && g.store !== 'PlayStation' && g.store !== 'Xbox') finished.push(g);
             else still.push(g);
         } else still.push(g);
     });
