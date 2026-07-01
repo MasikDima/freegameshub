@@ -393,6 +393,12 @@ function switchLanguage(lang) {
     document.querySelectorAll('.lang-option').forEach(function(o) { o.classList.toggle('active', o.dataset.lang === lang); });
     renderGames(currentFilter);
     localStorage.setItem('lang', lang);
+    // Обновляем кнопки Играть на странице розыгрышей
+document.querySelectorAll('.btn-play[data-key="giveaway-play"]').forEach(function(btn) {
+    if (btn.textContent.indexOf('✅') === -1) {
+        btn.textContent = t('giveaway-play');
+    }
+});
 }
 
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
