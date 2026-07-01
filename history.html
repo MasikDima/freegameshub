@@ -181,7 +181,8 @@
         document.querySelectorAll('.lang-option').forEach(function(opt) {
             opt.classList.toggle('active', opt.dataset.lang === savedLang);
         });
-        renderHistory(savedLang);
+        var savedLang = localStorage.getItem('lang') || 'ru';
+switchLang(savedLang);
     </script>
 </body>
 </html>
