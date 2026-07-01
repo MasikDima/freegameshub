@@ -176,13 +176,12 @@
         });
 
         var savedLang = localStorage.getItem('lang') || 'ru';
-        document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
-        document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
-        document.querySelectorAll('.lang-option').forEach(function(opt) {
-            opt.classList.toggle('active', opt.dataset.lang === savedLang);
-        });
-        var savedLang = localStorage.getItem('lang') || 'ru';
+document.getElementById('currentLangText').textContent = savedLang.toUpperCase();
+document.getElementById('currentLangTextMob').textContent = savedLang.toUpperCase();
+document.querySelectorAll('.lang-option').forEach(function(opt) {
+    opt.classList.toggle('active', opt.dataset.lang === savedLang);
+});
 switchLang(savedLang);
-    </script>
+</script>
 </body>
 </html>
