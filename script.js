@@ -336,6 +336,12 @@ var translations = {
 'giveaway-already': '⚠️ You already played!',
 'giveaway-username': '⚠️ This @username already entered!',
 'giveaway-success': '✅ You are entered!',
+        'nav-home': '🏠 Home',
+'nav-epic': '🎁 Epic Games',
+'nav-steam': '🔵 Steam',
+'nav-ps': '🎮 PlayStation',
+'nav-xbox': '🟢 Xbox',
+'nav-giveaway': '🏆 Giveaway',
 'cups-desc': 'Guess where the ball is 3 times!',
         'steam-desc': 'Best free games forever'
     }
