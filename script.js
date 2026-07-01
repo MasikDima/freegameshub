@@ -107,6 +107,12 @@ var translations = {
 'giveaway-already': '⚠️ Ты уже участвовал!',
 'giveaway-username': '⚠️ Этот @username уже участвует!',
 'giveaway-success': '✅ Ты участвуешь!',
+        'nav-home': '🏠 Главная',
+'nav-epic': '🎁 Epic Games',
+'nav-steam': '🔵 Steam',
+'nav-ps': '🎮 PlayStation',
+'nav-xbox': '🟢 Xbox',
+'nav-giveaway': '🏆 Розыгрыш',
         'steam-desc': 'Лучшие бесплатные игры навсегда'
     },
     es: {
@@ -215,6 +221,12 @@ var translations = {
 'flappy-try-again': 'Intenta de nuevo.',
 'giveaway-already': '⚠️ ¡Ya participaste!',
 'giveaway-username': '⚠️ ¡Este @username ya participa!',
+        'nav-home': '🏠 Inicio',
+'nav-epic': '🎁 Epic Games',
+'nav-steam': '🔵 Steam',
+'nav-ps': '🎮 PlayStation',
+'nav-xbox': '🟢 Xbox',
+'nav-giveaway': '🏆 Sorteo',
 'giveaway-success': '✅ ¡Estás participando!',
         'steam-desc': 'Los mejores juegos gratis para siempre'
     },
