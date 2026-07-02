@@ -364,9 +364,17 @@ function chooseGame(gameId) {
                 });
             });
         } else { closeModal(); }
-    } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
-}
-        // Игра "Напёрстки" с анимацией
+                } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
+        }
+        function closeModal() { document.body.removeChild(modal); }
+        closeBtn.onclick = function() { gameRunning = false; closeModal(); };
+        document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
+        canvas.addEventListener('click', jump);
+        canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
+        requestAnimationFrame(loop);
+    }
+
+    // Игра "Напёрстки" с анимацией
 function launchCupGame(gameId) {
     var modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
