@@ -561,27 +561,42 @@ function launchCupGame(gameId) {
     }
     
     function endGame(won) {
-        if (won) {
-            scoreDiv.textContent = '🎉 Вы участвуете!';
-            var username = prompt('✅ Угадал все 3 раза! Введи Telegram @username:');
-            if (username) {
-                db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
-                    if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
-                    db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
-                        localStorage.setItem('played_' + gameId, 'true');
-                        scoreDiv.textContent = '✅ Ты участвуешь!';
-                        loadGameData(gameId);
-                        setTimeout(closeModal, 1500);
-                    });
-                });
-            } else { closeModal(); }
-        } else {
-            setTimeout(function() {
-                alert('Не угадал! Попробуй ещё раз.');
+    if (won) {
+        scoreDiv.textContent = '🎉 Вы участвуете!';
+        var username = prompt('✅ Угадал все 3 раза! Введи Telegram @username:');
+        if (username) {
+            // Проверка IP
+            if (userIP === 'unknown' || !userIP) {
+                alert('⚠️ Ошибка проверки. Попробуй через браузер.');
                 closeModal();
-            }, 1500);
-        }
+                return;
+            }
+            
+            db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
+                if (!s.empty) { 
+                    alert('⚠️ Этот @username уже участвует!'); 
+                    closeModal(); 
+                    return; 
+                }
+                db.collection('giveaway_' + gameId).add({ 
+                    username: username, 
+                    ip: userIP, 
+                    date: firebase.firestore.FieldValue.serverTimestamp() 
+                }).then(function() {
+                    localStorage.setItem('played_' + gameId, 'true');
+                    scoreDiv.textContent = '✅ Ты участвуешь!';
+                    loadGameData(gameId);
+                    setTimeout(closeModal, 1500);
+                });
+            });
+        } else { closeModal(); }
+    } else {
+        setTimeout(function() {
+            alert('Не угадал! Попробуй ещё раз.');
+            closeModal();
+        }, 1500);
     }
+}
     
     function closeModal() { document.body.removeChild(modal); }
     closeBtn.onclick = function() { gameActive = false; closeModal(); };
