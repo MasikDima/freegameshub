@@ -209,7 +209,172 @@ snapshot.forEach(function(doc) {
             }
         });
     }
+    function loadGameData(gameId) {
+        var countEl = document.getElementById('count-' + gameId);
+        if (!countEl) return;
+        var btnEl = document.getElementById('btn-' + gameId);
+        if (btnEl && localStorage.getItem('played_' + gameId)) {
+            btnEl.style.background = '#444';
+            btnEl.textContent = '✅ ' + t('giveaway-entered');
+        }
+        db.collection('giveaway_' + gameId).get().then(function(s) {
+            countEl.textContent = t('giveaway-count') + ': ' + s.size;
+            var game = giveawayGames.find(function(g) { return g.id === gameId; });
+            var limit = game.maxPlayers || 100;
+            if (s.size >= limit) checkWinner(gameId, s);
+        });
+        db.collection('winner_' + gameId).get().then(function(s) {
+            if (!s.empty) {
+                s.forEach(function(d) {
+                    var winnerEl = document.getElementById('winner-' + gameId);
+                    var btnWinner = document.getElementById('btn-' + gameId);
+                    if (winnerEl) { winnerEl.style.display = 'block'; winnerEl.textContent = '🏆 Победитель: ' + d.data().masked; }
+                    if (btnWinner) { btnWinner.disabled = true; btnWinner.textContent = 'Розыгрыш завершён'; btnWinner.style.background = '#666'; }
+                });
+            }
+        });
+    }
 
+    function checkWinner(gameId, snapshot) {
+        var game = giveawayGames.find(function(g) { return g.id === gameId; });
+        var limit = game.maxPlayers || 100;
+        if (snapshot.size < limit) return;
+        db.collection('winner_' + gameId).get().then(function(w) {
+            if (!w.empty) return;
+            var entries = [];
+            snapshot.forEach(function(d) { entries.push(d.data().username); });
+            var randomArray = new Uint32Array(1);
+            window.crypto.getRandomValues(randomArray);
+            var winner = entries[randomArray[0] % entries.length];
+            var masked = winner.substring(0,2) + '***' + winner.substring(winner.length-2);
+            db.collection('winner_' + gameId).add({ username: winner, masked: masked });
+            document.getElementById('winner-' + gameId).style.display = 'block';
+            document.getElementById('winner-' + gameId).textContent = '🏆 Победитель: ' + masked;
+            document.getElementById('btn-' + gameId).disabled = true;
+            document.getElementById('btn-' + gameId).textContent = 'Розыгрыш завершён';
+        });
+    }
+
+    function startGame(gameId) {
+        if (localStorage.getItem('played_' + gameId)) { 
+            alert('⚠️ Ты уже участвовал!'); 
+            var btn = document.getElementById('btn-' + gameId); 
+            if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+            return; 
+        }
+        if (userIP && userIP !== 'unknown' && userIP !== '') {
+            db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
+                if (!s.empty) { 
+                    alert('⚠️ Ты уже участвовал!'); 
+                    var btn = document.getElementById('btn-' + gameId); 
+                    if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
+                    return; 
+                }
+                chooseGame(gameId);
+            });
+        } else { chooseGame(gameId); }
+    }
+
+    function chooseGame(gameId) {
+        var games = ['flappy', 'mines', 'cups'];
+        var randomGame = games[Math.floor(Math.random() * games.length)];
+        if (randomGame === 'flappy') {
+            launchGame(gameId);
+        } else if (randomGame === 'mines') {
+            launchMinesGame(gameId);
+        } else if (randomGame === 'cups') {
+            launchCupGame(gameId);
+        }
+    }
+
+    function launchGame(gameId) {
+        var score = 0;
+        var canvas = document.createElement('canvas');
+        canvas.width = 400; canvas.height = 500;
+        canvas.style.cssText = 'display:block;margin:20px auto;border:2px solid #f5c518;border-radius:10px;background:#0a0a2e;';
+        var modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+        var scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color:#f5c518;font-size:24px;font-weight:900;margin-bottom:10px;';
+        scoreDiv.textContent = 'Счёт: 0';
+        var closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕ Закрыть';
+        closeBtn.style.cssText = 'margin-top:10px;padding:10px 20px;background:#e94560;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;';
+        modal.appendChild(scoreDiv); modal.appendChild(canvas); modal.appendChild(closeBtn);
+        document.body.appendChild(modal);
+
+        var ctx = canvas.getContext('2d');
+        var bird = { x: 80, y: 250, size: 22, velocity: 0 };
+        var pipes = []; var gameRunning = true; var lastTime = 0, pipeTimer = 0;
+        var GRAVITY = 700, JUMP = -250, GAP = 180, SPEED = 150, INTERVAL = 1.8;
+
+        function jump() { if (!gameRunning) return; bird.velocity = JUMP; }
+        function loop(t) {
+            if (!gameRunning) return;
+            if (!lastTime) lastTime = t;
+            var dt = (t - lastTime) / 1000; if (dt > 0.1) dt = 0.1; lastTime = t;
+            ctx.clearRect(0, 0, 400, 500);
+            var g = ctx.createLinearGradient(0, 0, 0, 500); g.addColorStop(0, '#0a0a2e'); g.addColorStop(1, '#050510');
+            ctx.fillStyle = g; ctx.fillRect(0, 0, 400, 500);
+            bird.velocity += GRAVITY * dt; bird.y += bird.velocity * dt;
+            var bx = bird.x, by = bird.y, s = bird.size;
+            ctx.fillStyle = '#e94560'; ctx.fillRect(bx - s, by - s, s * 2, s * 2);
+            ctx.fillStyle = '#ff0080'; ctx.fillRect(bx - s - 3, by - s - 5, s * 2 + 6, 10);
+            ctx.fillStyle = '#f5c518'; ctx.fillRect(bx - 4, by - s, 8, s * 2); ctx.fillRect(bx - s, by - 4, s * 2, 8);
+            ctx.beginPath(); ctx.arc(bx - 8, by - s - 2, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx + 8, by - s - 2, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#ff8c00'; ctx.beginPath(); ctx.arc(bx, by - s - 5, 5, 0, Math.PI * 2); ctx.fill();
+            pipeTimer += dt;
+            if (pipeTimer >= INTERVAL) { pipeTimer = 0; var mH = 30, xH = 500 - GAP - 30; pipes.push({ x: 400, topHeight: Math.random() * (xH - mH) + mH, scored: false }); }
+            for (var i = pipes.length - 1; i >= 0; i--) {
+                var p = pipes[i]; p.x -= SPEED * dt;
+                var pG = ctx.createLinearGradient(p.x, 0, p.x + 50, 0); pG.addColorStop(0, '#2ecc71'); pG.addColorStop(1, '#27ae60');
+                ctx.fillStyle = pG; ctx.fillRect(p.x, 0, 50, p.topHeight);
+                ctx.fillStyle = '#1e8449'; ctx.fillRect(p.x - 3, p.topHeight - 20, 56, 20);
+                var bY = p.topHeight + GAP;
+                ctx.fillStyle = pG; ctx.fillRect(p.x, bY, 50, 500 - bY);
+                ctx.fillStyle = '#1e8449'; ctx.fillRect(p.x - 3, bY, 56, 20);
+                if (!p.scored && p.x + 50 < bird.x) { p.scored = true; score++; scoreDiv.textContent = 'Счёт: ' + score; if (score >= 20) { end(); return; } }
+                var bl = bird.x - s, br = bird.x + s, bt = bird.y - s, bb = bird.y + s;
+                if (br > p.x && bl < p.x + 50) { if (bt < p.topHeight || bb > bY) { end(); return; } }
+                if (p.x < -50) pipes.splice(i, 1);
+            }
+            if (bird.y - s < 0 || bird.y + s > 500) { end(); return; }
+            requestAnimationFrame(loop);
+        }
+        function end() {
+            gameRunning = false;
+            if (score >= 20) {
+                scoreDiv.textContent = '🎉 Вы участвуете!';
+                var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
+                if (username) {
+                    if (userIP === 'unknown' || !userIP) {
+                        alert('⚠️ Ошибка проверки. Попробуй через браузер.');
+                        closeModal();
+                        return;
+                    }
+                    db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
+                        if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
+                        db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+                            localStorage.setItem('played_' + gameId, 'true');
+                            scoreDiv.textContent = '✅ Ты участвуешь!';
+                            loadGameData(gameId);
+                            setTimeout(closeModal, 1500);
+                        });
+                    });
+                } else { closeModal(); }
+            } else { 
+                alert('Нужно 20 очков! Набрано: ' + score); 
+                closeModal(); 
+            }
+        }
+        function closeModal() { document.body.removeChild(modal); }
+        closeBtn.onclick = function() { gameRunning = false; closeModal(); };
+        document.addEventListener('keydown', function(e) { if (e.code === 'Space') { e.preventDefault(); jump(); } });
+        canvas.addEventListener('click', jump);
+        canvas.addEventListener('touchstart', function(e) { e.preventDefault(); jump(); });
+        requestAnimationFrame(loop);
+    }
         // Игра "Напёрстки" с анимацией
 function launchCupGame(gameId) {
     var modal = document.createElement('div');
