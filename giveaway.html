@@ -263,7 +263,7 @@ snapshot.forEach(function(doc) {
         if (btn) { btn.style.background = '#444'; btn.textContent = '✅ Участвуешь'; } 
         return; 
     }
-    if (userIP && userIP !== 'unknown') {
+    if (userIP && userIP !== 'unknown' && userIP !== '') {
         db.collection('giveaway_' + gameId).where('ip', '==', userIP).get().then(function(s) {
             if (!s.empty) { 
                 alert('⚠️ Ты уже участвовал!'); 
