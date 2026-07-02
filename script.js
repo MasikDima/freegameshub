@@ -401,6 +401,21 @@ document.querySelectorAll('.btn-play[data-key="giveaway-play"]').forEach(functio
         btn.textContent = t('giveaway-play');
     }
 });
+        // Обновляем описания розыгрышей
+    document.querySelectorAll('.prize-desc').forEach(function(el) {
+        if (!el.textContent.includes('🎯')) {
+            var card = el.closest('.prize-card');
+            if (card) {
+                var btn = card.querySelector('.btn-play');
+                if (btn) {
+                    var gameId = btn.id.replace('btn-', '');
+                    if (translations[currentLang] && translations[currentLang]['desc-' + gameId]) {
+                        el.textContent = translations[currentLang]['desc-' + gameId];
+                    }
+                }
+            }
+        }
+    });
 }
 
 // ========== ВЫПАДАЮЩИЙ СПИСОК ==========
