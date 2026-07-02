@@ -343,28 +343,31 @@ function chooseGame(gameId) {
             if (bird.y - s < 0 || bird.y + s > 500) { end(); return; }
             requestAnimationFrame(loop);
         }
-        function end() {
-    gameRunning = false;
-    if (score >= 20) {
-        scoreDiv.textContent = '🎉 Вы участвуете!';
-        var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
-        if (username) {
-            if (userIP === 'unknown' || !userIP) {
-                alert('⚠️ Ошибка проверки. Попробуй через браузер.');
-                closeModal();
-                return;
+                function end() {
+            gameRunning = false;
+            if (score >= 20) {
+                scoreDiv.textContent = '🎉 Вы участвуете!';
+                var username = prompt('✅ ' + score + ' очков! Введи Telegram @username:');
+                if (username) {
+                    if (userIP === 'unknown' || !userIP) {
+                        alert('⚠️ Ошибка проверки. Попробуй через браузер.');
+                        closeModal();
+                        return;
+                    }
+                    db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
+                        if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
+                        db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
+                            localStorage.setItem('played_' + gameId, 'true');
+                            scoreDiv.textContent = '✅ Ты участвуешь!';
+                            loadGameData(gameId);
+                            setTimeout(closeModal, 1500);
+                        });
+                    });
+                } else { closeModal(); }
+            } else { 
+                alert('Нужно 20 очков! Набрано: ' + score); 
+                closeModal(); 
             }
-            db.collection('giveaway_' + gameId).where('username','==',username).get().then(function(s) {
-                if (!s.empty) { alert('⚠️ Этот @username уже участвует!'); closeModal(); return; }
-                db.collection('giveaway_' + gameId).add({ username: username, ip: userIP, date: firebase.firestore.FieldValue.serverTimestamp() }).then(function() {
-                    localStorage.setItem('played_' + gameId, 'true');
-                    scoreDiv.textContent = '✅ Ты участвуешь!';
-                    loadGameData(gameId);
-                    setTimeout(closeModal, 1500);
-                });
-            });
-        } else { closeModal(); }
-                } else { alert('Нужно 20 очков! Набрано: ' + score); closeModal(); }
         }
         function closeModal() { document.body.removeChild(modal); }
         closeBtn.onclick = function() { gameRunning = false; closeModal(); };
