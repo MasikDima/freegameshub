@@ -407,15 +407,19 @@ function launchCupGame(gameId) {
         cups.push(cup);
     }
     
-    var closeBtn = document.createElement('button');
+        var closeBtn = document.createElement('button');
     closeBtn.textContent = '✕ Закрыть';
     closeBtn.style.cssText = 'margin-top:15px;padding:10px 20px;background:#e94560;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;';
+    closeBtn.onclick = function() { gameActive = false; closeModal(); };
+    
+    function closeModal() { document.body.removeChild(modal); }
     
     modal.appendChild(scoreDiv);
     modal.appendChild(messageDiv);
-    modal.appendChild(cupsDiv);
+    modal.appendChild(gridDiv);
     modal.appendChild(closeBtn);
     document.body.appendChild(modal);
+}
     
     function showBall() {
         // Показываем шарик под стаканчиком
